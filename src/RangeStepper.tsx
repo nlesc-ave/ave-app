@@ -13,44 +13,61 @@ import {
 } from 'material-ui/Stepper';
 import TextField from 'material-ui/TextField';
 
+interface IChromosome {
+    chrom_id: string;
+    length: number;
+}
+
 interface IState {
-    finished: boolean;
     stepIndex: number;
+    allowedSpecies: string[];
+    allowedGenomes: string[];
+    allowedChromosomes: IChromosome[];
     selectedSpecies: string;
     selectedGenome: string;
-    selectedChromosome: string;
+    selectedChromosome: IChromosome;
     selectedStart: number;
     selectedEnd: number;
 }
 
 export class RangeStepper extends React.Component<{}, IState> {
-    state = {
-        finished: false,
+    state: IState = {
         stepIndex: 0,
         // tslint:disable-next-line:object-literal-sort-keys
+        allowedSpecies: [],
+        allowedGenomes: [],
+        allowedChromosomes: [],
         selectedSpecies: '',
         selectedGenome: '',
-        selectedChromosome: '1',
+        selectedChromosome: { chrom_id: '', length: 0 },
         selectedStart: 1,
         selectedEnd: 10000
     };
 
-    allowedSpecies = ['human', 'mouse', 'rat'];
-    allowedGenomes = ['GRCh38.p10', 'GRCh38.p7', 'GRCh38.p5'];
-    allowedChromosomes = [{
-        chrom_id: '1',
-        length: 1209341
-    }, {
-        chrom_id: '2',
-        length: 534534
-    }];
+    componentDidMount() {
+        this.fetchSpecies();
+    }
 
-    handleNext = () => {
-        const { stepIndex } = this.state;
-        this.setState({
-            finished: stepIndex >= 2,
-            stepIndex: stepIndex + 1
-        });
+    fetchSpecies() {
+        fetch('/api/species.json')
+            .then<string[]>((response) => response.json())
+            .then((allowedSpecies) => this.setState({ allowedSpecies }));
+    }
+
+    fetchGenomes(species_id: string) {
+        fetch(`/api/species/${species_id}/genomes.json`)
+            .then<string[]>((response) => response.json())
+            .then((allowedGenomes) => this.setState({ allowedGenomes, stepIndex: this.state.stepIndex + 1 }));
+    }
+
+    fetchChromosomes(genome_id: string) {
+        fetch(`/api/genomes/${genome_id}/chromosomes.json`)
+            .then<IChromosome[]>((response) => response.json())
+            .then((allowedChromosomes) => this.setState({
+                allowedChromosomes,
+                selectedChromosome: allowedChromosomes[0],
+                stepIndex: this.state.stepIndex + 1
+            }));
     }
 
     handlePrev = () => {
@@ -68,12 +85,12 @@ export class RangeStepper extends React.Component<{}, IState> {
             const region_url = [
                 '#/region',
                 this.state.selectedGenome,
-                this.state.selectedChromosome,
+                this.state.selectedChromosome.chrom_id,
                 this.state.selectedStart,
                 this.state.selectedEnd
             ].join('/');
             const finalEnabled = this.state.selectedGenome &&
-                this.state.selectedChromosome &&
+                this.state.selectedChromosome.chrom_id &&
                 this.state.selectedStart &&
                 this.state.selectedEnd;
             finishButton = (
@@ -110,16 +127,16 @@ export class RangeStepper extends React.Component<{}, IState> {
 
     selectSpecies = (_event: React.FormEvent<{}>, selectedSpecies: string) => {
         this.setState({ selectedSpecies });
-        this.handleNext();
+        this.fetchGenomes(selectedSpecies);
     }
 
     selectGenome = (_e: any, selectedGenome: string) => {
         this.setState({ selectedGenome });
-        this.handleNext();
+        this.fetchChromosomes(selectedGenome);
     }
 
     selectChromosome = (_e: any, selectedChromosomeIndex: number, _payload: any) => {
-        const selectedChromosome = this.allowedChromosomes[selectedChromosomeIndex].chrom_id;
+        const selectedChromosome = this.state.allowedChromosomes[selectedChromosomeIndex];
         this.setState({ selectedChromosome });
     }
 
@@ -128,11 +145,23 @@ export class RangeStepper extends React.Component<{}, IState> {
 
     render() {
         const { stepIndex, selectedGenome, selectedSpecies } = this.state;
-        const speciesRadios = this.allowedSpecies.map((name) => <RadioButton key={name} label={name} value={name} />);
-        const genomeRadios = this.allowedGenomes.map((name) => <RadioButton key={name} label={name} value={name} />);
-        const chromosomeItems = this.allowedChromosomes.map(
+        const speciesRadios = this.state.allowedSpecies.map(
+            (name) => <RadioButton key={name} label={name} value={name} />
+        );
+        const genomeRadios = this.state.allowedGenomes.map(
+            (name) => <RadioButton key={name} label={name} value={name} />
+        );
+        const chromosomeItems = this.state.allowedChromosomes.map(
             (chr) => <MenuItem key={chr.chrom_id} primaryText={chr.chrom_id} value={chr.chrom_id} />
         );
+        const startError = this.state.selectedStart < 1 ? 'Start should be greater than 1' : '';
+        let endError = '';
+        if (this.state.selectedEnd <= this.state.selectedStart) {
+            endError = 'End should be greater than start';
+        }
+        if (this.state.selectedChromosome && this.state.selectedEnd > this.state.selectedChromosome.length) {
+            endError = `End should be smaller than chromosome length ${this.state.selectedChromosome.length}`;
+        }
 
         return (
             <Stepper activeStep={stepIndex} orientation="vertical">
@@ -159,7 +188,7 @@ export class RangeStepper extends React.Component<{}, IState> {
                     <StepContent>
                         <SelectField
                             floatingLabelText="Chromosome"
-                            value={this.state.selectedChromosome}
+                            value={this.state.selectedChromosome.chrom_id}
                             onChange={this.selectChromosome}
                         >
                             {chromosomeItems}
@@ -170,6 +199,7 @@ export class RangeStepper extends React.Component<{}, IState> {
                                 floatingLabelText="Start"
                                 value={this.state.selectedStart}
                                 onChange={this.selectStart}
+                                errorText={startError}
                             />
                             <TextField
                                 type="number"
@@ -177,6 +207,7 @@ export class RangeStepper extends React.Component<{}, IState> {
                                 value={this.state.selectedEnd}
                                 onChange={this.selectEnd}
                                 style={{ paddingLeft: '5px' }}
+                                errorText={endError}
                             />
                         </div>
                         {this.renderStepActions(2)}

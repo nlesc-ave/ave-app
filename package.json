@@ -1,8 +1,10 @@
 {
   "name": "ave-app",
   "version": "0.1.0",
+  "proxy": "http://localhost:2015",
   "private": true,
   "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
     "material-ui": "^0.17.4",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
@@ -13,6 +15,7 @@
   },
   "devDependencies": {
     "@nlesc/react-scripts": "0.2.0",
+    "@types/isomorphic-fetch": "^0.0.33",
     "@types/material-ui": "^0.17.2",
     "@types/react": "^15.0.23",
     "@types/react-dom": "^15.5.0",
