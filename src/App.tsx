@@ -1,20 +1,23 @@
 import * as React from 'react';
 
-import './App.css';
-import logo from './logo.svg';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { Route } from 'react-router';
+import { HashRouter as Router, Switch } from 'react-router-dom';
+
+import { RegionViewer } from './RegionViewer';
+import { Welcome } from './Welcome';
 
 export class App extends React.Component<{}, {}> {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </div>
+      <MuiThemeProvider>
+        <Router>
+          <Switch>
+            <Route path="/region/:genome_id/:chrom_id/:start_position/:end_position" component={RegionViewer}/>
+            <Route component={Welcome}/>
+          </Switch>
+        </Router>
+      </MuiThemeProvider>
     );
   }
 }
