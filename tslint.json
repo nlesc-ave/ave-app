@@ -1,5 +1,8 @@
 {
     "extends": [
         "@nlesc/tslint-config-react-app"
-    ]
+    ],
+    "rules": {
+        "no-suspicious-comment": false
+    }
 }
