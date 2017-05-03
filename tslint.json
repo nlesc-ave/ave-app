@@ -3,6 +3,12 @@
         "@nlesc/tslint-config-react-app"
     ],
     "rules": {
-        "no-suspicious-comment": false
+        "no-suspicious-comment": false,
+        "jsx-no-bind": false,
+        "react-this-binding-issue": false,
+        "react-a11y-event-has-role": false,
+        "interface-name": [
+            false
+        ]
     }
 }

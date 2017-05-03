@@ -4,9 +4,12 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import * as pileup from 'pileup/dist/main/pileup';
-import Root from 'pileup/dist/main/Root';
+import { Root } from './Root';
+import { AveDataSource } from './sources/AveDataSource';
+import { HaplotypeTrack } from './viz/HaplotypeTrack';
 
 import 'pileup/style/pileup.css';
+import './RegionViewer.css';
 
 export const RegionViewer = ({ match }: any) => {
     const closeButton = <IconButton href="#/" tooltip="Back to start"><NavigationClose /></IconButton>;
@@ -41,6 +44,10 @@ export const RegionViewer = ({ match }: any) => {
     //     }),
     //     name: 'Genes',
     //     viz: pileup.viz.genes()
+    }, {
+        data: new AveDataSource(),
+        name: 'Haplotypes',
+        viz: {component: HaplotypeTrack, options: {}}
     }];
     const vizTracks = sources.map((track) => {
         const source = track.data;
