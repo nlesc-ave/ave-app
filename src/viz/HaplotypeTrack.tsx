@@ -1,11 +1,10 @@
 import * as React from 'react';
 
 import * as dataCanvas from 'data-canvas';
-import ContigInterval from 'pileup/dist/main/ContigInterval';
 import * as style from 'pileup/dist/main/style';
 import * as canvasUtils from 'pileup/dist/main/viz/canvas-utils';
 import * as d3utils from 'pileup/dist/main/viz/d3utils';
-import {AveDataSource} from '../sources/AveDataSource';
+import {AveVariantsDataSource} from '../sources/AveVariantsDataSource';
 
 interface IGenomeRange {
     contig: string;
@@ -14,7 +13,7 @@ interface IGenomeRange {
 }
 
 interface IProps {
-    source: AveDataSource;
+    source: AveVariantsDataSource;
     width: number;
     height: number;
     range: IGenomeRange;
@@ -22,7 +21,15 @@ interface IProps {
     options: any;
 }
 
+const VARIANT_FILL = 'red';
+const VARIANT_RADIUS = 7;
+const HAPLOTYPE_HEIGHT = 16;
+const HAPLOTYPE_STROKE = 'darkgrey';
+const HAPLOTYPE_PADDING = 4;
+const containerStyles = {height: '100%'};
+
 export class HaplotypeTrack extends React.Component<IProps, {}> {
+    static displayName = 'pileup';
     canvas: Element;
 
     constructor() {
@@ -37,7 +44,7 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
     }
 
     componentDidMount() {
-        this.updateVisualization();
+        this.props.source.on('newdata', this.updateVisualization.bind(this));
     }
 
     onClick() {
@@ -45,41 +52,62 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
     }
 
     render() {
-        return <canvas onClick={this.onClick} ref={this.canvasRefHandler}/>;
+        return (
+            <div style={containerStyles}>
+                <canvas onClick={this.onClick} ref={this.canvasRefHandler}/>
+            </div>
+        );
     }
 
     updateVisualization() {
-        const {width, height} = this.props;
+        const {width} = this.props;
         // Hold off until height & width are known.
         if (width === 0) {
             return;
         }
+        const height = this.props.source.haplotypes.length * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING);
+        // console.log(height);
         d3utils.sizeCanvas(this.canvas, width, height);
         const ctx = canvasUtils.getContext(this.canvas);
         const dtx = dataCanvas.getDataContext(ctx);
         this.renderScene(dtx);
     }
 
-    renderScene(ctx: any) {
+    renderScene(ctx: dataCanvas.DataCanvasRenderingContext2D ) {
         const range = this.props.range;
-        const interval = new ContigInterval(range.contig, range.start, range.stop);
-        const haplotypes = this.props.source.getFeaturesInRange(interval);
+        const haplotypes = this.props.source.haplotypes;
         const scale = this.getScale();
-        const height = this.props.height;
-        const y = height - style.VARIANT_HEIGHT - 1;
 
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.reset();
         ctx.save();
 
         ctx.fillStyle = style.VARIANT_FILL;
-        ctx.strokeStyle = style.VARIANT_STROKE;
-        haplotypes.forEach((haplotype) => {
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        const haplotypeWidth = Math.round(scale(range.stop) - scale(range.start));
+        haplotypes.forEach((haplotype, index) => {
             ctx.pushObject(haplotype);
-            const x = Math.round(scale(haplotype.position));
-            const width = Math.round(scale(haplotype.position + 100)) - 1 - x;
-            ctx.fillRect(x - 0.5, y - 0.5, width, style.VARIANT_HEIGHT);
-            ctx.strokeRect(x - 0.5, y - 0.5, width, style.VARIANT_HEIGHT);
+
+            ctx.strokeStyle = HAPLOTYPE_STROKE;
+            const yOffset = index * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING);
+            ctx.strokeRect(0, yOffset, haplotypeWidth, HAPLOTYPE_HEIGHT);
+
+            // Number of accessions in haplotype
+            ctx.strokeText(haplotype.accessions.length.toString(), 2, yOffset + Math.round(HAPLOTYPE_HEIGHT / 2));
+
+            haplotype.variants.forEach((variant) => {
+                ctx.pushObject(variant);
+                // TODO choose fill style on type of variant
+                ctx.fillStyle = VARIANT_FILL;
+                ctx.beginPath();
+                // TODO remove range.start when variant.pos is from real dataset
+                const xCenter = scale(range.start + variant.pos);
+                const yCenter = yOffset + Math.round(HAPLOTYPE_HEIGHT / 2);
+                ctx.arc(xCenter, yCenter, VARIANT_RADIUS, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.popObject();
+            });
             ctx.popObject();
         });
 

@@ -46,11 +46,12 @@ declare module 'pileup/dist/main/viz/d3utils' {
     export var getTrackScale: (range: any, width: number) => any;
 }
 declare module 'pileup/dist/main/viz/canvas-utils' {
-    export var getContext: (el: Element) => any;
+    export var getContext: (el: Element) => CanvasRenderingContext2D;
 }
 
 declare module 'pileup/dist/main/ContigInterval' {
     export default class ContigInterval {
+        contig: string;
         constructor(contig: string, start: number, stop: number);
         start(): number;
         stop(): number;
@@ -65,5 +66,10 @@ declare module 'pileup/dist/main/style' {
 }
 
 declare module 'data-canvas' {
-    export var getDataContext: (context: any) => any;
+    export class DataCanvasRenderingContext2D extends CanvasRenderingContext2D {
+        pushObject(o: any): void;
+        popObject(): void;
+        reset(): void;
+    }
+    export var getDataContext: (context: CanvasRenderingContext2D) => DataCanvasRenderingContext2D ;
 }
