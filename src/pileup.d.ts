@@ -20,29 +20,54 @@ declare module 'pileup/dist/main/Root' {
         initialRange: any;
     }
 
-    export interface VizWithOptions {
-        component: any;
-        options?: any;
+    interface GenomeRange {
+        contig: string;
+        start: number;
+        stop: number;
     }
 
-    export interface Track {
+    interface IRootState {
+        contigList: string[];
+        range?: GenomeRange;
+        settingsMenuKey?: string;
+    }
+
+    interface VizWithOptions {
+        component: any;
+        options?: object;
+    }
+
+    interface Track {
         viz: VizWithOptions;
-        data: Object;  // This is a DataSource object
+        data: object;  // This is a DataSource object
         name?: string;
         cssClass?: string;
-        isReference?: boolean
+        isReference?: boolean;
     }
 
-    export interface VisualizedTrack {
+    interface VisualizedTrack {
         visualization: VizWithOptions;
-        source: Object;  // data source
+        source: object;  // data source
         track: Track;  // for css class and options
     }
 
-    export default class Root extends React.Component<IRootProps, any> {
+    export default class Root extends React.Component<IRootProps, IRootState> {
         handleRangeChange: any;
         toggleSettingsMenu: any;
-        makeDivForTrack: (key: string, track: VisualizedTrack) => any;
+        makeDivForTrack(key: string, track: VisualizedTrack): any;
+        handleSelectOption: any;
+    }
+}
+
+declare module 'pileup/dist/main/VisualizationWrapper' {
+    interface IProps {
+        visualization: any;
+        range: any;
+        onRangeChange: any;
+        source: any;
+        referenceSource: any;
+    }
+    export default class VisualizationWrapper extends React.Component<IProps, {}> {
     }
 }
 

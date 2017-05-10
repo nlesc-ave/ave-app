@@ -5,3 +5,7 @@
     top: 120px;
     bottom: 10px;
 }
+
+.pileup-root > .haplotype {
+  flex: 1;  /* stretch to fill remaining space */
+}

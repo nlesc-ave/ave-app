@@ -7,7 +7,6 @@ import * as pileup from 'pileup/dist/main/pileup';
 import { Root } from './Root';
 import { AveVariantsDataSource, IHaplotype, IVariant } from './sources/AveVariantsDataSource';
 import { HaplotypeTrack } from './viz/HaplotypeTrack';
-import { HaplotypeTree } from './viz/HaplotypeTree';
 
 import 'pileup/style/pileup.css';
 import './RegionViewer.css';
@@ -72,7 +71,6 @@ export const RegionViewer = ({ match }: any) => {
                 End: {match.params.end_position}
             </p>
             <Root referenceSource={vizTracks[0].source} tracks={vizTracks} initialRange={range} />
-            <HaplotypeTree source={variantDataSource} width={150}/>
         </div>
     );
 };

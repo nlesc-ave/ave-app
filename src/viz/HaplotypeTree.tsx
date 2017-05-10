@@ -5,8 +5,6 @@ import * as d3 from 'd3';
 import {AveVariantsDataSource, IVariantNode} from '../sources/AveVariantsDataSource';
 import {HAPLOTYPE_HEIGHT, HAPLOTYPE_PADDING} from './HaplotypeTrack';
 
-import './HaplotypeTree.css';
-
 interface IProps {
     source: AveVariantsDataSource;
     width: number;
@@ -42,11 +40,9 @@ export class HaplotypeTree extends React.Component<IProps, IState> {
         const linkStyle = {fill: 'none', stroke: 'darkgrey', strokeWidth: '.8px'};
         const compLinks = links.map((l, i) => <path key={i} d={diagonal(l)} style={linkStyle}/>);
         return (
-            <div className="haplotree">
-                <svg width={this.props.width} height={height}>
-                    {compLinks}
-                </svg>
-            </div>
+            <svg width={this.props.width} height={height}>
+                {compLinks}
+            </svg>
         );
     }
 }

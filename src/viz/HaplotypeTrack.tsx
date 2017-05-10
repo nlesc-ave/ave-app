@@ -30,7 +30,7 @@ export const HAPLOTYPE_PADDING = 4;
 const containerStyles = {height: '100%'};
 
 export class HaplotypeTrack extends React.Component<IProps, {}> {
-    static displayName = 'pileup';
+    static displayName = 'haplotype';
     canvas: Element;
 
     constructor() {
