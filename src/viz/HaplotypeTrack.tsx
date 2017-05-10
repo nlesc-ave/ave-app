@@ -125,6 +125,31 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
         });
 
         ctx.restore();
+
+        // TODO: the center line should go above alignments, but below mismatches
+        this.renderCenterLine(ctx, range, scale);
+    }
+
+    // Draw the center line(s), which orient the user
+    renderCenterLine(ctx: CanvasRenderingContext2D,
+                     range: IGenomeRange,
+                     scale: (num: number) => number) {
+        const midPoint = Math.floor((range.stop + range.start) / 2);
+        const rightLineX = Math.ceil(scale(midPoint + 1));
+        const leftLineX = Math.floor(scale(midPoint));
+        const height = ctx.canvas.height;
+        ctx.save();
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        if (rightLineX - leftLineX < 3) {
+            // If the lines are very close, then just draw a center line.
+            const midX = Math.round((leftLineX + rightLineX) / 2);
+            canvasUtils.drawLine(ctx, midX - 0.5, 0, midX - 0.5, height);
+        } else {
+            canvasUtils.drawLine(ctx, leftLineX - 0.5, 0, leftLineX - 0.5, height);
+            canvasUtils.drawLine(ctx, rightLineX - 0.5, 0, rightLineX - 0.5, height);
+        }
+        ctx.restore();
     }
 
     getScale() {

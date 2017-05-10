@@ -66,6 +66,7 @@ declare module 'pileup/dist/main/viz/d3utils' {
 }
 declare module 'pileup/dist/main/viz/canvas-utils' {
     export var getContext: (el: Element) => CanvasRenderingContext2D;
+    export var drawLine: (ctx: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number) => void;
 }
 
 declare module 'pileup/dist/main/ContigInterval' {
