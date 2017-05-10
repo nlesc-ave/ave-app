@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import * as pileup from 'pileup/dist/main/pileup';
 import { Root } from './Root';
-import { AveDataSource } from './sources/AveDataSource';
+import { AveVariantsDataSource } from './sources/AveVariantsDataSource';
 import { HaplotypeTrack } from './viz/HaplotypeTrack';
 
 import 'pileup/style/pileup.css';
@@ -45,7 +45,8 @@ export const RegionViewer = ({ match }: any) => {
     //     name: 'Genes',
     //     viz: pileup.viz.genes()
     }, {
-        data: new AveDataSource(),
+        cssClass: 'normal',
+        data: new AveVariantsDataSource(match.params.genome_id),
         name: 'Haplotypes',
         viz: {component: HaplotypeTrack, options: {}}
     }];
@@ -56,12 +57,12 @@ export const RegionViewer = ({ match }: any) => {
     return (
         <div>
             <AppBar title="Allelic Variation Explorer: Region viewer" iconElementLeft={closeButton} />
-            <ul>
-                <li>Genome: {match.params.genome_id}</li>
-                <li>Chromsome: {match.params.chrom_id}</li>
-                <li>Start: {match.params.start_position}</li>
-                <li>End: {match.params.end_position}</li>
-            </ul>
+            <p>
+                Genome: {match.params.genome_id},
+                Chromsome: {match.params.chrom_id},
+                Start: {match.params.start_position},
+                End: {match.params.end_position}
+            </p>
             <Root referenceSource={vizTracks[0].source} tracks={vizTracks} initialRange={range} />
         </div>
     );
