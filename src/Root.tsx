@@ -6,6 +6,7 @@ import PileupRoot from 'pileup/dist/main/Root';
 import './Root.css';
 
 export class Root extends PileupRoot {
+
     render() {
         const trackEls = this.props.tracks.map((t, i) => this.makeDivForTrack('' + i, t));
         return (

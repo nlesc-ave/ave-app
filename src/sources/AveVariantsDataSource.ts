@@ -23,7 +23,7 @@ interface GenomeRange {
   stop: number;  // inclusive
 }
 
-interface IVariantNode {
+export interface IVariantNode {
     id?: number;
     children?: IVariantNode[];
 }

@@ -23,9 +23,10 @@ interface IProps {
 
 const VARIANT_FILL = 'red';
 const VARIANT_RADIUS = 7;
-const HAPLOTYPE_HEIGHT = 16;
+const HAPLOTYPE_TOP_MARGIN = 20;
+export const HAPLOTYPE_HEIGHT = 16;
 const HAPLOTYPE_STROKE = 'darkgrey';
-const HAPLOTYPE_PADDING = 4;
+export const HAPLOTYPE_PADDING = 4;
 const containerStyles = {height: '100%'};
 
 export class HaplotypeTrack extends React.Component<IProps, {}> {
@@ -65,7 +66,8 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
         if (width === 0) {
             return;
         }
-        const height = this.props.source.haplotypes.length * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING);
+        const height = this.props.source.haplotypes.length * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING)
+            + HAPLOTYPE_TOP_MARGIN;
         // console.log(height);
         d3utils.sizeCanvas(this.canvas, width, height);
         const ctx = canvasUtils.getContext(this.canvas);
@@ -90,7 +92,7 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
             ctx.pushObject(haplotype);
 
             ctx.strokeStyle = HAPLOTYPE_STROKE;
-            const yOffset = index * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING);
+            const yOffset = index * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING) + HAPLOTYPE_TOP_MARGIN;
             ctx.strokeRect(0, yOffset, haplotypeWidth, HAPLOTYPE_HEIGHT);
 
             // Number of accessions in haplotype

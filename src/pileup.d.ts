@@ -20,10 +20,29 @@ declare module 'pileup/dist/main/Root' {
         initialRange: any;
     }
 
+    export interface VizWithOptions {
+        component: any;
+        options?: any;
+    }
+
+    export interface Track {
+        viz: VizWithOptions;
+        data: Object;  // This is a DataSource object
+        name?: string;
+        cssClass?: string;
+        isReference?: boolean
+    }
+
+    export interface VisualizedTrack {
+        visualization: VizWithOptions;
+        source: Object;  // data source
+        track: Track;  // for css class and options
+    }
+
     export default class Root extends React.Component<IRootProps, any> {
         handleRangeChange: any;
         toggleSettingsMenu: any;
-        makeDivForTrack: any;
+        makeDivForTrack: (key: string, track: VisualizedTrack) => any;
     }
 }
 

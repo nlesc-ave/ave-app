@@ -72,6 +72,10 @@
     "@types/jquery" "*"
     "@types/underscore" "*"
 
+"@types/d3@^3.0.0":
+  version "3.5.38"
+  resolved "https://registry.yarnpkg.com/@types/d3/-/d3-3.5.38.tgz#76f8f2e9159ae562965b2fa0e6fbee1aa643a1bc"
+
 "@types/history@*":
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.5.0.tgz#2f5c3aad4fbd00f89e99b83083e354bc5308e307"
@@ -4393,8 +4397,9 @@ pify@^2.0.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
 
-"pileup@file:/home/stefanv/git/pileup.js":
+"pileup@https://github.com/nlesc-ave/pileup.js.git":
   version "0.6.8"
+  resolved "https://github.com/nlesc-ave/pileup.js.git#2467fccdaecbc62f26084a78dbb6bf169bb15ea7"
   dependencies:
     backbone "1.1.2"
     d3 "^3.5.5"
@@ -4404,8 +4409,6 @@ pify@^2.0.0:
     memory-cache "0.1.6"
     pako "^0.2.5"
     q "^1.1.2"
-    react "^15.5.4"
-    react-dom "^15.5.4"
     shallow-equals "0.0.0"
     underscore "^1.7.0"
 
