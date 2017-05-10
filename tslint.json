@@ -9,6 +9,8 @@
         "react-a11y-event-has-role": false,
         "interface-name": [
             false
-        ]
+        ],
+        "prefer-type-cast": false,
+        "no-console": [false]
     }
 }
