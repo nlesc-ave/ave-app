@@ -48,8 +48,19 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
         this.props.source.on('newdata', this.updateVisualization.bind(this));
     }
 
-    onClick() {
-        // TODO
+    onClick(reactEvent: any) {
+        const ev = reactEvent.nativeEvent;
+        const x = ev.offsetX;
+        const y = ev.offsetY;
+        const ctx = canvasUtils.getContext(this.canvas);
+        const trackingCtx = new dataCanvas.ClickTrackingContext(ctx, x, y);
+        this.renderScene(trackingCtx);
+
+        if (trackingCtx.hit) {
+            const variant = trackingCtx.hit[0];
+            const haplotype = trackingCtx.hit[1];
+            this.props.options.onVariantClick(variant, haplotype);
+        }
     }
 
     render() {

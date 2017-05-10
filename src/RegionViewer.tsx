@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import * as pileup from 'pileup/dist/main/pileup';
 import { Root } from './Root';
-import { AveVariantsDataSource } from './sources/AveVariantsDataSource';
+import { AveVariantsDataSource, IHaplotype, IVariant } from './sources/AveVariantsDataSource';
 import { HaplotypeTrack } from './viz/HaplotypeTrack';
 import { HaplotypeTree } from './viz/HaplotypeTree';
 
@@ -50,7 +50,12 @@ export const RegionViewer = ({ match }: any) => {
         cssClass: 'normal',
         data: variantDataSource,
         name: 'Haplotypes',
-        viz: {component: HaplotypeTrack, options: {}}
+        viz: {component: HaplotypeTrack, options: {
+            onVariantClick: (variant: IVariant, haplotype: IHaplotype) => {
+                // TODO replace with route change or show pretty dialog
+                alert([variant.pos, haplotype.id]);
+            }
+        }}
     }];
     const vizTracks = sources.map((track) => {
         const source = track.data;

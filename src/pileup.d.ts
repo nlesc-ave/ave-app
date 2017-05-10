@@ -90,5 +90,10 @@ declare module 'data-canvas' {
         popObject(): void;
         reset(): void;
     }
+    export class ClickTrackingContext extends DataCanvasRenderingContext2D {
+        constructor(ctx: CanvasRenderingContext2D, x: number, y: number);
+        hit?: any[];
+        hits: any[][];
+    }
     export var getDataContext: (context: CanvasRenderingContext2D) => DataCanvasRenderingContext2D ;
 }

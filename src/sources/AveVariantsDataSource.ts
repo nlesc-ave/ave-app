@@ -3,7 +3,7 @@ import * as _ from 'underscore';
 
 import ContigInterval from 'pileup/dist/main/ContigInterval';
 
-interface IVariant {
+export interface IVariant {
     pos: number;
     ref: string;
     alt: string;
@@ -11,7 +11,7 @@ interface IVariant {
     info: string;
 }
 
-interface IHaplotype {
+export interface IHaplotype {
     id: number;
     accessions: string[];
     variants: IVariant[];
