@@ -29,7 +29,7 @@ export class HaplotypeTree extends React.Component<IProps, IState> {
 
     render() {
         if (this.state == null) {
-            return <svg/>;
+            return <svg width={this.props.width} height={HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING}/>;
         }
         const height = this.state.leafs * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING);
         const cluster = d3.layout.cluster().size([height, this.props.width]).separation(() => 1);

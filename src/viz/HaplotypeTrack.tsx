@@ -79,7 +79,6 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
         }
         const height = this.props.source.haplotypes.length * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING)
             + HAPLOTYPE_TOP_MARGIN;
-        // console.log(height);
         d3utils.sizeCanvas(this.canvas, width, height);
         const ctx = canvasUtils.getContext(this.canvas);
         const dtx = dataCanvas.getDataContext(ctx);
