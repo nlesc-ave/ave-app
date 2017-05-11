@@ -82,12 +82,17 @@ export class RangeStepper extends React.Component<{}, IState> {
 
         let finishButton;
         if (step === 2) {
+            // TODO when server is online use dynamic range
             const region_url = [
                 '#/region',
-                this.state.selectedGenome,
-                this.state.selectedChromosome.chrom_id,
-                this.state.selectedStart,
-                this.state.selectedEnd
+                'S_lycopersicum',
+                'SL2.40ch05',
+                 4938381,
+                 4938899
+            //     this.state.selectedGenome,
+            //     this.state.selectedChromosome.chrom_id,
+            //     this.state.selectedStart,
+            //     this.state.selectedEnd
             ].join('/');
             const finalEnabled = this.state.selectedGenome &&
                 this.state.selectedChromosome.chrom_id &&

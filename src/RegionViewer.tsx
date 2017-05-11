@@ -14,17 +14,16 @@ import './RegionViewer.css';
 export const RegionViewer = ({ match }: any) => {
     const closeButton = <IconButton href="#/" tooltip="Back to start"><NavigationClose /></IconButton>;
     // TODO when server is online use dynamic range
-    // const range = {
-    //     contig: match.params.chrom_id,
-    //     start: match.params.start_position,
-    //     stop: match.params.end_position
-    // };4,938,381-4,938,899
-    const range = {contig: 'SL2.40ch05', start: 4938381, stop: 4938899};
+    const range = {
+        contig: match.params.chrom_id,
+        start: Number.parseInt(match.params.start_position),
+        stop: Number.parseInt(match.params.end_position)
+    };
     const variantDataSource = new AveVariantsDataSource(match.params.genome_id);
     const sources = [{
         data: pileup.formats.twoBit({
-            // tslint:disable-next-line:no-http-string
-            // url: 'http://www.biodalliance.org/datasets/hg19.2bit'
+            // TODO use twoBit from server
+            // url: `/api/genomes/${match.params.genome_id}.2bit`
             url: '/api/S_lycopersicum_chromosomes.2.40.2bit'
         }),
         isReference: true,
@@ -60,7 +59,6 @@ export const RegionViewer = ({ match }: any) => {
         const source = track.data;
         return {visualization: track.viz, source, track};
     });
-    // TODO move instantiation of HaplotypeTree to Root.makeDivForTrack
     return (
         <div>
             <AppBar title="Allelic Variation Explorer: Region viewer" iconElementLeft={closeButton} />
