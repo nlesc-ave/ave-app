@@ -1,33 +1,36 @@
+import { History } from 'history';
 import * as React from 'react';
+import { withRouter } from 'react-router';
 
 import Controls from 'pileup/dist/main/Controls';
 import PileupRoot from 'pileup/dist/main/Root';
+import { VisualizedTrack  } from 'pileup/dist/main/Root';
+import { GenomeRange, IRootProps, IRootState } from 'pileup/dist/main/Root';
 import VisualizationWrapper from 'pileup/dist/main/VisualizationWrapper';
 import { AveVariantsDataSource } from './sources/AveVariantsDataSource';
 import { HaplotypeTree } from './viz/HaplotypeTree';
 
 import './Root.css';
 
-interface VizWithOptions {
-    component: any;
-    options?: object;
+interface IProps extends IRootProps {
+    history: History;
+    match: any;
+    location: any;
+    genome: IGenome;
 }
 
-interface Track {
-    viz: VizWithOptions;
-    data: object;  // This is a DataSource object
-    name?: string;
-    cssClass?: string;
-    isReference?: boolean;
-}
+class RootWithoutHistory extends PileupRoot<IProps, IRootState> {
+    handleRangeChange(newRange: GenomeRange) {
+        const path = this.props.match.path
+            .replace(':genome_id', this.props.match.params.genome_id)
+            .replace(':chrom_id', newRange.contig)
+            .replace(':start_position', newRange.start + '')
+            .replace(':end_position', newRange.stop + '')
+        ;
+        this.props.history.replace(path);
+        super.handleRangeChange(newRange);
+    }
 
-interface VisualizedTrack {
-    visualization: VizWithOptions;
-    source: object;  // data source
-    track: Track;  // for css class and options
-}
-
-export class Root extends PileupRoot {
     makeDivForTrack(key: string, track: VisualizedTrack) {
         const trackEl = (
             <VisualizationWrapper
@@ -94,7 +97,7 @@ export class Root extends PileupRoot {
                     </div>
                     <div className="track-content">
                         <Controls
-                            contigList={this.state.contigList}
+                            contigList={this.props.genome.chromosomes.map((chr) => chr.chrom_id)}
                             range={this.state.range}
                             onChange={this.handleRangeChange.bind(this)}
                         />
@@ -106,3 +109,5 @@ export class Root extends PileupRoot {
         );
     }
 }
+
+export const Root = withRouter(RootWithoutHistory);

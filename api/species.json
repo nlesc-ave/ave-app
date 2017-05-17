@@ -1,1 +1,4 @@
-["human", "mouse", "rat"]
+[{
+    "name": "Solanum lycopersicum",
+    "species_id": "s_lycopersicum"
+}]

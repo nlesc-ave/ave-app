@@ -14,30 +14,30 @@ declare module 'pileup/dist/main/Controls' {
 }
 
 declare module 'pileup/dist/main/Root' {
-    interface IRootProps {
+    export interface IRootProps {
         tracks: any[];
         referenceSource: any;
         initialRange: any;
     }
 
-    interface GenomeRange {
+    export interface GenomeRange {
         contig: string;
         start: number;
         stop: number;
     }
 
-    interface IRootState {
+    export interface IRootState {
         contigList: string[];
-        range?: GenomeRange;
+        range: GenomeRange;
         settingsMenuKey?: string;
     }
 
-    interface VizWithOptions {
+    export interface VizWithOptions {
         component: any;
         options?: object;
     }
 
-    interface Track {
+    export interface Track {
         viz: VizWithOptions;
         data: object;  // This is a DataSource object
         name?: string;
@@ -45,14 +45,14 @@ declare module 'pileup/dist/main/Root' {
         isReference?: boolean;
     }
 
-    interface VisualizedTrack {
+    export interface VisualizedTrack {
         visualization: VizWithOptions;
         source: object;  // data source
         track: Track;  // for css class and options
     }
 
-    export default class Root extends React.Component<IRootProps, IRootState> {
-        handleRangeChange: any;
+    export default class Root<P extends IRootProps, S extends IRootState> extends React.Component<P, S> {
+        handleRangeChange(newRange: GenomeRange): void;
         toggleSettingsMenu: any;
         makeDivForTrack(key: string, track: VisualizedTrack): any;
         handleSelectOption: any;

@@ -34,7 +34,7 @@ interface IVariantsResponse {
 }
 
 export class AveVariantsDataSource {
-    genome_id: string = 'GRCH38.p10';
+    genome_id: string;
     interval: ContigInterval;
     hierarchy: IVariantNode = {};
     haplotypes: IHaplotype[] = [];

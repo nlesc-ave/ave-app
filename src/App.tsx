@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Route } from 'react-router';
-import { HashRouter as Router, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
 import { RegionViewer } from './RegionViewer';
 import { Welcome } from './Welcome';
