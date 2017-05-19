@@ -34,7 +34,7 @@ export class RegionViewer extends React.Component<RouteComponentProps<IParams>, 
     }
 
     fetchGenome() {
-        fetch(`/api/genomes/${this.props.match.params.genome_id}/index.json`)
+        fetch(`/api/genomes/${this.props.match.params.genome_id}`)
             .then<IGenome>((response) => response.json())
             .then((genome) => this.setState({ genome }))
         ;
@@ -69,13 +69,12 @@ export class RegionViewer extends React.Component<RouteComponentProps<IParams>, 
             data: pileup.formats.empty(),
             name: 'Location',
             viz: pileup.viz.location()
-        // }, {
-        //     data: pileup.formats.bigBed({
-        //         // tslint:disable-next-line:no-http-string
-        //         url: 'http://www.biodalliance.org/datasets/ensGene.bb'
-        //     }),
-        //     name: 'Genes',
-        //     viz: pileup.viz.genes()
+        }, {
+            data: pileup.formats.bigBed({
+                url: genome.genes
+            }),
+            name: 'Genes',
+            viz: pileup.viz.genes()
         }, {
             cssClass: 'normal',
             data: variantDataSource,

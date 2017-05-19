@@ -41,14 +41,14 @@ export class RangeStepper extends React.Component<{}, IState> {
 
     fetchSpecies() {
         // TODO change to /api/species when server online
-        fetch('/api/species.json')
+        fetch('/api/species')
             .then<ISpecies[]>((response) => response.json())
             .then((allowedSpecies) => this.setState({ allowedSpecies }));
     }
 
     fetchGenomes(species: ISpecies) {
         // TODO change to /api/species/${species_id}/genomes when server online
-        fetch(`/api/species/${species.species_id}/genomes.json`)
+        fetch(`/api/species/${species.species_id}/genomes`)
             .then<IGenome[]>((response) => response.json())
             .then((allowedGenomes) => this.setState({ allowedGenomes, stepIndex: this.state.stepIndex + 1 }));
     }

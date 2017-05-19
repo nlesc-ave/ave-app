@@ -53,8 +53,11 @@ export class AveVariantsDataSource {
     }
 
     fetchVariants(interval: ContigInterval) {
-        const url = `/api/genomes/${this.genome_id}/variants.json` +
-            `#${interval.contig}/${interval.start}/${interval.stop}`;
+        // TODO match service url template
+        const url = `/api/genomes/${this.genome_id}/variants#` +
+            interval.contig + '/' + interval.start() + '/' + interval.stop();
+        // TODO debounce fetch, haplotypes are fetched for each interval change which can be very frequent
+        // so wait 100ms for navigation to stop and then fetch
         return fetch(url)
             .then<IVariantsResponse>((response) => response.json())
             .then((response) => this.loadVariants(response, interval))

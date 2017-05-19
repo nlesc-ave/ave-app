@@ -56,5 +56,6 @@
     ],
     "annotation_feature_types": [],
     "accessions": [],
-    "reference": "/api/S_lycopersicum_chromosomes.2.40.2bit"
+    "reference": "/api/genomes/SL.2.40/S_lycopersicum_May_2012.2bit",
+    "genes": "/api/genomes/SL.2.40/S_lycopersicum_May_2012.bb"
 }
