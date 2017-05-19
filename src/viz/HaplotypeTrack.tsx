@@ -4,6 +4,8 @@ import * as dataCanvas from 'data-canvas';
 import * as style from 'pileup/dist/main/style';
 import * as canvasUtils from 'pileup/dist/main/viz/canvas-utils';
 import * as d3utils from 'pileup/dist/main/viz/d3utils';
+
+import {AccessionPickList} from '../AccessionPickList';
 import {AveVariantsDataSource} from '../sources/AveVariantsDataSource';
 
 interface IGenomeRange {
@@ -46,6 +48,11 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
 
     componentDidMount() {
         this.props.source.on('newdata', this.updateVisualization.bind(this));
+    }
+
+    getOptionsMenu() {
+        const accessions = ['Accession1', 'Accession2', 'Accession3', 'Accession4'];
+        return <AccessionPickList accessions={accessions}/>;
     }
 
     onClick(reactEvent: any) {
