@@ -22,7 +22,7 @@ chmod +x bedToBigBed
 # description field is too long for bedToBigBed so it must be trimmed
 gunzip -c S_lycopersicum_May_2012.bed.gz | perl -n -e 'chomp;@F=split(/\t/);$F[13] = substr($F[13],0,255); print join("\t", @F),"\n";'  > S_lycopersicum_May_2012.bed.trimmed
 ./bedToBigBed -tab -type=bed12+2 S_lycopersicum_May_2012.bed.trimmed genome.txt S_lycopersicum_May_2012.bb
-rm S_lycopersicum_May_2012.bed.gz S_lycopersicum_May_2012.bed.trimmed S_lycopersicum_May_2012.bedgenome.txt bedToBigBed
+rm S_lycopersicum_May_2012.bed.gz S_lycopersicum_May_2012.bed.trimmed S_lycopersicum_May_2012.bed genome.txt bedToBigBed
 cd -
 ```
 
