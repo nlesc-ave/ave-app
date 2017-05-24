@@ -3,6 +3,7 @@ import * as React from 'react';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import NavigationBack from 'material-ui/svg-icons/navigation/arrow-back';
+import ActionSearch from 'material-ui/svg-icons/action/search';
 import * as pileup from 'pileup/dist/main/pileup';
 import { RouteComponentProps } from 'react-router';
 
@@ -48,6 +49,7 @@ export class RegionViewer extends React.Component<RouteComponentProps<IParams>, 
             return <div>Loading ...</div>;
         }
         const closeButton = <IconButton href="/" tooltip="Back to start"><NavigationBack /></IconButton>;
+        const searchButton = <IconButton tooltip="Search"><ActionSearch /></IconButton>;
         const match = this.props.match;
         const genome = this.state.genome;
         // TODO when server is online use dynamic range
@@ -94,7 +96,11 @@ export class RegionViewer extends React.Component<RouteComponentProps<IParams>, 
         });
         return (
             <div>
-                <AppBar title="Allelic Variation Explorer: Region viewer" iconElementLeft={closeButton} />
+                <AppBar
+                    title="Allelic Variation Explorer: Region viewer"
+                    iconElementLeft={closeButton}
+                    iconElementRight={searchButton}
+                />
                 <p>
                     Genome: {match.params.genome_id},
                     Chromsome: {match.params.chrom_id},
