@@ -28,3 +28,38 @@ interface IGenome {
     reference: string;
     genes: string;
 }
+
+interface IFeatureAttributes {
+    id: string;
+    name: string;
+}
+interface IFeatureAnnotation {
+    sequence: string;
+    source: string;
+    feature: string;
+    start: number;
+    end: number;
+    score: number;
+    strand: string;
+    phase: string;
+    attributes: IFeatureAttributes;
+}
+
+interface IRange {
+    start: number;
+    end: number;
+}
+
+interface IGeneAnnotation {
+    position: {
+        chrom: string;
+        start: number;
+        end: number;
+    }
+    id: string;
+    strand: string;
+    coding_region: IRange;
+    exons: IRange[];
+    gene_id: string;
+    name: string;
+}

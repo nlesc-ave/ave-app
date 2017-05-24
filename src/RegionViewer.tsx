@@ -1,13 +1,13 @@
 import * as React from 'react';
 
 import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import ActionSearch from 'material-ui/svg-icons/action/search';
 import NavigationBack from 'material-ui/svg-icons/navigation/arrow-back';
 import * as pileup from 'pileup/dist/main/pileup';
 import { RouteComponentProps } from 'react-router';
 
+import IconButton from 'material-ui/IconButton';
 import { Root } from './Root';
+import { Searcher } from './Searcher';
 import { AveVariantsDataSource, IHaplotype, IVariant } from './sources/AveVariantsDataSource';
 import { HaplotypeTrack } from './viz/HaplotypeTrack';
 
@@ -48,10 +48,10 @@ export class RegionViewer extends React.Component<RouteComponentProps<IParams>, 
         if (!this.state) {
             return <div>Loading ...</div>;
         }
-        const closeButton = <IconButton href="/" tooltip="Back to start"><NavigationBack /></IconButton>;
-        const searchButton = <IconButton tooltip="Search"><ActionSearch /></IconButton>;
         const match = this.props.match;
         const genome = this.state.genome;
+        const closeButton = <IconButton href="/" tooltip="Back to start"><NavigationBack /></IconButton>;
+        const searchButton = <Searcher genome_id={genome.genome_id} padding={1000}/>;
         // TODO when server is online use dynamic range
         const range = {
             contig: match.params.chrom_id,

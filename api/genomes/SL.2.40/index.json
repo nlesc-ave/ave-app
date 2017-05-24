@@ -54,7 +54,7 @@
             "length": 1000000000
         }
     ],
-    "annotation_feature_types": [],
+    "feature_types": [],
     "accessions": [],
     "reference": "/api/genomes/SL.2.40/S_lycopersicum_May_2012.2bit",
     "genes": "/api/genomes/SL.2.40/S_lycopersicum_May_2012.bb"
