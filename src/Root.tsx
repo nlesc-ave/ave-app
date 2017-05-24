@@ -2,11 +2,12 @@ import { History } from 'history';
 import * as React from 'react';
 import { withRouter } from 'react-router';
 
-import Controls from 'pileup/dist/main/Controls';
 import PileupRoot from 'pileup/dist/main/Root';
 import { VisualizedTrack  } from 'pileup/dist/main/Root';
 import { GenomeRange, IRootProps, IRootState } from 'pileup/dist/main/Root';
 import VisualizationWrapper from 'pileup/dist/main/VisualizationWrapper';
+
+import { Controls } from './Controls';
 import { AveVariantsDataSource } from './sources/AveVariantsDataSource';
 import { HaplotypeTree } from './viz/HaplotypeTree';
 
@@ -90,18 +91,16 @@ class RootWithoutHistory extends PileupRoot<IProps, IRootState> {
         const trackEls = this.props.tracks.map((t, i) => this.makeDivForTrack('' + i, t));
         return (
             <div id="pileup">
+                <Controls
+                    chromosomes={this.props.genome.chromosomes}
+                    range={this.state.range}
+                    onChange={this.handleRangeChange.bind(this)}
+                />
                 <div className="pileup-root">
                     <div className="track controls">
-                    <div className="track-label">
-                        &nbsp;
-                    </div>
-                    <div className="track-content">
-                        <Controls
-                            contigList={this.props.genome.chromosomes.map((chr) => chr.chrom_id)}
-                            range={this.state.range}
-                            onChange={this.handleRangeChange.bind(this)}
-                        />
-                    </div>
+                        <div className="track-label">
+                            &nbsp;
+                        </div>
                     </div>
                     {trackEls}
                 </div>

@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
-import NavigationBack from 'material-ui/svg-icons/navigation/arrow-back';
 import ActionSearch from 'material-ui/svg-icons/action/search';
+import NavigationBack from 'material-ui/svg-icons/navigation/arrow-back';
 import * as pileup from 'pileup/dist/main/pileup';
 import { RouteComponentProps } from 'react-router';
 
@@ -94,19 +94,14 @@ export class RegionViewer extends React.Component<RouteComponentProps<IParams>, 
             const source = track.data;
             return {visualization: track.viz, source, track};
         });
+        const title = 'Allelic Variation Explorer: ' + match.params.genome_id;
         return (
             <div>
                 <AppBar
-                    title="Allelic Variation Explorer: Region viewer"
+                    title={title}
                     iconElementLeft={closeButton}
                     iconElementRight={searchButton}
                 />
-                <p>
-                    Genome: {match.params.genome_id},
-                    Chromsome: {match.params.chrom_id},
-                    Start: {match.params.start_position},
-                    End: {match.params.end_position}
-                </p>
                 <Root referenceSource={vizTracks[0].source} tracks={vizTracks} initialRange={range} genome={genome}/>
             </div>
         );

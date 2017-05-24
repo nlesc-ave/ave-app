@@ -77,6 +77,7 @@ declare module 'pileup/dist/main/pileup' {
         export var scale: () => any;
         export var location: () => any;
         export var genes: () => any;
+        export var pileup: () => any;
     }
     export namespace formats {
         export var bigBed: (config: any) => any;
