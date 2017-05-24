@@ -25,12 +25,15 @@ interface IState {
 }
 
 export class RegionViewer extends React.Component<RouteComponentProps<IParams>, IState> {
+    variantDataSource: AveVariantsDataSource;
+
     constructor(props: RouteComponentProps<IParams>) {
         super(props);
     }
 
     componentDidMount() {
         this.fetchGenome();
+        this.variantDataSource = new AveVariantsDataSource(this.props.match.params.genome_id);
     }
 
     fetchGenome() {
@@ -53,7 +56,6 @@ export class RegionViewer extends React.Component<RouteComponentProps<IParams>, 
             start: Number.parseInt(match.params.start_position),
             stop: Number.parseInt(match.params.end_position)
         };
-        const variantDataSource = new AveVariantsDataSource(match.params.genome_id);
         const sources = [{
             data: pileup.formats.twoBit({
                 url: genome.reference
@@ -77,7 +79,7 @@ export class RegionViewer extends React.Component<RouteComponentProps<IParams>, 
             viz: pileup.viz.genes()
         }, {
             cssClass: 'normal',
-            data: variantDataSource,
+            data: this.variantDataSource,
             name: 'Haplotypes',
             viz: {component: HaplotypeTrack, options: {
                 onVariantClick: (variant: IVariant, haplotype: IHaplotype) => {
