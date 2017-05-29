@@ -1,11 +1,13 @@
 import * as React from 'react';
 
-import AutoComplete from 'material-ui/AutoComplete';
 import IconButton from 'material-ui/IconButton';
+import {List, ListItem} from 'material-ui/List';
 import Popover from 'material-ui/Popover';
 import RadioButton from 'material-ui/RadioButton';
 import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
 import ActionSearch from 'material-ui/svg-icons/action/search';
+import TextField from 'material-ui/TextField';
+import { Link } from 'react-router-dom';
 
 interface IProps {
     genome_id: string;
@@ -14,21 +16,35 @@ interface IProps {
 
 type AnnotationType = 'genes' | 'features';
 
+interface IHit {
+    key: string;
+    primaryText: string;
+    secondaryText: string;
+    route: string;
+}
+
 interface IState {
     open: boolean;
     anchorEl?: Element;
-    hits: string[];
+    hits: IHit[];
     annotation_type: AnnotationType;
+    flank: number;
 }
 
 export class Searcher extends React.Component<IProps, IState> {
+    state: IState = {open: false, hits: [], annotation_type: 'genes', flank: 1000};
+
     constructor(props: IProps) {
         super(props);
-        this.state = {open: false, hits: [], annotation_type: 'genes'};
 
         this.closeSearchDialog = this.closeSearchDialog.bind(this);
         this.openSearchDialog = this.openSearchDialog.bind(this);
         this.onQueryChange = this.onQueryChange.bind(this);
+        this.onAnnotationTypeChange = this.onAnnotationTypeChange.bind(this);
+        this.fetchGeneAnnotations = this.fetchGeneAnnotations.bind(this);
+        this.fetchFeatureAnnotations = this.fetchFeatureAnnotations.bind(this);
+        this.mapGeneAnnotation2Hit = this.mapGeneAnnotation2Hit.bind(this);
+        this.mapFeatureAnnotation2Hit = this.mapFeatureAnnotation2Hit.bind(this);
     }
 
     closeSearchDialog() {
@@ -51,7 +67,7 @@ export class Searcher extends React.Component<IProps, IState> {
         });
     }
 
-    onQueryChange(query: string) {
+    onQueryChange(_event: any, query: string) {
         switch (this.state.annotation_type) {
             case 'genes':
                 this.fetchGeneAnnotations(query);
@@ -61,24 +77,60 @@ export class Searcher extends React.Component<IProps, IState> {
         }
     }
 
+    mapGeneAnnotation2Hit(annotation: IGeneAnnotation) {
+        const { chrom, start, end } = annotation.position;
+        const flank = this.state.flank;
+        const route = `${this.props.genome_id}/${chrom}/${start - flank}/${end + flank}`;
+        return {
+            key: annotation.id,
+            primaryText: annotation.id,
+            route,
+            secondaryText: annotation.name
+        };
+    }
+
+    mapFeatureAnnotation2Hit(annotation: IFeatureAnnotation) {
+        const flank = this.state.flank;
+        const { sequence, start, end } = annotation;
+        const route = `${this.props.genome_id}/${sequence}/${start - flank}/${end + flank}`;
+        return {
+            key: annotation.attributes.id,
+            primaryText: annotation.attributes.id,
+            route,
+            secondaryText: annotation.attributes.name
+        };
+    }
+
     fetchGeneAnnotations(query: string) {
-        const url = '/api/genes?query=' + query;
+        const url = `/api/genomes/${this.props.genome_id}/genes?query=${query}`;
         return fetch(url)
             .then<IGeneAnnotation[]>((r) => r.json())
-            .then()
+            .then((annotations) => annotations.map(this.mapGeneAnnotation2Hit))
+            .then((hits) => this.setState({hits}))
         ;
     }
 
     fetchFeatureAnnotations(query: string) {
-        const url = '/api/features?query=' + query;
+        const url = `/api/genomes/${this.props.genome_id}/features?query=${query}`;
         return fetch(url)
             .then<IFeatureAnnotation[]>((r) => r.json())
-            .then()
+            .then((annotations) => annotations.map(this.mapFeatureAnnotation2Hit))
+            .then((hits) => this.setState({hits}))
         ;
     }
 
     render() {
         const queryHint = 'Search term';
+        const hits = this.state.hits.map(({key, primaryText, secondaryText, route}) => (
+                <ListItem
+                    key={key}
+                    primaryText={primaryText}
+                    secondaryText={secondaryText}
+                    secondaryTextLines={2}
+                    containerElement={<Link to={'/region/' + route}/>}
+                />
+            )
+        );
         return (
             <div>
                 <IconButton tooltip="Search" onTouchTap={this.openSearchDialog}><ActionSearch /></IconButton>
@@ -105,12 +157,13 @@ export class Searcher extends React.Component<IProps, IState> {
                             label="Features"
                         />
                     </RadioButtonGroup>
-                    <AutoComplete
+                    <TextField
                         hintText={queryHint}
-                        dataSource={this.state.hits}
-                        onUpdateInput={this.onQueryChange}
-                        filter={AutoComplete.noFilter}
+                        onChange={this.onQueryChange}
                     />
+                    <List>
+                        {hits}
+                    </List>
                 </Popover>
             </div>
         );

@@ -1,13 +1,14 @@
 import * as React from 'react';
 
 import AppBar from 'material-ui/AppBar';
-import NavigationBack from 'material-ui/svg-icons/navigation/arrow-back';
+import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import * as pileup from 'pileup/dist/main/pileup';
 import { RouteComponentProps } from 'react-router';
 
 import IconButton from 'material-ui/IconButton';
 import { Root } from './Root';
 import { Searcher } from './Searcher';
+import { SideBar } from './SideBar';
 import { AveVariantsDataSource, IHaplotype, IVariant } from './sources/AveVariantsDataSource';
 import { HaplotypeTrack } from './viz/HaplotypeTrack';
 
@@ -22,15 +23,13 @@ interface IParams {
 }
 
 interface IState {
-    genome: IGenome;
+    genome?: IGenome;
+    menuOpen: boolean;
 }
 
 export class RegionViewer extends React.Component<RouteComponentProps<IParams>, IState> {
     variantDataSource: AveVariantsDataSource;
-
-    constructor(props: RouteComponentProps<IParams>) {
-        super(props);
-    }
+    state: IState = {menuOpen: false};
 
     componentDidMount() {
         this.fetchGenome();
@@ -44,13 +43,15 @@ export class RegionViewer extends React.Component<RouteComponentProps<IParams>, 
         ;
     }
 
+    onMenuToggle = () => this.setState({menuOpen: !this.state.menuOpen});
+
     render() {
-        if (!this.state) {
+        const match = this.props.match;
+        const { genome, menuOpen } = this.state;
+        if (!genome) {
             return <div>Loading ...</div>;
         }
-        const match = this.props.match;
-        const genome = this.state.genome;
-        const closeButton = <IconButton href="/" tooltip="Back to start"><NavigationBack /></IconButton>;
+        const menuButton = <IconButton onTouchTap={this.onMenuToggle}><NavigationMenu /></IconButton>;
         const searchButton = <Searcher genome_id={genome.genome_id} padding={1000}/>;
         // TODO when server is online use dynamic range
         const range = {
@@ -99,9 +100,10 @@ export class RegionViewer extends React.Component<RouteComponentProps<IParams>, 
             <div>
                 <AppBar
                     title={title}
-                    iconElementLeft={closeButton}
+                    iconElementLeft={menuButton}
                     iconElementRight={searchButton}
                 />
+                <SideBar open={menuOpen} onToggle={this.onMenuToggle}/>
                 <Root referenceSource={vizTracks[0].source} tracks={vizTracks} initialRange={range} genome={genome}/>
             </div>
         );

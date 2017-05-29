@@ -1,3 +1,17 @@
 localhost:2015
 index index.html index.json
 
+# Ignore query part of url for searches
+rewrite {
+    regexp /api/genomes/(.*)/features?query=(.*)
+    to /api/genomes/{1}/features/index.json
+}
+
+rewrite {
+    regexp /api/genomes/(.*)/genes?query=(.*)
+    to /api/genomes/{1}/genes/index.json
+}
+
+errors {
+    404 index.html
+}
