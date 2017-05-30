@@ -12,6 +12,11 @@ import {
     Stepper
 } from 'material-ui/Stepper';
 import TextField from 'material-ui/TextField';
+import { Link } from 'react-router-dom';
+
+export interface IProps {
+    apiroot: string;
+}
 
 interface IState {
     stepIndex: number;
@@ -24,7 +29,7 @@ interface IState {
     selectedEnd: number;
 }
 
-export class RangeStepper extends React.Component<{}, IState> {
+export class RangeStepper extends React.Component<IProps, IState> {
     state: IState = {
         stepIndex: 0,
         // tslint:disable-next-line:object-literal-sort-keys
@@ -41,14 +46,14 @@ export class RangeStepper extends React.Component<{}, IState> {
 
     fetchSpecies() {
         // TODO change to /api/species when server online
-        fetch('/api/species')
+        fetch(`${this.props.apiroot}/species`)
             .then<ISpecies[]>((response) => response.json())
             .then((allowedSpecies) => this.setState({ allowedSpecies }));
     }
 
     fetchGenomes(species: ISpecies) {
         // TODO change to /api/species/${species_id}/genomes when server online
-        fetch(`/api/species/${species.species_id}/genomes`)
+        fetch(`${this.props.apiroot}/species/${species.species_id}/genomes`)
             .then<IGenome[]>((response) => response.json())
             .then((allowedGenomes) => this.setState({ allowedGenomes, stepIndex: this.state.stepIndex + 1 }));
     }
@@ -84,7 +89,7 @@ export class RangeStepper extends React.Component<{}, IState> {
                     disableTouchRipple={true}
                     disableFocusRipple={true}
                     primary={true}
-                    href={region_url}
+                    containerElement={<Link to={region_url}/>}
                     style={{ marginRight: 12 }}
                 />
             );

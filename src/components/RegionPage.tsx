@@ -6,14 +6,14 @@ import * as pileup from 'pileup/dist/main/pileup';
 import { RouteComponentProps } from 'react-router';
 
 import IconButton from 'material-ui/IconButton';
-import { Root } from './Root';
-import { Searcher } from './Searcher';
-import { SideBar } from './SideBar';
-import { AveVariantsDataSource, IHaplotype, IVariant } from './sources/AveVariantsDataSource';
-import { HaplotypeTrack } from './viz/HaplotypeTrack';
+import { Root } from '../Root';
+import { Searcher } from '../Searcher';
+import { SideBar } from '../SideBar';
+import { AveVariantsDataSource, IHaplotype, IVariant } from '../sources/AveVariantsDataSource';
+import { HaplotypeTrack } from '../viz/HaplotypeTrack';
 
 import 'pileup/style/pileup.css';
-import './RegionViewer.css';
+import './RegionPage.css';
 
 interface IParams {
    genome_id: string;
@@ -22,22 +22,29 @@ interface IParams {
    end_position: string;
 }
 
+export interface IStateProps {
+    apiroot: string;
+    flank: number;
+}
+
+type IProps = RouteComponentProps<IParams> & IStateProps;
+
 interface IState {
     genome?: IGenome;
     menuOpen: boolean;
 }
 
-export class RegionViewer extends React.Component<RouteComponentProps<IParams>, IState> {
+export class RegionPage extends React.Component<IProps, IState> {
     variantDataSource: AveVariantsDataSource;
     state: IState = {menuOpen: false};
 
     componentDidMount() {
         this.fetchGenome();
-        this.variantDataSource = new AveVariantsDataSource(this.props.match.params.genome_id);
+        this.variantDataSource = new AveVariantsDataSource(this.props.match.params.genome_id, this.props.apiroot);
     }
 
     fetchGenome() {
-        fetch(`/api/genomes/${this.props.match.params.genome_id}`)
+        fetch(`${this.props.apiroot}/genomes/${this.props.match.params.genome_id}`)
             .then<IGenome>((response) => response.json())
             .then((genome) => this.setState({ genome }))
         ;
@@ -52,7 +59,13 @@ export class RegionViewer extends React.Component<RouteComponentProps<IParams>, 
             return <div>Loading ...</div>;
         }
         const menuButton = <IconButton onTouchTap={this.onMenuToggle}><NavigationMenu /></IconButton>;
-        const searchButton = <Searcher genome_id={genome.genome_id} padding={1000}/>;
+        const searchButton = (
+            <Searcher
+                genome_id={genome.genome_id}
+                padding={this.props.flank}
+                apiroot={this.props.apiroot}
+            />
+        );
         // TODO when server is online use dynamic range
         const range = {
             contig: match.params.chrom_id,

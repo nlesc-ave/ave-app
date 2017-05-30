@@ -6,11 +6,12 @@ import Paper from 'material-ui/Paper';
 
 interface IProps {
     accessions: string[];
+    selected: string;
 }
 
-export const AccessionPickList = (props: IProps) => {
-    const menuitems = props.accessions.map(
-        (a) => <MenuItem key={a} checked={true} primaryText={a}/>
+export const AccessionPickList = ({accessions, selected}: IProps) => {
+    const menuitems = accessions.map(
+        (a) => <MenuItem key={a} checked={a === selected} primaryText={a}/>
     );
     return (
         <Paper>

@@ -51,8 +51,9 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
     }
 
     getOptionsMenu() {
+        // TODO fetch accessions from IGenome object
         const accessions = ['Accession1', 'Accession2', 'Accession3', 'Accession4'];
-        return <AccessionPickList accessions={accessions}/>;
+        return <AccessionPickList selected={accessions[0]} accessions={accessions}/>;
     }
 
     onClick(reactEvent: any) {

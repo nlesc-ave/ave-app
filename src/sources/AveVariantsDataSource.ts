@@ -35,13 +35,15 @@ interface IVariantsResponse {
 
 export class AveVariantsDataSource {
     genome_id: string;
+    apiroot: string = '/api';
     interval: ContigInterval;
     hierarchy: IVariantNode = {};
     haplotypes: IHaplotype[] = [];
     events: Backbone.Events = _.extend({}, Events);
 
-    constructor(genome_id: string) {
+    constructor(genome_id: string, apiroot: string) {
         this.genome_id = genome_id;
+        this.apiroot = apiroot;
     }
 
     loadVariants(response: IVariantsResponse, interval: ContigInterval) {
@@ -54,7 +56,7 @@ export class AveVariantsDataSource {
 
     fetchVariants(interval: ContigInterval) {
         // TODO match service url template
-        const url = `/api/genomes/${this.genome_id}/variants#` +
+        const url = `${this.apiroot}/genomes/${this.genome_id}/variants#` +
             interval.contig + '/' + interval.start() + '/' + interval.stop();
         // TODO debounce fetch, haplotypes are fetched for each interval change which can be very frequent
         // so wait 100ms for navigation to stop and then fetch

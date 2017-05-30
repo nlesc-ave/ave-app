@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 interface IProps {
     genome_id: string;
     padding: number;
+    apiroot: string;
 }
 
 type AnnotationType = 'genes' | 'features';
@@ -28,11 +29,10 @@ interface IState {
     anchorEl?: Element;
     hits: IHit[];
     annotation_type: AnnotationType;
-    flank: number;
 }
 
 export class Searcher extends React.Component<IProps, IState> {
-    state: IState = {open: false, hits: [], annotation_type: 'genes', flank: 1000};
+    state: IState = {open: false, hits: [], annotation_type: 'genes'};
 
     constructor(props: IProps) {
         super(props);
@@ -79,7 +79,7 @@ export class Searcher extends React.Component<IProps, IState> {
 
     mapGeneAnnotation2Hit(annotation: IGeneAnnotation) {
         const { chrom, start, end } = annotation.position;
-        const flank = this.state.flank;
+        const flank = this.props.padding;
         const route = `${this.props.genome_id}/${chrom}/${start - flank}/${end + flank}`;
         return {
             key: annotation.id,
@@ -90,7 +90,7 @@ export class Searcher extends React.Component<IProps, IState> {
     }
 
     mapFeatureAnnotation2Hit(annotation: IFeatureAnnotation) {
-        const flank = this.state.flank;
+        const flank = this.props.padding;
         const { sequence, start, end } = annotation;
         const route = `${this.props.genome_id}/${sequence}/${start - flank}/${end + flank}`;
         return {
@@ -102,7 +102,7 @@ export class Searcher extends React.Component<IProps, IState> {
     }
 
     fetchGeneAnnotations(query: string) {
-        const url = `/api/genomes/${this.props.genome_id}/genes?query=${query}`;
+        const url = `${this.props.apiroot}/genomes/${this.props.genome_id}/genes?query=${query}`;
         return fetch(url)
             .then<IGeneAnnotation[]>((r) => r.json())
             .then((annotations) => annotations.map(this.mapGeneAnnotation2Hit))
@@ -111,7 +111,7 @@ export class Searcher extends React.Component<IProps, IState> {
     }
 
     fetchFeatureAnnotations(query: string) {
-        const url = `/api/genomes/${this.props.genome_id}/features?query=${query}`;
+        const url = `${this.props.apiroot}/genomes/${this.props.genome_id}/features?query=${query}`;
         return fetch(url)
             .then<IFeatureAnnotation[]>((r) => r.json())
             .then((annotations) => annotations.map(this.mapFeatureAnnotation2Hit))

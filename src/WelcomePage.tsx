@@ -4,14 +4,14 @@ import AppBar from 'material-ui/AppBar';
 import { Card, CardText, CardTitle } from 'material-ui/Card';
 import { RouteComponentProps } from 'react-router';
 
-import { RangeStepper } from './RangeStepper';
+import { RangeStepper } from './containers/RangeStepper';
 import { SideBar } from './SideBar';
 
 interface IState {
     menuOpen: boolean;
 }
 
-export class Welcome extends React.Component<RouteComponentProps<{}>, IState> {
+export class WelcomePage extends React.Component<RouteComponentProps<{}>, IState> {
 
     constructor(props: RouteComponentProps<{}>) {
         super(props);
@@ -32,7 +32,7 @@ export class Welcome extends React.Component<RouteComponentProps<{}>, IState> {
                         <CardTitle title="Welcome to the Allelic Variation Explorer" />
                         <CardText>
                             Please select a genome region to view.
-                            <RangeStepper />
+                            <RangeStepper/>
                         </CardText>
                     </Card>
                 </div>
