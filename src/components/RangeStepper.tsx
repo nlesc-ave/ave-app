@@ -36,8 +36,8 @@ export class RangeStepper extends React.Component<IProps, IState> {
         allowedSpecies: [],
         allowedGenomes: [],
         selectedChromosome: { chrom_id: '', length: 0 },
-        selectedStart: 1,
-        selectedEnd: 10000
+        selectedStart: 15000,
+        selectedEnd: 20000
     };
 
     componentDidMount() {
