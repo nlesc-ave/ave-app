@@ -89,7 +89,7 @@ export class RegionPage extends React.Component<IProps, IState> {
             viz: pileup.viz.location()
         }, {
             data: pileup.formats.bigBed({
-                url: genome.genes
+                url: genome.gene_track
             }),
             name: 'Genes',
             viz: pileup.viz.genes()

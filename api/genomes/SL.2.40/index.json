@@ -3,59 +3,59 @@
     "chromosomes": [
         {
             "chrom_id": "SL2.40ch00",
-            "length": 1000000000
+            "length": 21805821
         },
         {
             "chrom_id": "SL2.40ch01",
-            "length": 1000000000
+            "length": 90304244
         },
         {
             "chrom_id": "SL2.40ch02",
-            "length": 1000000000
+            "length": 49918294
         },
         {
             "chrom_id": "SL2.40ch03",
-            "length": 1000000000
+            "length": 64840714
         },
         {
             "chrom_id": "SL2.40ch04",
-            "length": 1000000000
+            "length": 64064312
         },
         {
             "chrom_id": "SL2.40ch05",
-            "length": 1000000000
+            "length": 65021438
         },
         {
             "chrom_id": "SL2.40ch06",
-            "length": 1000000000
+            "length": 46041636
         },
         {
             "chrom_id": "SL2.40ch07",
-            "length": 1000000000
+            "length": 65268621
         },
         {
             "chrom_id": "SL2.40ch08",
-            "length": 1000000000
+            "length": 63032657
         },
         {
             "chrom_id": "SL2.40ch09",
-            "length": 1000000000
+            "length": 67662091
         },
         {
             "chrom_id": "SL2.40ch10",
-            "length": 1000000000
+            "length": 64834305
         },
         {
             "chrom_id": "SL2.40ch11",
-            "length": 1000000000
+            "length": 53386025
         },
         {
             "chrom_id": "SL2.40ch12",
-            "length": 1000000000
+            "length": 65486253
         }
     ],
     "feature_types": [],
     "accessions": [],
     "reference": "/api/genomes/SL.2.40/S_lycopersicum_May_2012.2bit",
-    "genes": "/api/genomes/SL.2.40/S_lycopersicum_May_2012.bb"
+    "gene_track": "/api/genomes/SL.2.40/S_lycopersicum_May_2012.bb"
 }

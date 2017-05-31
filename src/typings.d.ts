@@ -26,7 +26,7 @@ interface IGenome {
     annotation_feature_types: string[];
     accessions: string[];
     reference: string;
-    genes: string;
+    gene_track: string;
 }
 
 interface IFeatureAttributes {
