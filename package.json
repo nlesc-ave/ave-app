@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "proxy": "http://localhost:2015",
   "private": true,
+  "main": "electron-main.js",
+  "build": {
+    "appId": "ave.nlesc",
+    "mac": {
+      "category": "spot.science"
+    }
+  },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.2.1",
@@ -30,7 +37,9 @@
     "@types/react-dom": "^15.5.0",
     "@types/react-redux": "^4.4.40",
     "@types/react-router": "^4.0.4",
-    "@types/react-router-dom": "^4.0.4"
+    "@types/react-router-dom": "^4.0.4",
+    "electron": "^1.6.10",
+    "electron-builder": "^18.2.2"
   },
   "scripts": {
     "start": "react-scripts start",
