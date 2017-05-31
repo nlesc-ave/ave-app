@@ -20,7 +20,6 @@ function apiroot(state: string = '/api', action: ApiRootAction | OtherAction = O
 function flank(state: number = 1000, action: FlankAction | OtherAction = OtherAction) {
     switch (action.type) {
         case FLANK:
-            console.log(action);
             return action.payload;
         default:
             return state;
