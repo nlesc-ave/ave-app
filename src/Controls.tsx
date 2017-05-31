@@ -76,14 +76,41 @@ export class Controls extends React.Component<IProps, {}> {
         if (!range) {
             return <Toolbar/>;
         }
+        const {start, stop} = range;
+        const windowSize = stop - start;
+        const chromLength = chromosomes.filter((c) => c.chrom_id === range.contig)[0].length;
         return (
             <Toolbar>
                 <RangeSelector chromosomes={chromosomes} range={range} onChange={this.props.onChange}/>
                 <ToolbarGroup>
-                    <IconButton tooltip="Back 1 window" onTouchTap={this.onPrevWindowClick}><PrevWindow/></IconButton>
-                    <IconButton tooltip="Zoom in" onTouchTap={this.onZoomInClick}><ZoomIn/></IconButton>
-                    <IconButton tooltip="Zoom out" onTouchTap={this.onZoomOutClick}><ZoomOut/></IconButton>
-                    <IconButton tooltip="Forward 1 window" onTouchTap={this.onNexWindowClick}><NextWindow/></IconButton>
+                    <IconButton
+                        disabled={start - windowSize < 0}
+                        tooltip="Back 1 window"
+                        onTouchTap={this.onPrevWindowClick}
+                    >
+                        <PrevWindow/>
+                    </IconButton>
+                    <IconButton
+                        disabled={windowSize <= 1}
+                        tooltip="Zoom in"
+                        onTouchTap={this.onZoomInClick}
+                    >
+                        <ZoomIn/>
+                    </IconButton>
+                    <IconButton
+                        disabled={windowSize * 2 > chromLength}
+                        tooltip="Zoom out"
+                        onTouchTap={this.onZoomOutClick}
+                    >
+                        <ZoomOut/>
+                    </IconButton>
+                    <IconButton
+                        disabled={stop + windowSize > chromLength}
+                        tooltip="Forward 1 window"
+                        onTouchTap={this.onNexWindowClick}
+                    >
+                        <NextWindow/>
+                    </IconButton>
                 </ToolbarGroup>
             </Toolbar>
         );
