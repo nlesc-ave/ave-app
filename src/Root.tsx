@@ -32,6 +32,14 @@ class RootWithoutHistory extends PileupRoot<IProps, IRootState> {
         super.handleRangeChange(newRange);
     }
 
+    componentDidUpdate(_prevProps: IProps, _prevState: IRootState) {
+        const a: GenomeRange = this.props.initialRange;
+        const b = this.state.range;
+        if (a && b && (a.contig !== b.contig || a.start !== b.start || a.stop !== b.stop)) {
+            super.handleRangeChange(this.props.initialRange);
+        }
+    }
+
     makeDivForTrack(key: string, track: VisualizedTrack) {
         const trackEl = (
             <VisualizationWrapper
