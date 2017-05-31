@@ -1,0 +1,9 @@
+[{
+    "sequence": "SL2.40ch05",
+    "start": 3000,
+    "end": 5000,
+    "attributes": {
+        "id": "feature1",
+        "name": "Name of feature1"
+    }
+}]

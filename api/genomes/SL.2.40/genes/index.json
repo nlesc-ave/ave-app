@@ -1,0 +1,9 @@
+[{
+    "position": {
+        "chrom": "SL2.40ch05",
+        "start": 3000,
+        "end": 5000
+    },
+    "id": "gene1",
+    "name": "Name of gene1"
+}]
