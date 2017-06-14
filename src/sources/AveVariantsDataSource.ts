@@ -4,11 +4,16 @@ import * as _ from 'underscore';
 import ContigInterval from 'pileup/dist/main/ContigInterval';
 
 export interface IVariant {
+    chrom: string;
     pos: number;
+    id: string;
     ref: string;
-    alt: string;
+    alt: string[];
     qual: number;
+    filter: string;
     info: string;
+    format: string;
+    samples: string;
 }
 
 export interface IHaplotype {

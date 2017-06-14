@@ -23,15 +23,25 @@
             "h2"
         ],
         "variants": [{
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
+            "format": "format placeholder",
+            "samples": "samples placeholder",
             "pos": 100,
             "ref": "A",
-            "alt": "C",
+            "alt": ["C"],
             "qual": 54.3,
             "info": "Variation description placeholder"
         }, {
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
+            "format": "format placeholder",
+            "samples": "samples placeholder",
             "pos": 200,
             "ref": "T",
-            "alt": "G",
+            "alt": ["G"],
             "qual": 12.3,
             "info": "Variation description placeholder"
         }]
@@ -42,12 +52,22 @@
             "h2"
         ],
         "variants": [{
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
+            "format": "format placeholder",
+            "samples": "samples placeholder",
             "pos": 100,
             "ref": "A",
             "alt": "C",
             "qual": 54.3,
             "info": "Variation description placeholder"
         }, {
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
+            "format": "format placeholder",
+            "samples": "samples placeholder",
             "pos": 200,
             "ref": "T",
             "alt": "G",
@@ -61,15 +81,21 @@
             "h2"
         ],
         "variants": [{
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
             "pos": 100,
             "ref": "A",
-            "alt": "C",
+            "alt": ["C"],
             "qual": 54.3,
             "info": "Variation description placeholder"
         }, {
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
             "pos": 200,
             "ref": "T",
-            "alt": "G",
+            "alt": ["G"],
             "qual": 12.3,
             "info": "Variation description placeholder"
         }]
@@ -79,9 +105,12 @@
             "h1"
         ],
         "variants": [{
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
             "pos": 250,
             "ref": "A",
-            "alt": "C",
+            "alt": ["C"],
             "qual": 87.3,
             "info": "Variation description placeholder"
         }]
