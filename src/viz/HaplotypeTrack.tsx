@@ -1,12 +1,13 @@
 import * as React from 'react';
 
 import * as dataCanvas from 'data-canvas';
-import * as style from 'pileup/dist/main/style';
 import * as canvasUtils from 'pileup/dist/main/viz/canvas-utils';
 import * as d3utils from 'pileup/dist/main/viz/d3utils';
 
 import {AccessionPickList} from '../AccessionPickList';
-import {AveVariantsDataSource} from '../sources/AveVariantsDataSource';
+import {AveVariantsDataSource, IHaplotype, IVariant} from '../sources/AveVariantsDataSource';
+import { HaplotypeDialog } from './HaplotypeDialog';
+import { VariantDialog } from './VariantDialog';
 
 interface IGenomeRange {
     contig: string;
@@ -20,7 +21,12 @@ interface IProps {
     height: number;
     range: IGenomeRange;
     referenceSource: any;
-    options: any;
+    options: {};
+}
+
+interface IState {
+    selectedVariant?: IVariant;
+    selectedHaplotype?: IHaplotype;
 }
 
 const VARIANT_FILL = 'red';
@@ -28,10 +34,11 @@ const VARIANT_RADIUS = 7;
 const HAPLOTYPE_TOP_MARGIN = 20;
 export const HAPLOTYPE_HEIGHT = 16;
 const HAPLOTYPE_STROKE = 'darkgrey';
+const HAPLOTYPE_FILL = 'white';
 export const HAPLOTYPE_PADDING = 4;
 const containerStyles = {height: '100%'};
 
-export class HaplotypeTrack extends React.Component<IProps, {}> {
+export class HaplotypeTrack extends React.Component<IProps, IState> {
     static displayName = 'haplotype';
     canvas: Element;
 
@@ -39,7 +46,7 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
         super();
         this.onClick = this.onClick.bind(this);
         this.canvasRefHandler = this.canvasRefHandler.bind(this);
-
+        this.state = {};
     }
 
     componentDidUpdate() {
@@ -65,16 +72,54 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
         this.renderScene(trackingCtx);
 
         if (trackingCtx.hit) {
-            const variant = trackingCtx.hit[0];
-            const haplotype = trackingCtx.hit[1];
-            this.props.options.onVariantClick(variant, haplotype);
+            if (trackingCtx.hit.length === 2) {
+                this.setState({
+                    selectedHaplotype: trackingCtx.hit[1],
+                    selectedVariant: trackingCtx.hit[0]
+                });
+            } else {
+                this.setState({
+                    selectedHaplotype: trackingCtx.hit[0]
+                });
+            }
         }
     }
 
+    onCloseHaplotypeDialog = () => {
+        this.setState({
+           selectedHaplotype: undefined
+        });
+    }
+
+    onCloseVariantDialog = () => {
+        this.setState({
+           selectedHaplotype: undefined,
+           selectedVariant: undefined
+        });
+    }
+
     render() {
+        let dialog;
+        if (this.state.selectedVariant && this.state.selectedHaplotype) {
+            dialog = (
+                <VariantDialog
+                    variant={this.state.selectedVariant}
+                    haplotype={this.state.selectedHaplotype}
+                    onClose={this.onCloseVariantDialog}
+                />
+            );
+        } else if (this.state.selectedHaplotype) {
+            dialog = (
+                <HaplotypeDialog
+                    haplotype={this.state.selectedHaplotype}
+                    onClose={this.onCloseHaplotypeDialog}
+                />
+            );
+        }
         return (
             <div style={containerStyles}>
                 <canvas onClick={this.onClick} ref={this.canvasRefHandler}/>
+                {dialog}
             </div>
         );
     }
@@ -102,15 +147,16 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
         ctx.reset();
         ctx.save();
 
-        ctx.fillStyle = style.VARIANT_FILL;
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
         const haplotypeWidth = Math.round(scale(range.stop) - scale(range.start));
         haplotypes.forEach((haplotype, index) => {
             ctx.pushObject(haplotype);
 
+            ctx.fillStyle = HAPLOTYPE_FILL;
             ctx.strokeStyle = HAPLOTYPE_STROKE;
             const yOffset = index * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING) + HAPLOTYPE_TOP_MARGIN;
+            ctx.fillRect(0, yOffset, haplotypeWidth, HAPLOTYPE_HEIGHT);
             ctx.strokeRect(0, yOffset, haplotypeWidth, HAPLOTYPE_HEIGHT);
 
             // Number of accessions in haplotype

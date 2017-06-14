@@ -9,8 +9,8 @@ import IconButton from 'material-ui/IconButton';
 import { Root } from '../Root';
 import { Searcher } from '../Searcher';
 import { SideBar } from '../SideBar';
-import { AveVariantsDataSource, IHaplotype, IVariant } from '../sources/AveVariantsDataSource';
-import { HaplotypeTrack } from '../viz/HaplotypeTrack';
+import { AveVariantsDataSource } from '../sources/AveVariantsDataSource';
+import { haplotypes } from '../viz/haplotypes';
 
 import 'pileup/style/pileup.css';
 import './RegionPage.css';
@@ -97,12 +97,7 @@ export class RegionPage extends React.Component<IProps, IState> {
             cssClass: 'normal',
             data: this.variantDataSource,
             name: 'Haplotypes',
-            viz: {component: HaplotypeTrack, options: {
-                onVariantClick: (variant: IVariant, haplotype: IHaplotype) => {
-                    // TODO replace with route change or show pretty dialog
-                    alert([variant.pos, haplotype.id]);
-                }
-            }}
+            viz: haplotypes()
         }];
         const vizTracks = sources.map((track) => {
             const source = track.data;
