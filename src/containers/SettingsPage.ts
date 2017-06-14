@@ -1,16 +1,18 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import {ApiRootAction, FlankAction, setApiRoot, setFlank} from '../actions';
+import * as actions from '../actions';
 import {IDispatchProps, IStateProps, SettingsPage as SettingsPageComp } from '../components/SettingsPage';
 
-type DispatchActions = ApiRootAction | FlankAction;
-
 const mapStateToProps = (state: IStateProps) => state;
-const mapDispatchToProps = (dispatch: Dispatch<DispatchActions>): IDispatchProps => ({
+const mapDispatchToProps = (dispatch: Dispatch<actions.DispatchActions>): IDispatchProps => ({
+    resetSettings: () => {
+        dispatch(actions.resetApiRoot());
+        dispatch(actions.resetFlank());
+    },
     saveSettings: (apiRoot: string, flank: number) => {
-        dispatch(setApiRoot(apiRoot));
-        dispatch(setFlank(flank));
+        dispatch(actions.updateApiRoot(apiRoot));
+        dispatch(actions.updateFlank(flank));
     }
 });
 

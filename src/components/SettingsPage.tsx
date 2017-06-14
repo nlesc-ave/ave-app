@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 import AppBar from 'material-ui/AppBar';
+import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
 import NavigationBack from 'material-ui/svg-icons/navigation/arrow-back';
 import TextField from 'material-ui/TextField';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,7 @@ export interface IStateProps {
 }
 
 export interface IDispatchProps {
+    resetSettings(): void;
     saveSettings(apiRoot: string, flank: number): void;
 }
 
@@ -50,6 +51,10 @@ export class SettingsPage extends React.Component<IProps, IState> {
         }
     }
 
+    onReset = () => {
+        this.props.resetSettings();
+    }
+
     onApirootChange = (_e: any, apiroot: string) => this.setState({apiroot});
     onFlankChange = (_e: any, flank: string) => this.setState({ flank: parseInt(flank, 10) });
 
@@ -78,8 +83,10 @@ export class SettingsPage extends React.Component<IProps, IState> {
                         value={flank}
                         onChange={this.onFlankChange}
                     />
-                    <br />
-                    <RaisedButton label="Save" primary={true} onTouchTap={this.onSubmit}/>
+                    <div>
+                        <FlatButton label="Save" primary={true} onTouchTap={this.onSubmit}/>
+                        <FlatButton label="Reset" onTouchTap={this.onReset}/>
+                    </div>
                 </Paper>
             </div>
         );
