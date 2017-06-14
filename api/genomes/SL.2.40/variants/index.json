@@ -48,8 +48,8 @@
     }, {
         "id": 2,
         "accessions": [
-            "h1",
-            "h2"
+            "h3",
+            "h4"
         ],
         "variants": [{
             "id": "id placeholder",
@@ -77,8 +77,8 @@
     }, {
         "id": 3,
         "accessions": [
-            "h1",
-            "h2"
+            "h5",
+            "h6"
         ],
         "variants": [{
             "id": "id placeholder",
@@ -102,7 +102,7 @@
     }, {
         "id": 4,
         "accessions": [
-            "h1"
+            "h7"
         ],
         "variants": [{
             "id": "id placeholder",

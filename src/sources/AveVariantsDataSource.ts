@@ -17,7 +17,7 @@ export interface IVariant {
 }
 
 export interface IHaplotype {
-    id: number;
+    id: string;
     accessions: string[];
     variants: IVariant[];
 }
@@ -78,5 +78,9 @@ export class AveVariantsDataSource {
 
     on(event: string, callback: (body: any) => void) {
         return this.events.on(event, callback);
+    }
+
+    off(event: string, callback: (body: any) => void) {
+        return this.events.off(event, callback);
     }
 }

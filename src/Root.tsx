@@ -7,6 +7,7 @@ import { VisualizedTrack  } from 'pileup/dist/main/Root';
 import { GenomeRange, IRootProps, IRootState } from 'pileup/dist/main/Root';
 import VisualizationWrapper from 'pileup/dist/main/VisualizationWrapper';
 
+import { AccessionsMenu } from './components/AccessionsMenu';
 import { Controls } from './Controls';
 import { AveVariantsDataSource } from './sources/AveVariantsDataSource';
 import { HaplotypeTree } from './viz/HaplotypeTree';
@@ -72,6 +73,7 @@ class RootWithoutHistory extends PileupRoot<IProps, IRootState> {
         let trackLegend = null;
         if (track.visualization.component.displayName === 'haplotype') {
             trackLegend = <HaplotypeTree source={track.source as AveVariantsDataSource} width={150}/>;
+            gearIcon = <AccessionsMenu source={track.source as AveVariantsDataSource}/>;
         }
 
         const className = [
@@ -82,9 +84,8 @@ class RootWithoutHistory extends PileupRoot<IProps, IRootState> {
         return (
             <div key={key} className={className}>
                 <div className="track-label">
-                    <span>{trackName}</span>
+                    <span>{trackName}{gearIcon}</span>
                     <br/>
-                    {gearIcon}
                     {settingsMenu}
                     {trackLegend}
                 </div>

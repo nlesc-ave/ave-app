@@ -4,7 +4,6 @@ import * as dataCanvas from 'data-canvas';
 import * as canvasUtils from 'pileup/dist/main/viz/canvas-utils';
 import * as d3utils from 'pileup/dist/main/viz/d3utils';
 
-import {AccessionPickList} from '../AccessionPickList';
 import {AveVariantsDataSource, IHaplotype, IVariant} from '../sources/AveVariantsDataSource';
 import { HaplotypeDialog } from './HaplotypeDialog';
 import { VariantDialog } from './VariantDialog';
@@ -55,12 +54,6 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
 
     componentDidMount() {
         this.props.source.on('newdata', this.updateVisualization.bind(this));
-    }
-
-    getOptionsMenu() {
-        // TODO fetch accessions from IGenome object
-        const accessions = ['Accession1', 'Accession2', 'Accession3', 'Accession4'];
-        return <AccessionPickList selected={accessions[0]} accessions={accessions}/>;
     }
 
     onClick(reactEvent: any) {
