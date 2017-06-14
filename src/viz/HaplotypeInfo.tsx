@@ -1,8 +1,5 @@
 import * as React from 'react';
 
-import FlatButton from 'material-ui/FlatButton';
-import FileDownload from 'material-ui/svg-icons/file/file-download';
-
 import { IHaplotype } from '../sources/AveVariantsDataSource';
 
 interface IProps {
@@ -11,7 +8,7 @@ interface IProps {
 
 export const HaplotypeInfo = ({haplotype}: IProps) => {
     const accessions = haplotype.accessions.map(
-        (d, i) => <li key={i}>{d}<FlatButton label="Sequence" icon={<FileDownload/>} disabled={true}/></li>
+        (d, i) => <li key={i}>{d}</li>
     );
     return (
         <div>
