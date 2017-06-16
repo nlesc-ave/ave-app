@@ -1,5 +1,8 @@
 # Allelic Variation Explorer
 
+[![Build Status](https://travis-ci.org/nlesc-ave/ave-app.svg?branch=master)](https://travis-ci.org/nlesc-ave/ave-app)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3ccb04ea47b04d19bfb560ffba27d18b)](https://www.codacy.com/app/nlesc-ave/ave-app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nlesc-ave/ave-app&amp;utm_campaign=Badge_Grade)
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) using scripts package [@nlesc/react-scripts](https://github.com/NLeSC/create-react-app).
 
 The web application uses [pileup.js](https://github.com/hammerlab/pileup.js).
