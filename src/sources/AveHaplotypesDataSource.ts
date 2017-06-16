@@ -60,21 +60,25 @@ export class AveHaplotypesDataSource {
         return response;
     }
 
-    buildUrl(interval: ContigInterval) {
+    buildUrl(interval: ContigInterval, accessions: string[] = [], suffix = 'haplotypes') {
         let url = `${this.apiroot}` +
             `/genomes/${this.genome_id}` +
             `/chromosomes/${interval.contig}` +
             `/start/${interval.start()}` +
             `/stop/${interval.stop()}` +
-            '/haplotypes';
-        if (this.accessions.length > 0) {
-            url += '?accessions=' + this.accessions.join(',');
+            `/${suffix}`;
+        if (accessions.length > 0) {
+            url += '?accessions=' + accessions.join(',');
         }
         return url;
     }
 
+    buildSequenceUrl(haplotype: IHaplotype) {
+        return this.buildUrl(this.interval, haplotype.accessions, 'haplotype.fa');
+    }
+
     fetch(interval: ContigInterval) {
-        const url = this.buildUrl(interval);
+        const url = this.buildUrl(interval, this.accessions);
         // TODO debounce fetch,
         // haplotypes are fetched for each interval change which can be very frequent due to dragging
         // so wait 100ms for navigation to stop and then fetch

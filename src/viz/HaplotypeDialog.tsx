@@ -9,13 +9,20 @@ import { HaplotypeInfo } from './HaplotypeInfo';
 
 interface IProps {
     haplotype: IHaplotype;
+    sequenceUrl: string;
     onClose(): void;
 }
 
-export const HaplotypeDialog = ({haplotype, onClose}: IProps) => {
+export const HaplotypeDialog = ({haplotype, onClose, sequenceUrl}: IProps) => {
     const actions = [
-        <FlatButton label="Sequence" icon={<FileDownload/>} disabled={true}/>,
         (
+            <FlatButton
+                label="Sequence"
+                icon={<FileDownload/>}
+                href={sequenceUrl}
+                target="_blank"
+            />
+        ), (
             <FlatButton
                 label="Close"
                 primary={true}

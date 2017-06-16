@@ -91,6 +91,10 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
         });
     }
 
+    buildSequenceUrl(haplotype: IHaplotype) {
+        return this.props.source.buildSequenceUrl(haplotype);
+    }
+
     render() {
         let dialog;
         if (this.state.selectedVariant && this.state.selectedHaplotype) {
@@ -105,6 +109,7 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
             dialog = (
                 <HaplotypeDialog
                     haplotype={this.state.selectedHaplotype}
+                    sequenceUrl={this.buildSequenceUrl(this.state.selectedHaplotype)}
                     onClose={this.onCloseHaplotypeDialog}
                 />
             );
