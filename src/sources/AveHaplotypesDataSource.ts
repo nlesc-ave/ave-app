@@ -33,12 +33,12 @@ export interface IVariantNode {
     children?: IVariantNode[];
 }
 
-interface IVariantsResponse {
+interface IHaplotypesResponse {
     hierarchy: IVariantNode;
     haplotypes: IHaplotype[];
 }
 
-export class AveVariantsDataSource {
+export class AveHaplotypesDataSource {
     genome_id: string;
     apiroot: string = '/api';
     interval: ContigInterval;
@@ -52,7 +52,7 @@ export class AveVariantsDataSource {
         this.apiroot = apiroot;
     }
 
-    loadVariants(response: IVariantsResponse, interval: ContigInterval) {
+    load(response: IHaplotypesResponse, interval: ContigInterval) {
         this.hierarchy = response.hierarchy;
         this.haplotypes = response.haplotypes;
         this.interval = interval;
@@ -73,20 +73,20 @@ export class AveVariantsDataSource {
         return url;
     }
 
-    fetchVariants(interval: ContigInterval) {
+    fetch(interval: ContigInterval) {
         const url = this.buildUrl(interval);
         // TODO debounce fetch,
         // haplotypes are fetched for each interval change which can be very frequent due to dragging
         // so wait 100ms for navigation to stop and then fetch
         return fetch(url)
-            .then<IVariantsResponse>((response) => response.json())
-            .then((response) => this.loadVariants(response, interval))
+            .then<IHaplotypesResponse>((response) => response.json())
+            .then((response) => this.load(response, interval))
             .catch((reason) => this.events.trigger('networkfailure', reason))
         ;
     }
 
     rangeChanged(range: GenomeRange) {
-        this.fetchVariants(new ContigInterval(range.contig, range.start, range.stop));
+        this.fetch(new ContigInterval(range.contig, range.start, range.stop));
     }
 
     on(event: string, callback: (body: any) => void) {
@@ -104,7 +104,7 @@ export class AveVariantsDataSource {
         }
         this.accessions = accessions;
         if (this.interval) {
-            this.fetchVariants(this.interval);
+            this.fetch(this.interval);
         }
     }
 }

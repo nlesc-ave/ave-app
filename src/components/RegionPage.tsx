@@ -9,7 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import { Root } from '../Root';
 import { Searcher } from '../Searcher';
 import { SideBar } from '../SideBar';
-import { AveVariantsDataSource } from '../sources/AveVariantsDataSource';
+import { AveHaplotypesDataSource } from '../sources/AveHaplotypesDataSource';
 import { haplotypes } from '../viz/haplotypes';
 
 import 'pileup/style/pileup.css';
@@ -35,12 +35,12 @@ interface IState {
 }
 
 export class RegionPage extends React.Component<IProps, IState> {
-    variantDataSource: AveVariantsDataSource;
+    variantDataSource: AveHaplotypesDataSource;
     state: IState = {menuOpen: false};
 
     componentDidMount() {
         this.fetchGenome();
-        this.variantDataSource = new AveVariantsDataSource(this.props.match.params.genome_id, this.props.apiroot);
+        this.variantDataSource = new AveHaplotypesDataSource(this.props.match.params.genome_id, this.props.apiroot);
     }
 
     fetchGenome() {

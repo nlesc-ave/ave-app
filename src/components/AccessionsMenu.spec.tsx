@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
-import { AveVariantsDataSource } from '../sources/AveVariantsDataSource';
+import { AveHaplotypesDataSource } from '../sources/AveHaplotypesDataSource';
 import { AccessionsMenu, IProps, IState } from './AccessionsMenu';
 
 const DEFAULT_ACCESSIONS = ['a1', 'a2', 'a3'];
@@ -10,7 +10,7 @@ const DEFAULT_ACCESSIONS = ['a1', 'a2', 'a3'];
 describe('<AccessionsMenu/>', () => {
     describe('without accessions', () => {
         it('should have nothing selected', () => {
-            const source = new AveVariantsDataSource('some genome id', '/');
+            const source = new AveHaplotypesDataSource('some genome id', '/');
             const wrapper = shallow(<AccessionsMenu accessions={[]} source={source}/>);
             const expected = {
                 selected: new Set()
@@ -21,9 +21,9 @@ describe('<AccessionsMenu/>', () => {
 
     describe('with accessions', () => {
         let wrapper: ShallowWrapper<IProps, IState>;
-        let source: AveVariantsDataSource;
+        let source: AveHaplotypesDataSource;
         beforeEach(() => {
-            source = new AveVariantsDataSource('some genome id', '/');
+            source = new AveHaplotypesDataSource('some genome id', '/');
             source.setAccessions = jest.fn();
             const response = {
                 haplotypes: [{
@@ -39,7 +39,7 @@ describe('<AccessionsMenu/>', () => {
                 start: () => 1,
                 stop: () => 10
             };
-            source.loadVariants(response, interval);
+            source.load(response, interval);
             wrapper = shallow<IProps, IState>(<AccessionsMenu accessions={DEFAULT_ACCESSIONS} source={source}/>);
         });
 

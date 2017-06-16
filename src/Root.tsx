@@ -9,7 +9,7 @@ import VisualizationWrapper from 'pileup/dist/main/VisualizationWrapper';
 
 import { AccessionsMenu } from './components/AccessionsMenu';
 import { Controls } from './Controls';
-import { AveVariantsDataSource } from './sources/AveVariantsDataSource';
+import { AveHaplotypesDataSource } from './sources/AveHaplotypesDataSource';
 import { HaplotypeTree } from './viz/HaplotypeTree';
 
 import './Root.css';
@@ -72,11 +72,11 @@ class RootWithoutHistory extends PileupRoot<IProps, IRootState> {
 
         let trackLegend = null;
         if (track.visualization.component.displayName === 'haplotype') {
-            trackLegend = <HaplotypeTree source={track.source as AveVariantsDataSource} width={150}/>;
+            trackLegend = <HaplotypeTree source={track.source as AveHaplotypesDataSource} width={150}/>;
             gearIcon = (
                 <AccessionsMenu
                     accessions={this.props.genome.accessions}
-                    source={track.source as AveVariantsDataSource}
+                    source={track.source as AveHaplotypesDataSource}
                 />
             );
         }
