@@ -8,22 +8,23 @@ import { AccessionsMenu, IProps, IState } from './AccessionsMenu';
 const DEFAULT_ACCESSIONS = ['a1', 'a2', 'a3'];
 
 describe('<AccessionsMenu/>', () => {
-    describe('with empty source', () => {
-        it('should have an empty initialState', () => {
+    describe('without accessions', () => {
+        it('should have nothing selected', () => {
             const source = new AveVariantsDataSource('some genome id', '/');
-            const wrapper = shallow(<AccessionsMenu source={source}/>);
+            const wrapper = shallow(<AccessionsMenu accessions={[]} source={source}/>);
             const expected = {
-                accessions: [],
                 selected: new Set()
             };
             expect(wrapper.state()).toEqual(expected);
         });
     });
 
-    describe('with filled source', () => {
+    describe('with accessions', () => {
         let wrapper: ShallowWrapper<IProps, IState>;
+        let source: AveVariantsDataSource;
         beforeEach(() => {
-            const source = new AveVariantsDataSource('some genome id', '/');
+            source = new AveVariantsDataSource('some genome id', '/');
+            source.setAccessions = jest.fn();
             const response = {
                 haplotypes: [{
                     accessions: DEFAULT_ACCESSIONS,
@@ -39,19 +40,25 @@ describe('<AccessionsMenu/>', () => {
                 stop: () => 10
             };
             source.loadVariants(response, interval);
-            wrapper = shallow<IProps, IState>(<AccessionsMenu source={source}/>);
+            wrapper = shallow<IProps, IState>(<AccessionsMenu accessions={DEFAULT_ACCESSIONS} source={source}/>);
         });
 
-        it('should have selected all', () => {
+        it('should have selected all accessions', () => {
             const expected = new Set(DEFAULT_ACCESSIONS);
             expect(wrapper.state().selected).toEqual(expected);
         });
 
         describe('when a1 accession is unchecked', () => {
-            it('should not be selected', () => {
+            beforeEach(() => {
                 wrapper.find({accession: 'a1'}).simulate('toggle', 'a1');
+            });
 
+            it('should not be selected', () => {
                 expect(wrapper.state().selected.has('a1')).toBeFalsy();
+            });
+
+            it('should call source.setAccessions', () => {
+                expect(source.setAccessions).toBeCalledWith(['a2', 'a3']);
             });
         });
     });

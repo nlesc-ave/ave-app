@@ -73,7 +73,12 @@ class RootWithoutHistory extends PileupRoot<IProps, IRootState> {
         let trackLegend = null;
         if (track.visualization.component.displayName === 'haplotype') {
             trackLegend = <HaplotypeTree source={track.source as AveVariantsDataSource} width={150}/>;
-            gearIcon = <AccessionsMenu source={track.source as AveVariantsDataSource}/>;
+            gearIcon = (
+                <AccessionsMenu
+                    accessions={this.props.genome.accessions}
+                    source={track.source as AveVariantsDataSource}
+                />
+            );
         }
 
         const className = [

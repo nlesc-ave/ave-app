@@ -44,6 +44,7 @@ export class AveVariantsDataSource {
     interval: ContigInterval;
     hierarchy: IVariantNode = {};
     haplotypes: IHaplotype[] = [];
+    accessions: string[] = [];
     events: Backbone.Events = _.extend({}, Events);
 
     constructor(genome_id: string, apiroot: string) {
@@ -59,11 +60,23 @@ export class AveVariantsDataSource {
         return response;
     }
 
+    buildUrl(interval: ContigInterval) {
+        let url = `${this.apiroot}` +
+            `/genomes/${this.genome_id}` +
+            `/chromosomes/${interval.contig}` +
+            `/start/${interval.start()}` +
+            `/stop/${interval.stop()}` +
+            '/haplotypes';
+        if (this.accessions.length > 0) {
+            url += '?accessions=' + this.accessions.join(',');
+        }
+        return url;
+    }
+
     fetchVariants(interval: ContigInterval) {
-        // TODO match service url template
-        const url = `${this.apiroot}/genomes/${this.genome_id}/variants#` +
-            interval.contig + '/' + interval.start() + '/' + interval.stop();
-        // TODO debounce fetch, haplotypes are fetched for each interval change which can be very frequent
+        const url = this.buildUrl(interval);
+        // TODO debounce fetch,
+        // haplotypes are fetched for each interval change which can be very frequent due to dragging
         // so wait 100ms for navigation to stop and then fetch
         return fetch(url)
             .then<IVariantsResponse>((response) => response.json())
@@ -82,5 +95,16 @@ export class AveVariantsDataSource {
 
     off(event: string, callback: (body: any) => void) {
         return this.events.off(event, callback);
+    }
+
+    setAccessions(accessions: string[]) {
+        // only update when different
+        if (this.accessions.every((d) => accessions.indexOf(d) > -1)) {
+            return;
+        }
+        this.accessions = accessions;
+        if (this.interval) {
+            this.fetchVariants(this.interval);
+        }
     }
 }

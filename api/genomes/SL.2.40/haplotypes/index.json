@@ -19,8 +19,8 @@
     "haplotypes": [{
         "id": 1,
         "accessions": [
-            "h1",
-            "h2"
+            "a1",
+            "a2"
         ],
         "variants": [{
             "id": "id placeholder",
@@ -48,8 +48,8 @@
     }, {
         "id": 2,
         "accessions": [
-            "h3",
-            "h4"
+            "a3",
+            "a4"
         ],
         "variants": [{
             "id": "id placeholder",
@@ -77,8 +77,8 @@
     }, {
         "id": 3,
         "accessions": [
-            "h5",
-            "h6"
+            "a5",
+            "a6"
         ],
         "variants": [{
             "id": "id placeholder",
@@ -102,7 +102,7 @@
     }, {
         "id": 4,
         "accessions": [
-            "h7"
+            "a7"
         ],
         "variants": [{
             "id": "id placeholder",

@@ -11,11 +11,11 @@ import { AveVariantsDataSource } from '../sources/AveVariantsDataSource';
 import { AccessionMenuItem} from './AccessionMenuItem';
 
 export interface IProps {
+    accessions: string[];
     source: AveVariantsDataSource;
 }
 
 export interface IState {
-    accessions: string[];
      // TODO is Set going to work in all our target browsers?
     selected: Set<string>;
 }
@@ -34,7 +34,6 @@ const iconStyle = {
 
 export class AccessionsMenu extends React.Component<IProps, IState> {
     state: IState = {
-        accessions: [],
         selected: new Set()
     };
 
@@ -42,29 +41,13 @@ export class AccessionsMenu extends React.Component<IProps, IState> {
         super();
     }
 
-    refreshAccessions = () => {
-        const accessions = this.props.source.haplotypes
-            .map((d) => d.accessions)
-            .reduce((p, c) => p.concat(c), []);
-        // TODO persist selection so when navigating to another region the same selection is used.
-        const selected = new Set();
-        accessions.forEach((d) => selected.add(d));
-        this.setState({
-            accessions,
-            selected
-        });
-    }
-
     componentWillMount() {
-        this.props.source.on('newdata', this.refreshAccessions);
-        if (this.props.source.haplotypes) {
-            // if source already has data then read it
-            this.refreshAccessions();
+        const accessionsFromSource = this.props.source.accessions;
+        if (accessionsFromSource.length > 0) {
+            this.updateSelectionArray(accessionsFromSource);
+        } else {
+            this.updateSelectionArray(this.props.accessions);
         }
-    }
-
-    componentWillUnmount() {
-        this.props.source.off('newdata', this.refreshAccessions);
     }
 
     onAccessionToggle = (accession: string) => {
@@ -82,17 +65,30 @@ export class AccessionsMenu extends React.Component<IProps, IState> {
         if (!this.state.selected.has(accession)) {
             selected.add(accession);
         }
-        this.setState({selected});
+        this.updateSelection(selected);
     }
 
-    onSelectAllClick = () => {
+    selectAll = () => {
+        this.updateSelectionArray(this.props.accessions);
+    }
+
+    updateSelectionArray(accessions: string[]) {
         const selected = new Set();
-        this.state.accessions.forEach((d) => selected.add(d));
+        accessions.forEach((d) => selected.add(d));
+        this.updateSelection(selected);
+    }
+
+    updateSelection(selected: Set<string>) {
         this.setState({selected});
+        const accessions: string[] = [];
+        if (selected.size < this.props.accessions.length) {
+            selected.forEach((d) => accessions.push(d));
+        }
+        this.props.source.setAccessions(accessions);
     }
 
     render() {
-        const items = this.state.accessions.map(
+        const items = this.props.accessions.map(
             (d, i) => (
                 <AccessionMenuItem
                     key={i}
@@ -102,13 +98,13 @@ export class AccessionsMenu extends React.Component<IProps, IState> {
                 />
             )
         );
-        const isAllSelected = this.state.accessions.length === this.state.selected.size;
+        const isAllSelected = this.props.accessions.length === this.state.selected.size;
         const button = (
             <IconButton
                 style={style}
                 tooltip="Select accessions"
                 iconStyle={iconStyle}
-                disabled={!this.state.accessions}
+                disabled={!this.props.accessions}
                 color={isAllSelected ? black : blue500}
             >
                 <ActionSettings/>
@@ -119,9 +115,9 @@ export class AccessionsMenu extends React.Component<IProps, IState> {
                 {items}
                 <Divider />
                 <MenuItem
-                    primaryText="Check all"
+                    primaryText="Select all"
                     disabled={isAllSelected}
-                    onTouchTap={this.onSelectAllClick}
+                    onTouchTap={this.selectAll}
                 />
             </IconMenu>
         );
