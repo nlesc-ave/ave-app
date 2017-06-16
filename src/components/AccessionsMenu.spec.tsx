@@ -48,6 +48,11 @@ describe('<AccessionsMenu/>', () => {
             expect(wrapper.state().selected).toEqual(expected);
         });
 
+        it('should have `Select all` menu item disabled', () => {
+            const menuItem = wrapper.find({primaryText: 'Select all'});
+            expect(menuItem.prop('disabled')).toBeTruthy();
+        });
+
         describe('when a1 accession is unchecked', () => {
             beforeEach(() => {
                 wrapper.find({accession: 'a1'}).simulate('toggle', 'a1');
@@ -60,6 +65,44 @@ describe('<AccessionsMenu/>', () => {
             it('should call source.setAccessions', () => {
                 expect(source.setAccessions).toBeCalledWith(['a2', 'a3']);
             });
+
+            it('should have `Select all` menu item enabled', () => {
+                const menuItem = wrapper.find({primaryText: 'Select all'});
+                expect(menuItem.prop('disabled')).toBeFalsy();
+            });
+
+            describe('when selected all clicked', () => {
+                beforeEach(() => {
+                    wrapper.find({primaryText: 'Select all'}).simulate('touchTap');
+                });
+
+                it('should selected all', () => {
+                    const expected = new Set(DEFAULT_ACCESSIONS);
+                    expect(wrapper.state().selected).toEqual(expected);
+                });
+
+                it('should call source.setAccessions', () => {
+                    expect(source.setAccessions).toBeCalledWith([]);
+                });
+            });
+
+            describe('when a1 accession is checked', () => {
+                beforeEach(() => {
+                    wrapper.find({accession: 'a1'}).simulate('toggle', 'a1');
+                });
+
+                it('should selected all', () => {
+                    const expected = DEFAULT_ACCESSIONS;
+                    // jest does not work on Set object, so convert it into an array.
+                    const selected = [...wrapper.state().selected];
+                    expect(selected).toEqual(expect.arrayContaining(expected));
+                });
+
+                it('should call source.setAccessions', () => {
+                    expect(source.setAccessions).toBeCalledWith([]);
+                });
+            });
+
         });
     });
 });
