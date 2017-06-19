@@ -17,9 +17,10 @@ export interface IVariant {
 }
 
 export interface IHaplotype {
-    id: string;
+    haplotype_id: string;
     accessions: string[];
     variants: IVariant[];
+    sequence: string;
 }
 
 interface GenomeRange {
@@ -28,13 +29,13 @@ interface GenomeRange {
   stop: number;  // inclusive
 }
 
-export interface IVariantNode {
+export interface IHaplotypeNode {
     id?: number;
-    children?: IVariantNode[];
+    children?: IHaplotypeNode[];
 }
 
 interface IHaplotypesResponse {
-    hierarchy: IVariantNode;
+    hierarchy: IHaplotypeNode;
     haplotypes: IHaplotype[];
 }
 
@@ -42,7 +43,7 @@ export class AveHaplotypesDataSource {
     genome_id: string;
     apiroot: string = '/api';
     interval: ContigInterval;
-    hierarchy: IVariantNode = {};
+    hierarchy: IHaplotypeNode = {};
     haplotypes: IHaplotype[] = [];
     accessions: string[] = [];
     events: Backbone.Events = _.extend({}, Events);
@@ -74,7 +75,10 @@ export class AveHaplotypesDataSource {
     }
 
     buildSequenceUrl(haplotype: IHaplotype) {
-        return this.buildUrl(this.interval, haplotype.accessions, 'haplotype.fa');
+        const header = `>${this.genome_id}:${this.interval.contig}:${this.interval.start()}:${this.interval.stop()}`
+             + ` accessions=${haplotype.accessions.join(',')}\n`;
+        const blob = new Blob([header, haplotype.sequence], {type: 'text/plain'});
+        return URL.createObjectURL(blob);
     }
 
     fetch(interval: ContigInterval) {

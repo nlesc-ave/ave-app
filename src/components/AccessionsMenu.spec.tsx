@@ -28,7 +28,8 @@ describe('<AccessionsMenu/>', () => {
             const response = {
                 haplotypes: [{
                     accessions: DEFAULT_ACCESSIONS,
-                    id: 'h1',
+                    haplotype_id: 'h1',
+                    sequence: 'ACTG',
                     variants: []
                 }],
                 hierarchy: {}

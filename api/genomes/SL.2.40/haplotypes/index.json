@@ -2,26 +2,27 @@
     "hierarchy": {
         "children": [{
             "children": [{
-                "id": 1
+                "haplotype_id": 1
             }, {
                 "children": [{
-                    "id": 2
+                    "haplotype_id": 2
                 }, {
                     "children": [{
-                        "id": 3
+                        "haplotype_id": 3
                     }, {
-                        "id": 4
+                        "haplotype_id": 4
                     }]
                 }]
             }]
         }]
     },
     "haplotypes": [{
-        "id": 1,
+        "haplotype_id": 1,
         "accessions": [
             "a1",
             "a2"
         ],
+        "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
         "variants": [{
             "id": "id placeholder",
             "chrom": "chrom placeholder",
@@ -46,11 +47,12 @@
             "info": "Variation description placeholder"
         }]
     }, {
-        "id": 2,
+        "haplotype_id": 2,
         "accessions": [
             "a3",
             "a4"
         ],
+        "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
         "variants": [{
             "id": "id placeholder",
             "chrom": "chrom placeholder",
@@ -75,11 +77,12 @@
             "info": "Variation description placeholder"
         }]
     }, {
-        "id": 3,
+        "haplotype_id": 3,
         "accessions": [
             "a5",
             "a6"
         ],
+        "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
         "variants": [{
             "id": "id placeholder",
             "chrom": "chrom placeholder",
@@ -100,10 +103,11 @@
             "info": "Variation description placeholder"
         }]
     }, {
-        "id": 4,
+        "haplotype_id": 4,
         "accessions": [
             "a7"
         ],
+        "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
         "variants": [{
             "id": "id placeholder",
             "chrom": "chrom placeholder",

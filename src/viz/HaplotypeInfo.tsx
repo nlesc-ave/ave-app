@@ -12,7 +12,7 @@ export const HaplotypeInfo = ({haplotype}: IProps) => {
     );
     return (
         <div>
-            <div>Haplotype identifier: {haplotype.id}</div>
+            <div>Haplotype identifier: {haplotype.haplotype_id}</div>
             <div>Variants in current region: {haplotype.variants.length}</div>
             <h2>Accessions</h2>
             <ol>
