@@ -32,7 +32,7 @@ export class Controls extends React.Component<IProps, {}> {
         const windowSize = stop - start;
         const newRange = {
             contig,
-            start: start - start - windowSize ,
+            start: start - windowSize ,
             stop: stop - windowSize
         };
         this.props.onChange(this.capRange(newRange));
