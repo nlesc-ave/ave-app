@@ -34,13 +34,7 @@ describe('<AccessionsMenu/>', () => {
                 }],
                 hierarchy: {}
             };
-            const interval = {
-                contig: '1',
-                length: () => 9,
-                start: () => 1,
-                stop: () => 10
-            };
-            source.load(response, interval);
+            source.load(response);
             wrapper = shallow<IProps, IState>(<AccessionsMenu accessions={DEFAULT_ACCESSIONS} source={source}/>);
         });
 

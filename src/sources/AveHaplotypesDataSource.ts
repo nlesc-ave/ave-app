@@ -1,4 +1,7 @@
 import {Events} from 'backbone';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import { Subject } from 'rxjs/Subject';
 import * as _ from 'underscore';
 
 import ContigInterval from 'pileup/dist/main/ContigInterval';
@@ -47,17 +50,33 @@ export class AveHaplotypesDataSource {
     haplotypes: IHaplotype[] = [];
     accessions: string[] = [];
     events: Backbone.Events = _.extend({}, Events);
+    subject: Subject<string> = new Subject<string>();
+    observeable = this.buildObserveable();
 
     constructor(genome_id: string, apiroot: string) {
         this.genome_id = genome_id;
         this.apiroot = apiroot;
+        this.observeable.subscribe(this.fetch.bind(this));
     }
 
-    load(response: IHaplotypesResponse, interval: ContigInterval) {
+    buildObserveable() {
+        return this.subject
+            .distinctUntilChanged()
+            .debounceTime(100)
+        ;
+    }
+
+    onFetch() {
+        if (this.interval) {
+            const url = this.buildUrl(this.interval, this.accessions);
+            this.subject.next(url);
+        }
+    }
+
+    load(response: IHaplotypesResponse) {
         this.hierarchy = response.hierarchy;
         this.haplotypes = response.haplotypes;
-        this.interval = interval;
-        this.events.trigger('newdata', interval);
+        this.events.trigger('newdata', this.interval);
         return response;
     }
 
@@ -81,20 +100,17 @@ export class AveHaplotypesDataSource {
         return URL.createObjectURL(blob);
     }
 
-    fetch(interval: ContigInterval) {
-        const url = this.buildUrl(interval, this.accessions);
-        // TODO debounce fetch,
-        // haplotypes are fetched for each interval change which can be very frequent due to dragging
-        // so wait 100ms for navigation to stop and then fetch
+    fetch(url: string) {
         return fetch(url)
             .then<IHaplotypesResponse>((response) => response.json())
-            .then((response) => this.load(response, interval))
+            .then((response) => this.load(response))
             .catch((reason) => this.events.trigger('networkfailure', reason))
         ;
     }
 
     rangeChanged(range: GenomeRange) {
-        this.fetch(new ContigInterval(range.contig, range.start, range.stop));
+        this.interval = new ContigInterval(range.contig, range.start, range.stop);
+        this.onFetch();
     }
 
     on(event: string, callback: (body: any) => void) {
@@ -106,13 +122,7 @@ export class AveHaplotypesDataSource {
     }
 
     setAccessions(accessions: string[]) {
-        // only update when different
-        if (this.accessions.every((d) => accessions.indexOf(d) > -1)) {
-            return;
-        }
         this.accessions = accessions;
-        if (this.interval) {
-            this.fetch(this.interval);
-        }
+        this.onFetch();
     }
 }
