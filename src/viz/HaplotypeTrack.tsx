@@ -30,9 +30,12 @@ interface IState {
 
 const VARIANT_FILL = 'red';
 const VARIANT_RADIUS = 7;
+const VARIANT_TEXT_THRESHOLD = 10;
+const VARIANT_LINE_THRESHOLD = 0.001;
 const HAPLOTYPE_TOP_MARGIN = 20;
 export const HAPLOTYPE_HEIGHT = 16;
 const HAPLOTYPE_STROKE = 'darkgrey';
+const HAPLOTYPE_SIZE_STROKE = 'black';
 const HAPLOTYPE_FILL = 'white';
 export const HAPLOTYPE_PADDING = 4;
 const containerStyles = {height: '100%'};
@@ -136,49 +139,82 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
         this.renderScene(dtx);
     }
 
-    renderScene(ctx: dataCanvas.DataCanvasRenderingContext2D ) {
+    renderScene(ctx: dataCanvas.DataCanvasRenderingContext2D) {
         const range = this.props.range;
-        const haplotypes = this.props.source.haplotypes;
         const scale = this.getScale();
 
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.reset();
         ctx.save();
 
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        const haplotypeWidth = Math.round(scale(range.stop) - scale(range.start));
-        haplotypes.forEach((haplotype, index) => {
-            ctx.pushObject(haplotype);
-
-            ctx.fillStyle = HAPLOTYPE_FILL;
-            ctx.strokeStyle = HAPLOTYPE_STROKE;
-            const yOffset = index * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING) + HAPLOTYPE_TOP_MARGIN;
-            ctx.fillRect(0, yOffset, haplotypeWidth, HAPLOTYPE_HEIGHT);
-            ctx.strokeRect(0, yOffset, haplotypeWidth, HAPLOTYPE_HEIGHT);
-
-            // Number of accessions in haplotype
-            ctx.strokeText(haplotype.accessions.length.toString(), 2, yOffset + Math.round(HAPLOTYPE_HEIGHT / 2));
-
-            haplotype.variants.forEach((variant) => {
-                ctx.pushObject(variant);
-                // TODO choose fill style on type of variant
-                ctx.fillStyle = VARIANT_FILL;
-                ctx.beginPath();
-                // TODO remove range.start when variant.pos is from real dataset
-                const xCenter = scale(range.start + variant.pos);
-                const yCenter = yOffset + Math.round(HAPLOTYPE_HEIGHT / 2);
-                ctx.arc(xCenter, yCenter, VARIANT_RADIUS, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.popObject();
-            });
-            ctx.popObject();
-        });
+        this.renderHaplotypes(ctx);
 
         ctx.restore();
 
         // TODO: the center line should go above alignments, but below mismatches
         this.renderCenterLine(ctx, range, scale);
+    }
+
+    renderHaplotypes(ctx: dataCanvas.DataCanvasRenderingContext2D) {
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        const haplotypes = this.props.source.haplotypes;
+        haplotypes.forEach((haplotype, index) => this.renderHaplotype(haplotype, index, ctx));
+    }
+
+    renderHaplotype(haplotype: IHaplotype, index: number, ctx: dataCanvas.DataCanvasRenderingContext2D) {
+        const range = this.props.range;
+        const scale = this.getScale();
+        const haplotypeWidth = Math.round(scale(range.stop) - scale(range.start));
+        ctx.pushObject(haplotype);
+
+        ctx.fillStyle = HAPLOTYPE_FILL;
+        ctx.strokeStyle = HAPLOTYPE_STROKE;
+        const yOffset = index * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING) + HAPLOTYPE_TOP_MARGIN;
+        ctx.fillRect(0, yOffset, haplotypeWidth, HAPLOTYPE_HEIGHT);
+        ctx.strokeRect(0, yOffset, haplotypeWidth, HAPLOTYPE_HEIGHT);
+
+        // Number of accessions in haplotype
+        ctx.strokeStyle = HAPLOTYPE_SIZE_STROKE;
+        ctx.strokeText(haplotype.accessions.length.toString(), 2, yOffset + Math.round(HAPLOTYPE_HEIGHT / 2));
+
+        haplotype.variants.forEach((variant) => this.renderVariant(variant, yOffset, ctx));
+        ctx.popObject();
+    }
+
+    renderVariant(variant: IVariant, yOffset: number, ctx: dataCanvas.DataCanvasRenderingContext2D) {
+        ctx.pushObject(variant);
+
+        const scale = this.getScale();
+        const pxPerLetter = scale(1) - scale(0);
+        const showText = pxPerLetter >= VARIANT_TEXT_THRESHOLD;
+        const showLine = pxPerLetter <= VARIANT_LINE_THRESHOLD;
+        const xCenter = scale(this.props.range.start + variant.pos);
+        const halfHaplotype = Math.round(HAPLOTYPE_HEIGHT / 2);
+        if (showText) {
+            ctx.fillStyle = HAPLOTYPE_FILL;
+            // something to click as, fillText is not clickable
+            ctx.fillRect(xCenter + 1, yOffset + 1, halfHaplotype, HAPLOTYPE_HEIGHT - 2);
+            ctx.fillStyle = this.getVariantColor(variant);
+            ctx.fillText(variant.alt[0], xCenter, yOffset + halfHaplotype);
+        } else if (showLine) {
+            ctx.fillStyle = this.getVariantColor(variant);
+            ctx.fillRect(xCenter, yOffset + 1, 1, HAPLOTYPE_HEIGHT - 2);
+        } else {
+            ctx.fillStyle = this.getVariantColor(variant);
+            ctx.beginPath();
+            // TODO remove range.start when variant.pos is from real dataset
+            // const xCenter = this.getScale()(variant.pos);
+            const yCenter = yOffset + halfHaplotype;
+            ctx.arc(xCenter, yCenter, VARIANT_RADIUS, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        ctx.popObject();
+    }
+
+    getVariantColor(_variant: IVariant) {
+        // TODO choose fill style on type of variant
+        return VARIANT_FILL;
     }
 
     // Draw the center line(s), which orient the user
