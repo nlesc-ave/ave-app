@@ -80,13 +80,13 @@ export class AveHaplotypesDataSource {
         return response;
     }
 
-    buildUrl(interval: ContigInterval, accessions: string[] = [], suffix = 'haplotypes') {
+    buildUrl(interval: ContigInterval, accessions: string[] = []) {
         let url = `${this.apiroot}` +
             `/genomes/${this.genome_id}` +
             `/chromosomes/${interval.contig}` +
             `/start/${interval.start()}` +
             `/stop/${interval.stop()}` +
-            `/${suffix}`;
+            '/haplotypes';
         if (accessions.length > 0) {
             url += '?accessions=' + accessions.join(',');
         }
