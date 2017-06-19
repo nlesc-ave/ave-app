@@ -25,14 +25,15 @@ interface IHit {
 }
 
 interface IState {
-    open: boolean;
     anchorEl?: Element;
-    hits: IHit[];
     annotation_type: AnnotationType;
+    open: boolean;
+    hits: IHit[];
+    query: string;
 }
 
 export class Searcher extends React.Component<IProps, IState> {
-    state: IState = {open: false, hits: [], annotation_type: 'genes'};
+    state: IState = {open: false, hits: [], annotation_type: 'genes', query: ''};
 
     constructor(props: IProps) {
         super(props);
@@ -63,11 +64,22 @@ export class Searcher extends React.Component<IProps, IState> {
 
     onAnnotationTypeChange(_event: any, annotation_type: AnnotationType) {
         this.setState({
-           annotation_type
+            annotation_type,
+            hits: []
         });
+        this.fetch(this.state.query);
     }
 
     onQueryChange(_event: any, query: string) {
+        this.setState({query});
+        this.fetch(query);
+    }
+
+    fetch(query: string) {
+        if (!query) {
+            this.setState({hits: [] });
+            return;
+        }
         switch (this.state.annotation_type) {
             case 'genes':
                 this.fetchGeneAnnotations(query);
@@ -160,6 +172,7 @@ export class Searcher extends React.Component<IProps, IState> {
                     <TextField
                         hintText={queryHint}
                         onChange={this.onQueryChange}
+                        value={this.state.query}
                     />
                     <List>
                         {hits}
