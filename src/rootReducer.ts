@@ -1,27 +1,36 @@
 import { combineReducers } from 'redux';
 
 import {
-    API_ROOT,
-    ApiRootAction,
-    FLANK,
-    FlankAction,
-    OtherAction
+    ApiRootActions,
+    FlankActions,
+    OtherAction,
+    RESET_API_ROOT,
+    RESET_FLANK,
+    UPDATE_API_ROOT,
+    UPDATE_FLANK
 } from './actions';
 
-function apiroot(state: string = '/api', action: ApiRootAction | OtherAction = OtherAction) {
+const DEFAULT_API_ROOT = '/api';
+
+function apiroot(state: string = DEFAULT_API_ROOT, action: ApiRootActions | OtherAction = OtherAction) {
     switch (action.type) {
-        case API_ROOT:
+        case UPDATE_API_ROOT:
             return action.payload;
+        case RESET_API_ROOT:
+            return DEFAULT_API_ROOT;
         default:
             return state;
     }
 }
 
-function flank(state: number = 1000, action: FlankAction | OtherAction = OtherAction) {
+const DEFAULT_FLANK = 1000;
+
+function flank(state: number = DEFAULT_FLANK, action: FlankActions | OtherAction = OtherAction) {
     switch (action.type) {
-        case FLANK:
-            console.log(action);
+        case UPDATE_FLANK:
             return action.payload;
+        case RESET_FLANK:
+            return DEFAULT_FLANK;
         default:
             return state;
     }

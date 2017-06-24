@@ -7,8 +7,9 @@ import { VisualizedTrack  } from 'pileup/dist/main/Root';
 import { GenomeRange, IRootProps, IRootState } from 'pileup/dist/main/Root';
 import VisualizationWrapper from 'pileup/dist/main/VisualizationWrapper';
 
+import { AccessionsMenu } from './components/AccessionsMenu';
 import { Controls } from './Controls';
-import { AveVariantsDataSource } from './sources/AveVariantsDataSource';
+import { AveHaplotypesDataSource } from './sources/AveHaplotypesDataSource';
 import { HaplotypeTree } from './viz/HaplotypeTree';
 
 import './Root.css';
@@ -30,6 +31,14 @@ class RootWithoutHistory extends PileupRoot<IProps, IRootState> {
         ;
         this.props.history.replace(path);
         super.handleRangeChange(newRange);
+    }
+
+    componentDidUpdate(_prevProps: IProps, _prevState: IRootState) {
+        const a: GenomeRange = this.props.initialRange;
+        const b = this.state.range;
+        if (a && b && (a.contig !== b.contig || a.start !== b.start || a.stop !== b.stop)) {
+            super.handleRangeChange(this.props.initialRange);
+        }
     }
 
     makeDivForTrack(key: string, track: VisualizedTrack) {
@@ -63,7 +72,13 @@ class RootWithoutHistory extends PileupRoot<IProps, IRootState> {
 
         let trackLegend = null;
         if (track.visualization.component.displayName === 'haplotype') {
-            trackLegend = <HaplotypeTree source={track.source as AveVariantsDataSource} width={150}/>;
+            trackLegend = <HaplotypeTree source={track.source as AveHaplotypesDataSource} width={150}/>;
+            gearIcon = (
+                <AccessionsMenu
+                    accessions={this.props.genome.accessions}
+                    source={track.source as AveHaplotypesDataSource}
+                />
+            );
         }
 
         const className = [
@@ -74,9 +89,8 @@ class RootWithoutHistory extends PileupRoot<IProps, IRootState> {
         return (
             <div key={key} className={className}>
                 <div className="track-label">
-                    <span>{trackName}</span>
+                    <span>{trackName}{gearIcon}</span>
                     <br/>
-                    {gearIcon}
                     {settingsMenu}
                     {trackLegend}
                 </div>

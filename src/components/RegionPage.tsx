@@ -9,8 +9,8 @@ import IconButton from 'material-ui/IconButton';
 import { Root } from '../Root';
 import { Searcher } from '../Searcher';
 import { SideBar } from '../SideBar';
-import { AveVariantsDataSource, IHaplotype, IVariant } from '../sources/AveVariantsDataSource';
-import { HaplotypeTrack } from '../viz/HaplotypeTrack';
+import { AveHaplotypesDataSource } from '../sources/AveHaplotypesDataSource';
+import { haplotypes } from '../viz/haplotypes';
 
 import 'pileup/style/pileup.css';
 import './RegionPage.css';
@@ -35,12 +35,12 @@ interface IState {
 }
 
 export class RegionPage extends React.Component<IProps, IState> {
-    variantDataSource: AveVariantsDataSource;
+    variantDataSource: AveHaplotypesDataSource;
     state: IState = {menuOpen: false};
 
     componentDidMount() {
         this.fetchGenome();
-        this.variantDataSource = new AveVariantsDataSource(this.props.match.params.genome_id, this.props.apiroot);
+        this.variantDataSource = new AveHaplotypesDataSource(this.props.match.params.genome_id, this.props.apiroot);
     }
 
     fetchGenome() {
@@ -89,7 +89,7 @@ export class RegionPage extends React.Component<IProps, IState> {
             viz: pileup.viz.location()
         }, {
             data: pileup.formats.bigBed({
-                url: genome.genes
+                url: genome.gene_track
             }),
             name: 'Genes',
             viz: pileup.viz.genes()
@@ -97,12 +97,7 @@ export class RegionPage extends React.Component<IProps, IState> {
             cssClass: 'normal',
             data: this.variantDataSource,
             name: 'Haplotypes',
-            viz: {component: HaplotypeTrack, options: {
-                onVariantClick: (variant: IVariant, haplotype: IHaplotype) => {
-                    // TODO replace with route change or show pretty dialog
-                    alert([variant.pos, haplotype.id]);
-                }
-            }}
+            viz: haplotypes()
         }];
         const vizTracks = sources.map((track) => {
             const source = track.data;

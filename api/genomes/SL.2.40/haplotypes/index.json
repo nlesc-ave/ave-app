@@ -1,0 +1,122 @@
+{
+    "hierarchy": {
+        "children": [{
+            "children": [{
+                "haplotype_id": 1
+            }, {
+                "children": [{
+                    "haplotype_id": 2
+                }, {
+                    "children": [{
+                        "haplotype_id": 3
+                    }, {
+                        "haplotype_id": 4
+                    }]
+                }]
+            }]
+        }]
+    },
+    "haplotypes": [{
+        "haplotype_id": 1,
+        "accessions": [
+            "a1",
+            "a2"
+        ],
+        "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
+        "variants": [{
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
+            "format": "format placeholder",
+            "samples": "samples placeholder",
+            "pos": 100,
+            "ref": "A",
+            "alt": ["C"],
+            "qual": 54.3,
+            "info": "Variation description placeholder"
+        }, {
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
+            "format": "format placeholder",
+            "samples": "samples placeholder",
+            "pos": 200,
+            "ref": "T",
+            "alt": ["G"],
+            "qual": 12.3,
+            "info": "Variation description placeholder"
+        }]
+    }, {
+        "haplotype_id": 2,
+        "accessions": [
+            "a3",
+            "a4"
+        ],
+        "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
+        "variants": [{
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
+            "format": "format placeholder",
+            "samples": "samples placeholder",
+            "pos": 100,
+            "ref": "A",
+            "alt": "C",
+            "qual": 54.3,
+            "info": "Variation description placeholder"
+        }, {
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
+            "format": "format placeholder",
+            "samples": "samples placeholder",
+            "pos": 200,
+            "ref": "T",
+            "alt": "G",
+            "qual": 12.3,
+            "info": "Variation description placeholder"
+        }]
+    }, {
+        "haplotype_id": 3,
+        "accessions": [
+            "a5",
+            "a6"
+        ],
+        "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
+        "variants": [{
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
+            "pos": 100,
+            "ref": "A",
+            "alt": ["C"],
+            "qual": 54.3,
+            "info": "Variation description placeholder"
+        }, {
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
+            "pos": 200,
+            "ref": "T",
+            "alt": ["G"],
+            "qual": 12.3,
+            "info": "Variation description placeholder"
+        }]
+    }, {
+        "haplotype_id": 4,
+        "accessions": [
+            "a7"
+        ],
+        "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
+        "variants": [{
+            "id": "id placeholder",
+            "chrom": "chrom placeholder",
+            "filter": "filter placeholder",
+            "pos": 250,
+            "ref": "A",
+            "alt": ["C"],
+            "qual": 87.3,
+            "info": "Variation description placeholder"
+        }]
+    }]
+}

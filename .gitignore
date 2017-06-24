@@ -22,3 +22,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+/api/genomes/SL.2.40/S_lycopersicum_May_2012.2bit
+/api/genomes/SL.2.40/S_lycopersicum_May_2012.bb

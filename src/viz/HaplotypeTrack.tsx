@@ -1,12 +1,12 @@
 import * as React from 'react';
 
 import * as dataCanvas from 'data-canvas';
-import * as style from 'pileup/dist/main/style';
 import * as canvasUtils from 'pileup/dist/main/viz/canvas-utils';
 import * as d3utils from 'pileup/dist/main/viz/d3utils';
 
-import {AccessionPickList} from '../AccessionPickList';
-import {AveVariantsDataSource} from '../sources/AveVariantsDataSource';
+import {AveHaplotypesDataSource, IHaplotype, IVariant} from '../sources/AveHaplotypesDataSource';
+import { HaplotypeDialog } from './HaplotypeDialog';
+import { VariantDialog } from './VariantDialog';
 
 interface IGenomeRange {
     contig: string;
@@ -15,23 +15,32 @@ interface IGenomeRange {
 }
 
 interface IProps {
-    source: AveVariantsDataSource;
+    source: AveHaplotypesDataSource;
     width: number;
     height: number;
     range: IGenomeRange;
     referenceSource: any;
-    options: any;
+    options: {};
+}
+
+interface IState {
+    selectedVariant?: IVariant;
+    selectedHaplotype?: IHaplotype;
 }
 
 const VARIANT_FILL = 'red';
 const VARIANT_RADIUS = 7;
+const VARIANT_TEXT_THRESHOLD = 10;
+const VARIANT_LINE_THRESHOLD = 0.001;
 const HAPLOTYPE_TOP_MARGIN = 20;
 export const HAPLOTYPE_HEIGHT = 16;
 const HAPLOTYPE_STROKE = 'darkgrey';
+const HAPLOTYPE_SIZE_STROKE = 'black';
+const HAPLOTYPE_FILL = 'white';
 export const HAPLOTYPE_PADDING = 4;
 const containerStyles = {height: '100%'};
 
-export class HaplotypeTrack extends React.Component<IProps, {}> {
+export class HaplotypeTrack extends React.Component<IProps, IState> {
     static displayName = 'haplotype';
     canvas: Element;
 
@@ -39,7 +48,7 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
         super();
         this.onClick = this.onClick.bind(this);
         this.canvasRefHandler = this.canvasRefHandler.bind(this);
-
+        this.state = {};
     }
 
     componentDidUpdate() {
@@ -48,12 +57,6 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
 
     componentDidMount() {
         this.props.source.on('newdata', this.updateVisualization.bind(this));
-    }
-
-    getOptionsMenu() {
-        // TODO fetch accessions from IGenome object
-        const accessions = ['Accession1', 'Accession2', 'Accession3', 'Accession4'];
-        return <AccessionPickList selected={accessions[0]} accessions={accessions}/>;
     }
 
     onClick(reactEvent: any) {
@@ -65,16 +68,59 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
         this.renderScene(trackingCtx);
 
         if (trackingCtx.hit) {
-            const variant = trackingCtx.hit[0];
-            const haplotype = trackingCtx.hit[1];
-            this.props.options.onVariantClick(variant, haplotype);
+            if (trackingCtx.hit.length === 2) {
+                this.setState({
+                    selectedHaplotype: trackingCtx.hit[1],
+                    selectedVariant: trackingCtx.hit[0]
+                });
+            } else {
+                this.setState({
+                    selectedHaplotype: trackingCtx.hit[0]
+                });
+            }
         }
     }
 
+    onCloseHaplotypeDialog = () => {
+        this.setState({
+           selectedHaplotype: undefined
+        });
+    }
+
+    onCloseVariantDialog = () => {
+        this.setState({
+           selectedHaplotype: undefined,
+           selectedVariant: undefined
+        });
+    }
+
+    buildSequenceUrl(haplotype: IHaplotype) {
+        return this.props.source.buildSequenceUrl(haplotype);
+    }
+
     render() {
+        let dialog;
+        if (this.state.selectedVariant && this.state.selectedHaplotype) {
+            dialog = (
+                <VariantDialog
+                    variant={this.state.selectedVariant}
+                    haplotype={this.state.selectedHaplotype}
+                    onClose={this.onCloseVariantDialog}
+                />
+            );
+        } else if (this.state.selectedHaplotype) {
+            dialog = (
+                <HaplotypeDialog
+                    haplotype={this.state.selectedHaplotype}
+                    sequenceUrl={this.buildSequenceUrl(this.state.selectedHaplotype)}
+                    onClose={this.onCloseHaplotypeDialog}
+                />
+            );
+        }
         return (
             <div style={containerStyles}>
                 <canvas onClick={this.onClick} ref={this.canvasRefHandler}/>
+                {dialog}
             </div>
         );
     }
@@ -93,48 +139,82 @@ export class HaplotypeTrack extends React.Component<IProps, {}> {
         this.renderScene(dtx);
     }
 
-    renderScene(ctx: dataCanvas.DataCanvasRenderingContext2D ) {
+    renderScene(ctx: dataCanvas.DataCanvasRenderingContext2D) {
         const range = this.props.range;
-        const haplotypes = this.props.source.haplotypes;
         const scale = this.getScale();
 
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.reset();
         ctx.save();
 
-        ctx.fillStyle = style.VARIANT_FILL;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        const haplotypeWidth = Math.round(scale(range.stop) - scale(range.start));
-        haplotypes.forEach((haplotype, index) => {
-            ctx.pushObject(haplotype);
-
-            ctx.strokeStyle = HAPLOTYPE_STROKE;
-            const yOffset = index * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING) + HAPLOTYPE_TOP_MARGIN;
-            ctx.strokeRect(0, yOffset, haplotypeWidth, HAPLOTYPE_HEIGHT);
-
-            // Number of accessions in haplotype
-            ctx.strokeText(haplotype.accessions.length.toString(), 2, yOffset + Math.round(HAPLOTYPE_HEIGHT / 2));
-
-            haplotype.variants.forEach((variant) => {
-                ctx.pushObject(variant);
-                // TODO choose fill style on type of variant
-                ctx.fillStyle = VARIANT_FILL;
-                ctx.beginPath();
-                // TODO remove range.start when variant.pos is from real dataset
-                const xCenter = scale(range.start + variant.pos);
-                const yCenter = yOffset + Math.round(HAPLOTYPE_HEIGHT / 2);
-                ctx.arc(xCenter, yCenter, VARIANT_RADIUS, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.popObject();
-            });
-            ctx.popObject();
-        });
+        this.renderHaplotypes(ctx);
 
         ctx.restore();
 
         // TODO: the center line should go above alignments, but below mismatches
         this.renderCenterLine(ctx, range, scale);
+    }
+
+    renderHaplotypes(ctx: dataCanvas.DataCanvasRenderingContext2D) {
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        const haplotypes = this.props.source.haplotypes;
+        haplotypes.forEach((haplotype, index) => this.renderHaplotype(haplotype, index, ctx));
+    }
+
+    renderHaplotype(haplotype: IHaplotype, index: number, ctx: dataCanvas.DataCanvasRenderingContext2D) {
+        const range = this.props.range;
+        const scale = this.getScale();
+        const haplotypeWidth = Math.round(scale(range.stop) - scale(range.start));
+        ctx.pushObject(haplotype);
+
+        ctx.fillStyle = HAPLOTYPE_FILL;
+        ctx.strokeStyle = HAPLOTYPE_STROKE;
+        const yOffset = index * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING) + HAPLOTYPE_TOP_MARGIN;
+        ctx.fillRect(0, yOffset, haplotypeWidth, HAPLOTYPE_HEIGHT);
+        ctx.strokeRect(0, yOffset, haplotypeWidth, HAPLOTYPE_HEIGHT);
+
+        // Number of accessions in haplotype
+        ctx.strokeStyle = HAPLOTYPE_SIZE_STROKE;
+        ctx.strokeText(haplotype.accessions.length.toString(), 2, yOffset + Math.round(HAPLOTYPE_HEIGHT / 2));
+
+        haplotype.variants.forEach((variant) => this.renderVariant(variant, yOffset, ctx));
+        ctx.popObject();
+    }
+
+    renderVariant(variant: IVariant, yOffset: number, ctx: dataCanvas.DataCanvasRenderingContext2D) {
+        ctx.pushObject(variant);
+
+        const scale = this.getScale();
+        const pxPerLetter = scale(1) - scale(0);
+        const showText = pxPerLetter >= VARIANT_TEXT_THRESHOLD;
+        const showLine = pxPerLetter <= VARIANT_LINE_THRESHOLD;
+        const xCenter = scale(this.props.range.start + variant.pos);
+        const halfHaplotype = Math.round(HAPLOTYPE_HEIGHT / 2);
+        if (showText) {
+            ctx.fillStyle = HAPLOTYPE_FILL;
+            // something to click as, fillText is not clickable
+            ctx.fillRect(xCenter + 1, yOffset + 1, halfHaplotype, HAPLOTYPE_HEIGHT - 2);
+            ctx.fillStyle = this.getVariantColor(variant);
+            ctx.fillText(variant.alt[0], xCenter, yOffset + halfHaplotype);
+        } else if (showLine) {
+            ctx.fillStyle = this.getVariantColor(variant);
+            ctx.fillRect(xCenter, yOffset + 1, 1, HAPLOTYPE_HEIGHT - 2);
+        } else {
+            ctx.fillStyle = this.getVariantColor(variant);
+            ctx.beginPath();
+            // TODO remove range.start when variant.pos is from real dataset
+            // const xCenter = this.getScale()(variant.pos);
+            const yCenter = yOffset + halfHaplotype;
+            ctx.arc(xCenter, yCenter, VARIANT_RADIUS, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        ctx.popObject();
+    }
+
+    getVariantColor(_variant: IVariant) {
+        // TODO choose fill style on type of variant
+        return VARIANT_FILL;
     }
 
     // Draw the center line(s), which orient the user

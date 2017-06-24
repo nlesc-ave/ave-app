@@ -2,16 +2,16 @@ import * as React from 'react';
 
 import * as d3 from 'd3';
 
-import {AveVariantsDataSource, IVariantNode} from '../sources/AveVariantsDataSource';
+import {AveHaplotypesDataSource, IHaplotypeNode} from '../sources/AveHaplotypesDataSource';
 import {HAPLOTYPE_HEIGHT, HAPLOTYPE_PADDING} from './HaplotypeTrack';
 
 interface IProps {
-    source: AveVariantsDataSource;
+    source: AveHaplotypesDataSource;
     width: number;
 }
 
 interface IState {
-    hierarchy: IVariantNode;
+    hierarchy: IHaplotypeNode;
     leafs: number;
 }
 

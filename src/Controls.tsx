@@ -32,10 +32,10 @@ export class Controls extends React.Component<IProps, {}> {
         const windowSize = stop - start;
         const newRange = {
             contig,
-            start: start - windowSize,
+            start: start - windowSize ,
             stop: stop - windowSize
         };
-        this.props.onChange(newRange);
+        this.props.onChange(this.capRange(newRange));
     }
 
     onZoomInClick() {
@@ -46,7 +46,24 @@ export class Controls extends React.Component<IProps, {}> {
             start: start + windowSize,
             stop: stop - windowSize
         };
-        this.props.onChange(newRange);
+        this.props.onChange(this.capRange(newRange));
+    }
+
+    capRange(range: GenomeRange): GenomeRange {
+        const chromLength = this.chromLength();
+        let start = range.start;
+        if (start < 1) {
+            start = 1;
+        }
+        let stop = range.stop;
+        if (stop >= chromLength ) {
+            stop = chromLength;
+        }
+        return {
+            contig : range.contig,
+            start,
+            stop
+        };
     }
 
     onZoomOutClick() {
@@ -57,7 +74,7 @@ export class Controls extends React.Component<IProps, {}> {
             start: start - windowSize,
             stop: stop + windowSize
         };
-        this.props.onChange(newRange);
+        this.props.onChange(this.capRange(newRange));
     }
 
     onNexWindowClick() {
@@ -68,7 +85,11 @@ export class Controls extends React.Component<IProps, {}> {
             start: start + windowSize,
             stop: stop + windowSize
         };
-        this.props.onChange(newRange);
+        this.props.onChange(this.capRange(newRange));
+    }
+
+    chromLength() {
+        return this.props.chromosomes.filter((c) => c.chrom_id === this.props.range.contig)[0].length;
     }
 
     render() {
@@ -76,14 +97,41 @@ export class Controls extends React.Component<IProps, {}> {
         if (!range) {
             return <Toolbar/>;
         }
+        const {start, stop} = range;
+        const windowSize = stop - start;
+        const chromLength = this.chromLength();
         return (
             <Toolbar>
                 <RangeSelector chromosomes={chromosomes} range={range} onChange={this.props.onChange}/>
                 <ToolbarGroup>
-                    <IconButton tooltip="Back 1 window" onTouchTap={this.onPrevWindowClick}><PrevWindow/></IconButton>
-                    <IconButton tooltip="Zoom in" onTouchTap={this.onZoomInClick}><ZoomIn/></IconButton>
-                    <IconButton tooltip="Zoom out" onTouchTap={this.onZoomOutClick}><ZoomOut/></IconButton>
-                    <IconButton tooltip="Forward 1 window" onTouchTap={this.onNexWindowClick}><NextWindow/></IconButton>
+                    <IconButton
+                        disabled={start <= 1}
+                        tooltip="Back 1 window"
+                        onTouchTap={this.onPrevWindowClick}
+                    >
+                        <PrevWindow/>
+                    </IconButton>
+                    <IconButton
+                        disabled={windowSize <= 1}
+                        tooltip="Zoom in"
+                        onTouchTap={this.onZoomInClick}
+                    >
+                        <ZoomIn/>
+                    </IconButton>
+                    <IconButton
+                        disabled={windowSize * 2 > chromLength}
+                        tooltip="Zoom out"
+                        onTouchTap={this.onZoomOutClick}
+                    >
+                        <ZoomOut/>
+                    </IconButton>
+                    <IconButton
+                        disabled={stop >= chromLength}
+                        tooltip="Forward 1 window"
+                        onTouchTap={this.onNexWindowClick}
+                    >
+                        <NextWindow/>
+                    </IconButton>
                 </ToolbarGroup>
             </Toolbar>
         );
