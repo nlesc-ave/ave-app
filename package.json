@@ -1,57 +1,77 @@
 {
   "name": "ave-app",
   "version": "0.1.0",
+  "description": "Allelic Variation Explorer",
+  "author": "Netherlands eScience Center <info@esciencecenter.nl (https://www.esciencecenter.nl)",
+  "license": "Apache-2.0",
   "proxy": "http://localhost:2015",
   "private": true,
-  "main": "electron-main.js",
+  "main": "public/electron.js",
+  "homepage": "./",
+  "repository": "nlesc-ave/ave-app",
   "build": {
-    "appId": "ave.nlesc",
+    "appId": "nl.esciencecenter.ave",
     "mac": {
-      "category": "spot.science"
+      "category": "public.app-category.business"
+    },
+    "extends": "react-cra",
+    "nsis": {
+      "artifactName": "${productName}_Setup_${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "${productName}_Portable_${version}.${ext}"
     }
   },
   "dependencies": {
+    "concurrently": "^3.5.0",
+    "electron-is-dev": "^0.1.2",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.2.1",
-    "material-ui": "^0.17.4",
+    "material-ui": "0.17.4",
     "pileup": "https://github.com/nlesc-ave/pileup.js.git",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
-    "react-redux": "^5.0.5",
-    "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1",
+    "react": "15.5.4",
+    "react-dom": "15.5.4",
+    "react-redux": "5.0.5",
+    "react-router": "4.1.1",
+    "react-router-dom": "4.1.1",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
     "redux-localstorage": "^0.4.1",
     "redux-observable": "^0.14.1",
     "roboto-npm-webfont": "^0.0.2",
-    "rxjs": "^5.4.0"
+    "rxjs": "^5.4.0",
+    "wait-on": "^2.0.2"
   },
   "devDependencies": {
     "@nlesc/react-scripts": "0.2.0",
     "@types/backbone": "^1.3.33",
     "@types/d3": "^3.0.0",
-    "@types/enzyme": "^2.8.0",
+    "@types/enzyme": "2.8.0",
     "@types/isomorphic-fetch": "^0.0.33",
     "@types/jquery": "^2.0.41",
-    "@types/material-ui": "^0.17.2",
-    "@types/react": "^15.0.23",
-    "@types/react-dom": "^15.5.0",
-    "@types/react-redux": "^4.4.40",
-    "@types/react-router": "^4.0.4",
-    "@types/react-router-dom": "^4.0.4",
+    "@types/material-ui": "0.17.2",
+    "@types/react": "15.0.23",
+    "@types/react-dom": "15.5.0",
+    "@types/react-redux": "4.4.40",
+    "@types/react-router": "4.0.4",
+    "@types/react-router-dom": "4.0.4",
     "@types/redux-localstorage": "^1.0.2",
     "codacy-coverage": "^2.0.2",
     "electron": "^1.6.10",
-    "electron-builder": "^18.2.2",
+    "electron-builder": "^19.8.0",
     "enzyme": "^2.8.2",
     "react-addons-test-utils": "^15.6.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"caddy\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "react-scripts lint"
+    "lint": "react-scripts lint",
+    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"caddy\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack": "electron-builder --win portable --linux AppImage --mac zip --em.main=build/electron.js",
+    "electron-pack-mac": "electron-builder --mac dmg --em.main=build/electron.js",
+    "postinstall": "electron-builder install-app-deps",
+    "preelectron-pack": "yarn build"
   }
 }

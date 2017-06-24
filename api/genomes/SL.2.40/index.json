@@ -56,6 +56,6 @@
     ],
     "feature_types": [],
     "accessions": ["a1", "a2", "a3", "a4", "a5", "a6", "a7"],
-    "reference": "/api/genomes/SL.2.40/S_lycopersicum_May_2012.2bit",
-    "gene_track": "/api/genomes/SL.2.40/S_lycopersicum_May_2012.bb"
+    "reference": "http://localhost:3000/api/genomes/SL.2.40/S_lycopersicum_May_2012.2bit",
+    "gene_track": "http://localhost:3000/api/genomes/SL.2.40/S_lycopersicum_May_2012.bb"
 }

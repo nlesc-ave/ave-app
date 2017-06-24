@@ -1,16 +1,22 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
 const url = require('url')
+const isDev = require('electron-is-dev');
 
 let win
 
 function createWindow () {
-  win = new BrowserWindow({width: 1100, height: 800})
+  win = new BrowserWindow({
+    width: 1200, 
+    height: 900
+  });
 
   // diable menu bar
-  win.setMenu(null);
+  // win.setMenu(null);
 
-  win.loadURL('http://localhost:3000')
+  win.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
+
+  //win.webContents.openDevTools();
 
   // Emitted when the window is closed.
   win.on('closed', () => {

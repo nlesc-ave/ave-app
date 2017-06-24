@@ -10,6 +10,10 @@ The web application uses [pileup.js](https://github.com/hammerlab/pileup.js).
 
 ## Develop
 
+Requirements:
+
+- caddy, static file server (https://caddyserver.com) to proxy example api files
+
 Clone repo and then
 ```
 yarn install
@@ -31,12 +35,28 @@ rm S_lycopersicum_May_2012.bed.gz S_lycopersicum_May_2012.bed.trimmed genome.txt
 cd -
 ```
 
-Start static file server (https://caddyserver.com) to proxy example api files.
-```
-caddy
-```
-
 Start development server
 ```
 yarn start
 ```
+
+## Develop with electron
+
+```
+yarn electron-dev
+```
+This will start an electron application with the application running in develop mode.
+
+On MacOS a dmg file can be built with:
+```
+yarn electron-dev-mac
+```
+
+To load the example api files, the api root must be changed to `http://localhost:3000/api` in the settings page.
+
+## Build electron distributions
+
+```
+yarn electron-pack
+```
+This will create distributions in the `dist/` directory.
