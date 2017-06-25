@@ -40,6 +40,9 @@ Start development server
 yarn start
 ```
 
+This will open the web application in a web browser on `http://localhost:3000`.
+It will also start an api web service using caddy with example api files.
+
 ## Develop with electron
 
 ```
@@ -60,3 +63,5 @@ To load the example api files, the api root must be changed to `http://localhost
 yarn electron-pack
 ```
 This will create distributions in the `dist/` directory.
+
+After installation, set api root to location of a running ave api service.

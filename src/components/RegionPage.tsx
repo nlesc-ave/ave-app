@@ -74,7 +74,7 @@ export class RegionPage extends React.Component<IProps, IState> {
         };
         const sources = [{
             data: pileup.formats.twoBit({
-                url: genome.reference
+                url: this.absoluteUrl(genome.reference)
             }),
             isReference: true,
             name: 'Reference',
@@ -89,7 +89,7 @@ export class RegionPage extends React.Component<IProps, IState> {
             viz: pileup.viz.location()
         }, {
             data: pileup.formats.bigBed({
-                url: genome.gene_track
+                url: this.absoluteUrl(genome.gene_track)
             }),
             name: 'Genes',
             viz: pileup.viz.genes()
@@ -115,5 +115,12 @@ export class RegionPage extends React.Component<IProps, IState> {
                 <Root referenceSource={vizTracks[0].source} tracks={vizTracks} initialRange={range} genome={genome}/>
             </div>
         );
+    }
+
+    absoluteUrl(path: string) {
+        if (path.startsWith('http') || path.startsWith('/')) {
+            return path;
+        }
+        return `${this.props.apiroot}/${path}`;
     }
 }
