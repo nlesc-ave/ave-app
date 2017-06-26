@@ -1,5 +1,9 @@
-localhost:2015
+:2015
 index index.html index.json
+
+cors {
+  allowed_headers range
+}
 
 # Ignore query part of url for searches
 rewrite {
