@@ -62,7 +62,7 @@ export class RegionPage extends React.Component<IProps, IState> {
         const searchButton = (
             <Searcher
                 genome_id={genome.genome_id}
-                padding={this.props.flank}
+                flank={this.props.flank}
                 apiroot={this.props.apiroot}
             />
         );

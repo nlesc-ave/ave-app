@@ -14,8 +14,11 @@ import {
 import TextField from 'material-ui/TextField';
 import { Link } from 'react-router-dom';
 
+import { SearchForm } from './SearchForm';
+
 export interface IProps {
     apiroot: string;
+    flank: number;
 }
 
 interface IState {
@@ -27,6 +30,7 @@ interface IState {
     selectedChromosome: IChromosome;
     selectedStart: number;
     selectedEnd: number;
+    speciesError: string;
 }
 
 export class RangeStepper extends React.Component<IProps, IState> {
@@ -37,7 +41,8 @@ export class RangeStepper extends React.Component<IProps, IState> {
         allowedGenomes: [],
         selectedChromosome: { chrom_id: '', length: 0 },
         selectedStart: 15000,
-        selectedEnd: 20000
+        selectedEnd: 20000,
+        speciesError: ''
     };
 
     componentDidMount() {
@@ -45,14 +50,13 @@ export class RangeStepper extends React.Component<IProps, IState> {
     }
 
     fetchSpecies() {
-        // TODO change to /api/species when server online
         fetch(`${this.props.apiroot}/species`)
             .then<ISpecies[]>((response) => response.json())
-            .then((allowedSpecies) => this.setState({ allowedSpecies }));
+            .then((allowedSpecies) => this.setState({ allowedSpecies }))
+            .catch((reason: TypeError) => this.setState({ speciesError: reason.message}));
     }
 
     fetchGenomes(species: ISpecies) {
-        // TODO change to /api/species/${species_id}/genomes when server online
         fetch(`${this.props.apiroot}/species/${species.species_id}/genomes`)
             .then<IGenome[]>((response) => response.json())
             .then((allowedGenomes) => this.setState({ allowedGenomes, stepIndex: this.state.stepIndex + 1 }));
@@ -150,6 +154,10 @@ export class RangeStepper extends React.Component<IProps, IState> {
         const speciesRadios = this.state.allowedSpecies.map(
             (species) => <RadioButton key={species.species_id} label={species.name} value={species.species_id} />
         );
+        let speciesError = null;
+        if (this.state.speciesError) {
+            speciesError = <span style={{color: 'red'}}>{this.state.speciesError}</span>;
+        }
         const genomeRadios = this.state.allowedGenomes.map(
             (genome) => <RadioButton key={genome.genome_id} label={genome.genome_id} value={genome.genome_id} />
         );
@@ -172,8 +180,16 @@ export class RangeStepper extends React.Component<IProps, IState> {
             selectedSpeciesLabel = selectedSpecies.name;
         }
         let selectedGenomeLabel = '';
+        let searchForm = null;
         if (selectedGenome) {
             selectedGenomeLabel = selectedGenome.genome_id;
+            searchForm = (
+                <SearchForm
+                    apiroot={this.props.apiroot}
+                    genome_id={selectedGenome.genome_id}
+                    flank={this.props.flank}
+                />
+            );
         }
 
         return (
@@ -184,6 +200,7 @@ export class RangeStepper extends React.Component<IProps, IState> {
                         <RadioButtonGroup name="species" onChange={this.selectSpecies}>
                             {speciesRadios}
                         </RadioButtonGroup>
+                        {speciesError}
                         {this.renderStepActions(0)}
                     </StepContent>
                 </Step>
@@ -197,16 +214,16 @@ export class RangeStepper extends React.Component<IProps, IState> {
                     </StepContent>
                 </Step>
                 <Step>
-                    <StepLabel>Select range</StepLabel>
+                    <StepLabel>Select range or search</StepLabel>
                     <StepContent>
-                        <SelectField
-                            floatingLabelText="Chromosome"
-                            value={this.state.selectedChromosome.chrom_id}
-                            onChange={this.selectChromosome}
-                        >
-                            {chromosomeItems}
-                        </SelectField>
-                        <div>
+                        <table><tbody><tr><td style={{verticalAlign: 'top'}}>
+                            <SelectField
+                                floatingLabelText="Chromosome"
+                                value={this.state.selectedChromosome.chrom_id}
+                                onChange={this.selectChromosome}
+                            >
+                                {chromosomeItems}
+                            </SelectField>
                             <TextField
                                 type="number"
                                 floatingLabelText="Start"
@@ -222,7 +239,9 @@ export class RangeStepper extends React.Component<IProps, IState> {
                                 style={{ paddingLeft: '5px' }}
                                 errorText={endError}
                             />
-                        </div>
+                        </td><td style={{verticalAlign: 'top'}}>
+                            {searchForm}
+                        </td></tr></tbody></table>
                         {this.renderStepActions(2)}
                     </StepContent>
                 </Step>
