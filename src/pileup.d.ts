@@ -72,11 +72,12 @@ declare module 'pileup/dist/main/VisualizationWrapper' {
 }
 
 declare module 'pileup/dist/main/pileup' {
+    import { IOptions } from 'pileup/dist/main/viz/GeneTrack';
     export namespace viz {
         export var genome: () => any;
         export var scale: () => any;
         export var location: () => any;
-        export var genes: () => any;
+        export var genes: (options: IOptions) => any;
         export var pileup: () => any;
     }
     export namespace formats {
@@ -95,13 +96,46 @@ declare module 'pileup/dist/main/viz/canvas-utils' {
     export var drawLine: (ctx: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number) => void;
 }
 
+declare module 'pileup/dist/main/viz/GeneTrack' {
+    import ContigInterval from 'pileup/dist/main/ContigInterval';
+    import Interval from 'pileup/dist/main/Interval';
+    type Strand = '-' | '+';
+    export type Gene = {
+        position: ContigInterval;
+        id: string;  // transcript ID, e.g. "ENST00000269305"
+        strand: Strand;
+        codingRegion: Interval;  // locus of coding start
+        exons: Interval[];
+        geneId: string;  // ensembl gene ID
+        name: string;  // human-readable name, e.g. "TP53"
+    }
+    export interface IOptions {
+        onGeneClicked(genes: Gene[]): void;
+    }
+    interface IProps {
+        options: IOptions;
+    }
+    export default class GeneTrack extends React.Component<IProps, {}> {
+        
+    }
+}
+
+declare module 'pileup/dist/main/Interval' {
+    export default class Interval {
+        start: number;
+        stop: number;
+    }
+}
+
 declare module 'pileup/dist/main/ContigInterval' {
+    import Interval from 'pileup/dist/main/Interval';
     export default class ContigInterval {
         contig: string;
         constructor(contig: string, start: number, stop: number);
         start(): number;
         stop(): number;
         length(): number;
+        interval: Interval;
     }
 }
 

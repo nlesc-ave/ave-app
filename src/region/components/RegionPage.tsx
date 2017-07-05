@@ -3,6 +3,7 @@ import * as React from 'react';
 import AppBar from 'material-ui/AppBar';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import * as pileup from 'pileup/dist/main/pileup';
+import { Gene } from 'pileup/dist/main/viz/GeneTrack';
 import { RouteComponentProps } from 'react-router';
 
 import IconButton from 'material-ui/IconButton';
@@ -10,6 +11,7 @@ import { SideBar } from '../../components/SideBar';
 import { Searcher } from '../../search/components/Searcher';
 import { AveHaplotypesDataSource } from '../haplotype/AveHaplotypesDataSource';
 import { haplotypes } from '../haplotype/haplotypes';
+import { GeneDialog } from './GeneDialog';
 import { RegionCanvas } from './RegionCanvas';
 
 import 'pileup/style/pileup.css';
@@ -32,6 +34,7 @@ type IProps = RouteComponentProps<IParams> & IStateProps;
 interface IState {
     genome?: IGenome;
     menuOpen: boolean;
+    selectedGene?: Gene;
 }
 
 export class RegionPage extends React.Component<IProps, IState> {
@@ -51,6 +54,16 @@ export class RegionPage extends React.Component<IProps, IState> {
     }
 
     onMenuToggle = () => this.setState({menuOpen: !this.state.menuOpen});
+
+    onGeneClick = (genes: Gene[]) => {
+        this.setState({selectedGene: genes[0]});
+    }
+
+    onCloseGeneDialog = () => {
+        this.setState({
+           selectedGene: undefined
+        });
+    }
 
     render() {
         const match = this.props.match;
@@ -92,7 +105,9 @@ export class RegionPage extends React.Component<IProps, IState> {
                 url: this.absoluteUrl(genome.gene_track)
             }),
             name: 'Genes',
-            viz: pileup.viz.genes()
+            viz: pileup.viz.genes({
+                onGeneClicked: this.onGeneClick
+            })
         }, {
             cssClass: 'normal',
             data: this.variantDataSource,
@@ -104,6 +119,15 @@ export class RegionPage extends React.Component<IProps, IState> {
             return {visualization: track.viz, source, track};
         });
         const title = 'Allelic Variation Explorer: ' + match.params.genome_id;
+        let dialog;
+        if (this.state.selectedGene) {
+            dialog = (
+                <GeneDialog
+                    gene={this.state.selectedGene}
+                    onClose={this.onCloseGeneDialog}
+                />
+            );
+        }
         return (
             <div>
                 <AppBar
@@ -112,6 +136,7 @@ export class RegionPage extends React.Component<IProps, IState> {
                     iconElementRight={searchButton}
                 />
                 <SideBar open={menuOpen} onToggle={this.onMenuToggle}/>
+                {dialog}
                 <RegionCanvas
                     referenceSource={vizTracks[0].source}
                     tracks={vizTracks}

@@ -14,7 +14,7 @@ export const HaplotypeInfo = ({haplotype}: IProps) => {
         <div>
             <div>Haplotype identifier: {haplotype.haplotype_id}</div>
             <div>Variants in current region: {haplotype.variants.length}</div>
-            <h2>Accessions</h2>
+            <h3>Accessions</h3>
             <ol>
                 {accessions}
             </ol>

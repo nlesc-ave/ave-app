@@ -13,7 +13,7 @@ export const VariantInfo = ({variant}: IProps) => {
             <div>Identifier: {variant.id}</div>
             <div>Position: {variant.pos}</div>
             <div>Reference: {variant.ref}</div>
-            <h2>Alternatives</h2>
+            <h3>Alternatives</h3>
             <ol>
                 {alts}
             </ol>
