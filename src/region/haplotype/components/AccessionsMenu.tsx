@@ -7,7 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { black, blue500 } from 'material-ui/styles/colors';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 
-import { AveHaplotypesDataSource } from '../sources/AveHaplotypesDataSource';
+import { AveHaplotypesDataSource } from '../AveHaplotypesDataSource';
 import { AccessionMenuItem} from './AccessionMenuItem';
 
 export interface IProps {

@@ -6,11 +6,11 @@ import * as pileup from 'pileup/dist/main/pileup';
 import { RouteComponentProps } from 'react-router';
 
 import IconButton from 'material-ui/IconButton';
-import { Root } from '../Root';
-import { Searcher } from '../Searcher';
-import { SideBar } from '../SideBar';
-import { AveHaplotypesDataSource } from '../sources/AveHaplotypesDataSource';
-import { haplotypes } from '../viz/haplotypes';
+import { SideBar } from '../../components/SideBar';
+import { Searcher } from '../../search/components/Searcher';
+import { AveHaplotypesDataSource } from '../haplotype/AveHaplotypesDataSource';
+import { haplotypes } from '../haplotype/haplotypes';
+import { RegionCanvas } from './RegionCanvas';
 
 import 'pileup/style/pileup.css';
 import './RegionPage.css';
@@ -112,7 +112,12 @@ export class RegionPage extends React.Component<IProps, IState> {
                     iconElementRight={searchButton}
                 />
                 <SideBar open={menuOpen} onToggle={this.onMenuToggle}/>
-                <Root referenceSource={vizTracks[0].source} tracks={vizTracks} initialRange={range} genome={genome}/>
+                <RegionCanvas
+                    referenceSource={vizTracks[0].source}
+                    tracks={vizTracks}
+                    initialRange={range}
+                    genome={genome}
+                />
             </div>
         );
     }

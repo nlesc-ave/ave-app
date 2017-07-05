@@ -4,7 +4,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import FileDownload from 'material-ui/svg-icons/file/file-download';
 
-import { IHaplotype } from '../sources/AveHaplotypesDataSource';
+import { IHaplotype } from '../AveHaplotypesDataSource';
 import { HaplotypeInfo } from './HaplotypeInfo';
 
 interface IProps {

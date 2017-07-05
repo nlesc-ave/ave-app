@@ -4,8 +4,8 @@ import AppBar from 'material-ui/AppBar';
 import { Card, CardText, CardTitle } from 'material-ui/Card';
 import { RouteComponentProps } from 'react-router';
 
-import { RangeStepper } from './containers/RangeStepper';
-import { SideBar } from './SideBar';
+import { SideBar } from '../../components/SideBar';
+import { RangeStepper } from '../containers/RangeStepper';
 
 interface IState {
     menuOpen: boolean;

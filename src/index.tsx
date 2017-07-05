@@ -5,8 +5,8 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
+import { Routes } from './components/Routes';
 import { configureStore } from './configureStore';
-import { Routes } from './Routes';
 
 import 'roboto-npm-webfont';
 import './index.css';

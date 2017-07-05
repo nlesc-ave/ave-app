@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IHaplotype } from '../sources/AveHaplotypesDataSource';
+import { IHaplotype } from '../AveHaplotypesDataSource';
 
 interface IProps {
     haplotype: IHaplotype;

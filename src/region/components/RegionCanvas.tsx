@@ -7,12 +7,12 @@ import { VisualizedTrack  } from 'pileup/dist/main/Root';
 import { GenomeRange, IRootProps, IRootState } from 'pileup/dist/main/Root';
 import VisualizationWrapper from 'pileup/dist/main/VisualizationWrapper';
 
-import { AccessionsMenu } from './components/AccessionsMenu';
+import { AveHaplotypesDataSource } from '../haplotype/AveHaplotypesDataSource';
+import { AccessionsMenu } from '../haplotype/components/AccessionsMenu';
+import { HaplotypeTree } from '../haplotype/components/HaplotypeTree';
 import { Controls } from './Controls';
-import { AveHaplotypesDataSource } from './sources/AveHaplotypesDataSource';
-import { HaplotypeTree } from './viz/HaplotypeTree';
 
-import './Root.css';
+import './RegionCanvas.css';
 
 interface IProps extends IRootProps {
     history: History;
@@ -21,7 +21,7 @@ interface IProps extends IRootProps {
     genome: IGenome;
 }
 
-class RootWithoutHistory extends PileupRoot<IProps, IRootState> {
+class RegionCanvasWithoutHistory extends PileupRoot<IProps, IRootState> {
     handleRangeChange(newRange: GenomeRange) {
         const path = this.props.match.path
             .replace(':genome_id', this.props.match.params.genome_id)
@@ -123,4 +123,4 @@ class RootWithoutHistory extends PileupRoot<IProps, IRootState> {
     }
 }
 
-export const Root = withRouter(RootWithoutHistory);
+export const RegionCanvas = withRouter(RegionCanvasWithoutHistory);

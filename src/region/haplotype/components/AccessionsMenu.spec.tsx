@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
-import { AveHaplotypesDataSource } from '../sources/AveHaplotypesDataSource';
+import { AveHaplotypesDataSource } from '../AveHaplotypesDataSource';
 import { AccessionsMenu, IProps, IState } from './AccessionsMenu';
 
 const DEFAULT_ACCESSIONS = ['a1', 'a2', 'a3'];

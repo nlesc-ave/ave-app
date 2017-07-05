@@ -4,7 +4,7 @@ import IconButton from 'material-ui/IconButton';
 import Popover from 'material-ui/Popover';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 
-import { IProps, SearchForm } from './components/SearchForm';
+import { IProps, SearchForm } from './SearchForm';
 
 interface IState {
     anchorEl?: Element;

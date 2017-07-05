@@ -4,7 +4,7 @@ import * as dataCanvas from 'data-canvas';
 import * as canvasUtils from 'pileup/dist/main/viz/canvas-utils';
 import * as d3utils from 'pileup/dist/main/viz/d3utils';
 
-import {AveHaplotypesDataSource, IHaplotype, IVariant} from '../sources/AveHaplotypesDataSource';
+import {AveHaplotypesDataSource, IHaplotype, IVariant} from '../AveHaplotypesDataSource';
 import { HaplotypeDialog } from './HaplotypeDialog';
 import { VariantDialog } from './VariantDialog';
 

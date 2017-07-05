@@ -3,10 +3,10 @@ import * as React from 'react';
 import { Route } from 'react-router';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
+import { SettingsPage } from '../containers/SettingsPage';
+import { RegionPage } from '../region/containers/RegionPage';
+import { WelcomePage } from '../welcome/components/WelcomePage';
 import { AboutPage } from './AboutPage';
-import { RegionPage } from './containers/RegionPage';
-import { SettingsPage } from './containers/SettingsPage';
-import { WelcomePage } from './WelcomePage';
 
 export const Routes = () => (
   <Router>

@@ -14,7 +14,7 @@ import {
 import TextField from 'material-ui/TextField';
 import { Link } from 'react-router-dom';
 
-import { SearchForm } from './SearchForm';
+import { SearchForm } from '../../search/components/SearchForm';
 
 export interface IProps {
     apiroot: string;

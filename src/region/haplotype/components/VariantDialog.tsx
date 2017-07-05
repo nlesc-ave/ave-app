@@ -4,7 +4,7 @@ import * as React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
-import { IHaplotype, IVariant } from '../sources/AveHaplotypesDataSource';
+import { IHaplotype, IVariant } from '../AveHaplotypesDataSource';
 import { HaplotypeInfo } from './HaplotypeInfo';
 import { VariantInfo } from './VariantInfo';
 

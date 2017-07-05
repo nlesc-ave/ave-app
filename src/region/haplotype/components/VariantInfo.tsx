@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IVariant } from '../sources/AveHaplotypesDataSource';
+import { IVariant } from '../AveHaplotypesDataSource';
 
 interface IProps {
     variant: IVariant;
