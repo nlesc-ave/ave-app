@@ -72,13 +72,15 @@ declare module 'pileup/dist/main/VisualizationWrapper' {
 }
 
 declare module 'pileup/dist/main/pileup' {
-    import { IOptions } from 'pileup/dist/main/viz/GeneTrack';
+    import { IGeneTrackOptions } from 'pileup/dist/main/viz/GeneTrack';
+    import { IFeatureTrackOptions } from 'pileup/dist/main/viz/FeatureTrack';
     export namespace viz {
         export var genome: () => any;
         export var scale: () => any;
         export var location: () => any;
-        export var genes: (options: IOptions) => any;
+        export var genes: (options: IGeneTrackOptions) => any;
         export var pileup: () => any;
+        export var features: (options: IFeatureTrackOptions) => any;
     }
     export namespace formats {
         export var bigBed: (config: any) => any;
@@ -109,14 +111,39 @@ declare module 'pileup/dist/main/viz/GeneTrack' {
         geneId: string;  // ensembl gene ID
         name: string;  // human-readable name, e.g. "TP53"
     }
-    export interface IOptions {
+    export interface IGeneTrackOptions {
         onGeneClicked(genes: Gene[]): void;
     }
     interface IProps {
-        options: IOptions;
+        options: IGeneTrackOptions;
     }
     export default class GeneTrack extends React.Component<IProps, {}> {
         
+    }
+}
+
+declare module 'pileup/dist/main/data/feature' {
+    export default class Feature {
+        id: string;
+        featureType: string;
+        contig: string;
+        start: number;
+        stop: number;
+        score: number;
+        constructor(feature: object);
+    }
+}
+
+declare module 'pileup/dist/main/viz/FeatureTrack' {
+    import Feature from 'pileup/dist/main/data/feature';
+    export interface IFeatureTrackOptions {
+        onFeatureClicked(feature: Feature): void;
+    }
+    interface IProps {
+        options: IFeatureTrackOptions;
+    }
+    export default class FeatureTrack extends React.Component<IProps, {}> {
+
     }
 }
 

@@ -5,7 +5,7 @@ import { Gene, Strand } from 'pileup/dist/main/viz/GeneTrack';
 import { AveDataSource } from './AveDataSource';
 
 export class AveGenesDataSource extends AveDataSource {
-    genes: Gene[];
+    genes: Gene[] = [];
 
     onFetch() {
         if (this.interval) {

@@ -1,18 +1,21 @@
 import * as React from 'react';
 
 import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import * as pileup from 'pileup/dist/main/pileup';
 import { Track } from 'pileup/dist/main/Root';
 import { Gene } from 'pileup/dist/main/viz/GeneTrack';
 import { RouteComponentProps } from 'react-router';
 
-import IconButton from 'material-ui/IconButton';
 import { SideBar } from '../../components/SideBar';
 import { Searcher } from '../../search/components/Searcher';
+import { AveFeature } from '../AveFeature';
+import { AveFeaturesDataSource } from '../AveFeaturesDataSource';
 import { AveGenesDataSource } from '../AveGenesDataSource';
 import { AveHaplotypesDataSource } from '../haplotype/AveHaplotypesDataSource';
 import { haplotypes } from '../haplotype/haplotypes';
+import { FeatureDialog } from './FeatureDialog';
 import { GeneDialog } from './GeneDialog';
 import { RegionCanvas } from './RegionCanvas';
 
@@ -37,17 +40,20 @@ interface IState {
     genome?: IGenome;
     menuOpen: boolean;
     selectedGene?: Gene;
+    selectedFeature?: IFeatureAnnotation;
 }
 
 export class RegionPage extends React.Component<IProps, IState> {
     variantDataSource: AveHaplotypesDataSource;
     genesDataSource: AveGenesDataSource;
+    featuresDataSource: AveFeaturesDataSource;
     state: IState = {menuOpen: false};
 
     componentDidMount() {
         this.fetchGenome();
         this.variantDataSource = new AveHaplotypesDataSource(this.props.match.params.genome_id, this.props.apiroot);
         this.genesDataSource = new AveGenesDataSource(this.props.match.params.genome_id, this.props.apiroot);
+        this.featuresDataSource = new AveFeaturesDataSource(this.props.match.params.genome_id, this.props.apiroot);
     }
 
     fetchGenome() {
@@ -63,9 +69,19 @@ export class RegionPage extends React.Component<IProps, IState> {
         this.setState({selectedGene: genes[0]});
     }
 
+    onFeatureClick = (feature: AveFeature) => {
+        this.setState({selectedFeature: feature.annotation});
+    }
+
     onCloseGeneDialog = () => {
         this.setState({
            selectedGene: undefined
+        });
+    }
+
+    onCloseFeatureDialog = () => {
+        this.setState({
+           selectedFeature: undefined
         });
     }
 
@@ -83,67 +99,23 @@ export class RegionPage extends React.Component<IProps, IState> {
                 apiroot={this.props.apiroot}
             />
         );
-        // TODO when server is online use dynamic range
         const range = {
             contig: match.params.chrom_id,
             start: Number.parseInt(match.params.start_position),
             stop: Number.parseInt(match.params.end_position)
         };
-        const sources: Track[] = [{
-            data: pileup.formats.twoBit({
-                url: this.absoluteUrl(genome.reference)
-            }),
-            isReference: true,
-            name: 'Reference',
-            viz: pileup.viz.genome()
-        }, {
-            data: pileup.formats.empty(),
-            name: 'Scale',
-            viz: pileup.viz.scale()
-        }, {
-            data: pileup.formats.empty(),
-            name: 'Location',
-            viz: pileup.viz.location()
-        }];
-        if ('gene_track' in genome) {
-            sources.push({
-                data: pileup.formats.bigBed({
-                    url: this.absoluteUrl(genome.gene_track)
-                }),
-                name: 'Genes',
-                viz: pileup.viz.genes({
-                    onGeneClicked: this.onGeneClick
-                })
-            });
-        } else {
-            sources.push({
-                data: this.genesDataSource,
-                name: 'Genes',
-                viz: pileup.viz.genes({
-                    onGeneClicked: this.onGeneClick
-                })
-            });
-        }
-        sources.push({
-            cssClass: 'normal',
-            data: this.variantDataSource,
-            name: 'Haplotypes',
-            viz: haplotypes()
-        });
+
+        const sources: Track[] = this.addDefaultTracks(genome);
+        this.addGeneTrack(genome, sources);
+        this.addFeatureTrack(genome, sources);
+        this.addHaplotypeTrack(sources);
         const vizTracks = sources.map((track) => {
             const source = track.data;
             return {visualization: track.viz, source, track};
         });
+
         const title = 'Allelic Variation Explorer: ' + match.params.genome_id;
-        let dialog;
-        if (this.state.selectedGene) {
-            dialog = (
-                <GeneDialog
-                    gene={this.state.selectedGene}
-                    onClose={this.onCloseGeneDialog}
-                />
-            );
-        }
+        const dialog = this.renderDialog();
         return (
             <div>
                 <AppBar
@@ -168,5 +140,87 @@ export class RegionPage extends React.Component<IProps, IState> {
             return path;
         }
         return `${this.props.apiroot}/${path}`;
+    }
+
+    addDefaultTracks(genome: IGenome) {
+        return [{
+            data: pileup.formats.twoBit({
+                url: this.absoluteUrl(genome.reference)
+            }),
+            isReference: true,
+            name: 'Reference',
+            viz: pileup.viz.genome()
+        }, {
+            data: pileup.formats.empty(),
+            name: 'Scale',
+            viz: pileup.viz.scale()
+        }, {
+            data: pileup.formats.empty(),
+            name: 'Location',
+            viz: pileup.viz.location()
+        }];
+    }
+
+    addGeneTrack(genome: IGenome, sources: Track[]) {
+        if ('gene_track' in genome) {
+            sources.push({
+                data: pileup.formats.bigBed({
+                    url: this.absoluteUrl(genome.gene_track)
+                }),
+                name: 'Genes',
+                viz: pileup.viz.genes({
+                    onGeneClicked: this.onGeneClick
+                })
+            });
+        } else {
+            sources.push({
+                data: this.genesDataSource,
+                name: 'Genes',
+                viz: pileup.viz.genes({
+                    onGeneClicked: this.onGeneClick
+                })
+            });
+        }
+    }
+
+    addFeatureTrack(genome: IGenome, sources: Track[]) {
+        if ('feature_types' in genome && genome.feature_types.length > 0) {
+            sources.push({
+                data: this.featuresDataSource,
+                name: 'Features',
+                viz: pileup.viz.features({
+                    onFeatureClicked: this.onFeatureClick
+                })
+            });
+        }
+    }
+
+    addHaplotypeTrack(sources: Track[]) {
+        sources.push({
+            cssClass: 'normal',
+            data: this.variantDataSource,
+            name: 'Haplotypes',
+            viz: haplotypes()
+        });
+    }
+
+    renderDialog() {
+        let dialog;
+        if (this.state.selectedGene) {
+            dialog = (
+                <GeneDialog
+                    gene={this.state.selectedGene}
+                    onClose={this.onCloseGeneDialog}
+                />
+            );
+        } else if (this.state.selectedFeature) {
+            dialog = (
+                <FeatureDialog
+                    feature={this.state.selectedFeature}
+                    onClose={this.onCloseFeatureDialog}
+                />
+            );
+        }
+        return dialog;
     }
 }
