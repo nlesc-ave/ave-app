@@ -2,8 +2,13 @@
     "sequence": "SL2.40ch05",
     "start": 3000,
     "end": 5000,
+    "score": 42,
+    "feature": "Featuretype1",
+    "source": "Source1",
     "attributes": {
-        "id": "feature1",
-        "name": "Name of feature1"
-    }
+        "ID": "feature1",
+        "Name": "Name of feature1"
+    },
+    "strand": "+",
+    "phase": "."
 }]

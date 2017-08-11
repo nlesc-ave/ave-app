@@ -30,6 +30,13 @@ rewrite {
     to /api/genomes/{1}/genes/index.json
 }
 
+rewrite {
+    # From /genomes/{genome_id}/chromosomes/{chrom_id}/start/{start_position}/end/{end_position}/features
+    # To /api/genomes/{genome_id}/features/index.json
+    regexp /api/genomes/(.*)/chromosomes/(.*)/features
+    to /api/genomes/{1}/features/index.json
+}
+
 errors {
     404 index.html
 }

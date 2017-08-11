@@ -23,16 +23,12 @@ interface IChromosome {
 interface IGenome {
     genome_id: string;
     chromosomes: IChromosome[];
-    annotation_feature_types: string[];
+    feature_types: string[];
     accessions: string[];
     reference: string;
     gene_track: string;
 }
 
-interface IFeatureAttributes {
-    id: string;
-    name: string;
-}
 interface IFeatureAnnotation {
     sequence: string;
     source: string;
@@ -42,7 +38,7 @@ interface IFeatureAnnotation {
     score: number;
     strand: string;
     phase: string;
-    attributes: IFeatureAttributes;
+    attributes: { [s: string]: string; };
 }
 
 interface IRange {
