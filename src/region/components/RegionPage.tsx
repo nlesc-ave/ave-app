@@ -3,12 +3,14 @@ import * as React from 'react';
 import AppBar from 'material-ui/AppBar';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import * as pileup from 'pileup/dist/main/pileup';
+import { Track } from 'pileup/dist/main/Root';
 import { Gene } from 'pileup/dist/main/viz/GeneTrack';
 import { RouteComponentProps } from 'react-router';
 
 import IconButton from 'material-ui/IconButton';
 import { SideBar } from '../../components/SideBar';
 import { Searcher } from '../../search/components/Searcher';
+import { AveGenesDataSource } from '../AveGenesDataSource';
 import { AveHaplotypesDataSource } from '../haplotype/AveHaplotypesDataSource';
 import { haplotypes } from '../haplotype/haplotypes';
 import { GeneDialog } from './GeneDialog';
@@ -39,11 +41,13 @@ interface IState {
 
 export class RegionPage extends React.Component<IProps, IState> {
     variantDataSource: AveHaplotypesDataSource;
+    genesDataSource: AveGenesDataSource;
     state: IState = {menuOpen: false};
 
     componentDidMount() {
         this.fetchGenome();
         this.variantDataSource = new AveHaplotypesDataSource(this.props.match.params.genome_id, this.props.apiroot);
+        this.genesDataSource = new AveGenesDataSource(this.props.match.params.genome_id, this.props.apiroot);
     }
 
     fetchGenome() {
@@ -85,7 +89,7 @@ export class RegionPage extends React.Component<IProps, IState> {
             start: Number.parseInt(match.params.start_position),
             stop: Number.parseInt(match.params.end_position)
         };
-        const sources = [{
+        const sources: Track[] = [{
             data: pileup.formats.twoBit({
                 url: this.absoluteUrl(genome.reference)
             }),
@@ -100,20 +104,32 @@ export class RegionPage extends React.Component<IProps, IState> {
             data: pileup.formats.empty(),
             name: 'Location',
             viz: pileup.viz.location()
-        }, {
-            data: pileup.formats.bigBed({
-                url: this.absoluteUrl(genome.gene_track)
-            }),
-            name: 'Genes',
-            viz: pileup.viz.genes({
-                onGeneClicked: this.onGeneClick
-            })
-        }, {
+        }];
+        if ('gene_track' in genome) {
+            sources.push({
+                data: pileup.formats.bigBed({
+                    url: this.absoluteUrl(genome.gene_track)
+                }),
+                name: 'Genes',
+                viz: pileup.viz.genes({
+                    onGeneClicked: this.onGeneClick
+                })
+            });
+        } else {
+            sources.push({
+                data: this.genesDataSource,
+                name: 'Genes',
+                viz: pileup.viz.genes({
+                    onGeneClicked: this.onGeneClick
+                })
+            });
+        }
+        sources.push({
             cssClass: 'normal',
             data: this.variantDataSource,
             name: 'Haplotypes',
             viz: haplotypes()
-        }];
+        });
         const vizTracks = sources.map((track) => {
             const source = track.data;
             return {visualization: track.viz, source, track};

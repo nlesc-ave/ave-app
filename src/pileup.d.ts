@@ -99,7 +99,7 @@ declare module 'pileup/dist/main/viz/canvas-utils' {
 declare module 'pileup/dist/main/viz/GeneTrack' {
     import ContigInterval from 'pileup/dist/main/ContigInterval';
     import Interval from 'pileup/dist/main/Interval';
-    type Strand = '-' | '+';
+    export type Strand = '-' | '+';
     export type Gene = {
         position: ContigInterval;
         id: string;  // transcript ID, e.g. "ENST00000269305"
@@ -122,6 +122,7 @@ declare module 'pileup/dist/main/viz/GeneTrack' {
 
 declare module 'pileup/dist/main/Interval' {
     export default class Interval {
+        constructor(start: number, stop: number);
         start: number;
         stop: number;
     }
