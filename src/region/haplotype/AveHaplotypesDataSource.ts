@@ -2,6 +2,13 @@ import ContigInterval from 'pileup/dist/main/ContigInterval';
 
 import { AveDataSource } from '../AveDataSource';
 
+// tslint:disable-next-line:interface-over-type-literal
+type IMap = { [s: string]: string; };
+
+export interface Genotype extends IMap {
+    accession: string;
+}
+
 export interface IVariant {
     chrom: string;
     pos: number;
@@ -10,9 +17,8 @@ export interface IVariant {
     alt: string[];
     qual: number;
     filter: string;
-    info: string;
-    format: string;
-    samples: string;
+    info: IMap;
+    genotypes: Genotype[];
 }
 
 export interface IHaplotype {

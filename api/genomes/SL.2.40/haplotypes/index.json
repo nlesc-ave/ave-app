@@ -25,26 +25,40 @@
         "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
         "variants": [{
             "id": "id placeholder",
-            "chrom": "chrom placeholder",
+            "chrom": "SL2.40ch05",
             "filter": "filter placeholder",
-            "format": "format placeholder",
-            "samples": "samples placeholder",
             "pos": 100,
             "ref": "A",
             "alt": ["C"],
             "qual": 54.3,
-            "info": "Variation description placeholder"
+            "info": {
+                "some": "info placeholder"
+            },
+            "genotypes": [{
+                "accession": "a1",
+                "type": "1/1"
+            }, {
+                "accession": "a2",
+                "type": "1/1"
+            }]
         }, {
             "id": "id placeholder",
-            "chrom": "chrom placeholder",
+            "chrom": "SL2.40ch05",
             "filter": "filter placeholder",
-            "format": "format placeholder",
-            "samples": "samples placeholder",
             "pos": 200,
             "ref": "T",
             "alt": ["G"],
             "qual": 12.3,
-            "info": "Variation description placeholder"
+            "info": {
+                "some": "info placeholder"
+            },
+            "genotypes": [{
+                "accession": "a1",
+                "type": "1/1"
+            }, {
+                "accession": "a2",
+                "type": "1/1"
+            }]
         }]
     }, {
         "haplotype_id": 2,
@@ -55,26 +69,40 @@
         "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
         "variants": [{
             "id": "id placeholder",
-            "chrom": "chrom placeholder",
+            "chrom": "SL2.40ch05",
             "filter": "filter placeholder",
-            "format": "format placeholder",
-            "samples": "samples placeholder",
             "pos": 100,
             "ref": "A",
             "alt": "C",
             "qual": 54.3,
-            "info": "Variation description placeholder"
+            "info": {
+                "some": "info placeholder"
+            },
+            "genotypes": [{
+                "accession": "a3",
+                "type": "1/1"
+            }, {
+                "accession": "a4",
+                "type": "1/1"
+            }]
         }, {
             "id": "id placeholder",
-            "chrom": "chrom placeholder",
+            "chrom": "SL2.40ch05",
             "filter": "filter placeholder",
-            "format": "format placeholder",
-            "samples": "samples placeholder",
             "pos": 200,
             "ref": "T",
             "alt": "G",
             "qual": 12.3,
-            "info": "Variation description placeholder"
+            "info": {
+                "some": "info placeholder"
+            },
+            "genotypes": [{
+                "accession": "a3",
+                "type": "1/1"
+            }, {
+                "accession": "a4",
+                "type": "1/1"
+            }]
         }]
     }, {
         "haplotype_id": 3,
@@ -85,22 +113,40 @@
         "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
         "variants": [{
             "id": "id placeholder",
-            "chrom": "chrom placeholder",
+            "chrom": "SL2.40ch05",
             "filter": "filter placeholder",
             "pos": 100,
             "ref": "A",
             "alt": ["C"],
             "qual": 54.3,
-            "info": "Variation description placeholder"
+            "info": {
+                "some": "info placeholder"
+            },
+            "genotypes": [{
+                "accession": "a5",
+                "type": "1/1"
+            }, {
+                "accession": "a6",
+                "type": "1/1"
+            }]
         }, {
             "id": "id placeholder",
-            "chrom": "chrom placeholder",
+            "chrom": "SL2.40ch05",
             "filter": "filter placeholder",
             "pos": 200,
             "ref": "T",
             "alt": ["G"],
             "qual": 12.3,
-            "info": "Variation description placeholder"
+            "info": {
+                "some": "info placeholder"
+            },
+            "genotypes": [{
+                "accession": "a5",
+                "type": "1/1"
+            }, {
+                "accession": "a6",
+                "type": "1/1"
+            }]
         }]
     }, {
         "haplotype_id": 4,
@@ -110,13 +156,19 @@
         "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
         "variants": [{
             "id": "id placeholder",
-            "chrom": "chrom placeholder",
+            "chrom": "SL2.40ch05",
             "filter": "filter placeholder",
             "pos": 250,
             "ref": "A",
             "alt": ["C"],
             "qual": 87.3,
-            "info": "Variation description placeholder"
+            "info": {
+                "some": "info placeholder"
+            },
+            "genotypes": [{
+                "accession": "a7",
+                "type": "1/1"
+            }]
         }]
     }]
 }
