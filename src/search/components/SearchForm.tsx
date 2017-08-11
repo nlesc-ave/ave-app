@@ -5,6 +5,10 @@ import RadioButton from 'material-ui/RadioButton';
 import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
 import TextField from 'material-ui/TextField';
 import { Link } from 'react-router-dom';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 export interface IProps {
     genome_id: string;
@@ -29,6 +33,14 @@ interface IState {
 
 export class SearchForm extends React.Component<IProps, IState> {
     state: IState = {hits: [], annotation_type: 'genes', query: ''};
+    querySubject = new Subject<string>();
+    queryObservable: Observable<string>;
+
+    constructor() {
+        super();
+        this.queryObservable = this.querySubject.distinctUntilChanged().debounceTime(500);
+        this.queryObservable.subscribe(this.fetch.bind(this));
+    }
 
     onAnnotationTypeChange = (_event: any, annotation_type: AnnotationType) => {
         this.setState({
@@ -40,7 +52,7 @@ export class SearchForm extends React.Component<IProps, IState> {
 
     onQueryChange = (_event: any, query: string) => {
         this.setState({query});
-        this.fetch(query);
+        this.querySubject.next(query);
     }
 
     fetch(query: string) {

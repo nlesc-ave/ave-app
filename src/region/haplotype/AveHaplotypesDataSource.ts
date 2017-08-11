@@ -51,15 +51,15 @@ export class AveHaplotypesDataSource {
     accessions: string[] = [];
     events: Backbone.Events = _.extend({}, Events);
     subject: Subject<string> = new Subject<string>();
-    observeable = this.buildObserveable();
+    observable = this.buildObservable();
 
     constructor(genome_id: string, apiroot: string) {
         this.genome_id = genome_id;
         this.apiroot = apiroot;
-        this.observeable.subscribe(this.fetch.bind(this));
+        this.observable.subscribe(this.fetch.bind(this));
     }
 
-    buildObserveable() {
+    buildObservable() {
         return this.subject
             .distinctUntilChanged()
             .debounceTime(100)
