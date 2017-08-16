@@ -189,7 +189,7 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
         const pxPerLetter = scale(1) - scale(0);
         const showText = pxPerLetter >= VARIANT_TEXT_THRESHOLD;
         const showLine = pxPerLetter <= VARIANT_LINE_THRESHOLD;
-        const xCenter = scale(this.props.range.start + variant.pos);
+        const xCenter = scale(variant.pos);
         const halfHaplotype = Math.round(HAPLOTYPE_HEIGHT / 2);
         if (showText) {
             ctx.fillStyle = HAPLOTYPE_FILL;

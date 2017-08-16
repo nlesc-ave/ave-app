@@ -86,6 +86,10 @@ class RegionCanvasWithoutHistory extends PileupRoot<IProps, IRootState> {
             track.visualization.component.displayName || '',
             track.track.cssClass || ''
         ].join(' ');
+        const style: { height?: number; } = {};
+        if ('height' in track.track) {
+            style.height = track.track.height;
+        }
         return (
             <div key={key} className={className}>
                 <div className="track-label">
@@ -94,7 +98,7 @@ class RegionCanvasWithoutHistory extends PileupRoot<IProps, IRootState> {
                     {settingsMenu}
                     {trackLegend}
                 </div>
-                <div className="track-content">
+                <div className="track-content" style={style}>
                     {trackEl}
                 </div>
             </div>

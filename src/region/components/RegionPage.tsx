@@ -14,6 +14,7 @@ import { AveFeature } from '../AveFeature';
 import { AveFeaturesDataSource } from '../AveFeaturesDataSource';
 import { AveGenesDataSource } from '../AveGenesDataSource';
 import { AveHaplotypesDataSource } from '../haplotype/AveHaplotypesDataSource';
+import { HAPLOTYPE_HEIGHT } from '../haplotype/components/HaplotypeTrack';
 import { haplotypes } from '../haplotype/haplotypes';
 import { FeatureDialog } from './FeatureDialog';
 import { GeneDialog } from './GeneDialog';
@@ -108,7 +109,7 @@ export class RegionPage extends React.Component<IProps, IState> {
         const sources: Track[] = this.addDefaultTracks(genome);
         this.addGeneTrack(genome, sources);
         this.addFeatureTrack(genome, sources);
-        this.addHaplotypeTrack(sources);
+        this.addHaplotypeTrack(sources, genome.accessions.length);
         const vizTracks = sources.map((track) => {
             const source = track.data;
             return {visualization: track.viz, source, track};
@@ -195,10 +196,11 @@ export class RegionPage extends React.Component<IProps, IState> {
         }
     }
 
-    addHaplotypeTrack(sources: Track[]) {
+    addHaplotypeTrack(sources: Track[], nr_accessions: number) {
         sources.push({
             cssClass: 'normal',
             data: this.variantDataSource,
+            height: nr_accessions * HAPLOTYPE_HEIGHT,
             name: 'Haplotypes',
             viz: haplotypes()
         });

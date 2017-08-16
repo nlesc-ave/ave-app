@@ -43,6 +43,7 @@ declare module 'pileup/dist/main/Root' {
         name?: string;
         cssClass?: string;
         isReference?: boolean;
+        height?: number;
     }
 
     export interface VisualizedTrack {
