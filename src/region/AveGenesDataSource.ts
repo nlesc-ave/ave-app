@@ -19,7 +19,7 @@ export class AveGenesDataSource extends AveDataSource {
             `/genomes/${this.genome_id}` +
             `/chromosomes/${interval.contig}` +
             `/start/${interval.start()}` +
-            `/stop/${interval.stop()}` +
+            `/end/${interval.stop()}` +
             '/genes';
     }
 

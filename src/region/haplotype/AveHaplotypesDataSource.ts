@@ -62,7 +62,7 @@ export class AveHaplotypesDataSource extends AveDataSource {
             `/genomes/${this.genome_id}` +
             `/chromosomes/${interval.contig}` +
             `/start/${interval.start()}` +
-            `/stop/${interval.stop()}` +
+            `/end/${interval.stop()}` +
             '/haplotypes';
         if (accessions.length > 0) {
             url += '?accessions=' + accessions.join(',');
