@@ -7,7 +7,7 @@
   "proxy": "http://localhost:2015",
   "private": true,
   "main": "public/electron.js",
-  "homepage": "./",
+  "homepage": "/",
   "repository": "nlesc-ave/ave-app",
   "build": {
     "appId": "nl.esciencecenter.ave",

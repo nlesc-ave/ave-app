@@ -37,6 +37,13 @@ rewrite {
     to /api/genomes/{1}/features/index.json
 }
 
+# HTML5 push state
+rewrite {
+    if {path} not_match ^/api
+    if {path} not_match ^/static
+    to {path} {path} index.html
+}
+
 errors {
     404 index.html
 }
