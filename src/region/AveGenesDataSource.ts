@@ -41,7 +41,7 @@ export class AveGenesDataSource extends AveDataSource {
         return {
             codingRegion: new Interval(res.coding_region.start, res.coding_region.end),
             exons: res.exons.map((d) => {
-                return new Interval(d.start, d.end);
+                return new Interval(res.position.start + d.start, res.position.start + d.start + d.size);
             }),
             geneId: res.gene_id,
             id: res.id,

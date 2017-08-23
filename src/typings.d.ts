@@ -46,6 +46,11 @@ interface IRange {
     end: number;
 }
 
+interface IExon {
+    size: number;
+    start: number;
+}
+
 interface IGeneAnnotation {
     position: {
         chrom: string;
@@ -55,7 +60,7 @@ interface IGeneAnnotation {
     id: string;
     strand: string;
     coding_region: IRange;
-    exons: IRange[];
+    exons: IExon[];
     gene_id: string;
     name: string;
 }
