@@ -18,6 +18,10 @@ export interface IProps {
 
 type AnnotationType = 'genes' | 'features';
 
+const innerDivStyle = {
+    padding: 3
+};
+
 interface IHit {
     key: string;
     primaryText: string;
@@ -69,15 +73,15 @@ export class SearchForm extends React.Component<IProps, IState> {
         }
     }
 
-    mapGeneAnnotation2Hit = (annotation: IGeneAnnotation) => {
-        const { chrom, start, end } = annotation.position;
+    mapGeneAnnotation2Hit = (annotation: IGeneSearchResult) => {
+        const { chrom, start, end } = annotation;
         const flank = this.props.flank;
         const route = `${this.props.genome_id}/${chrom}/${start - flank}/${end + flank}`;
         return {
             key: annotation.id,
             primaryText: annotation.id,
             route,
-            secondaryText: annotation.name
+            secondaryText: annotation.gene_id + ': ' + annotation.name
         };
     }
 
@@ -96,7 +100,7 @@ export class SearchForm extends React.Component<IProps, IState> {
     fetchGeneAnnotations(query: string) {
         const url = `${this.props.apiroot}/genomes/${this.props.genome_id}/genes?query=${query}`;
         return fetch(url)
-            .then<IGeneAnnotation[]>((r) => r.json())
+            .then<IGeneSearchResult[]>((r) => r.json())
             .then((annotations) => annotations.map(this.mapGeneAnnotation2Hit))
             .then((hits) => this.setState({hits}))
         ;
@@ -120,6 +124,7 @@ export class SearchForm extends React.Component<IProps, IState> {
                     secondaryText={secondaryText}
                     secondaryTextLines={2}
                     containerElement={<Link to={'/region/' + route}/>}
+                    innerDivStyle={innerDivStyle}
                 />
             )
         );

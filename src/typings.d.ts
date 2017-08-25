@@ -64,3 +64,12 @@ interface IGeneAnnotation {
     gene_id: string;
     name: string;
 }
+
+interface IGeneSearchResult {
+    chrom: string;
+    start: number;
+    end: number;
+    id: string;
+    gene_id: string;
+    name: string;
+}

@@ -1,148 +1,50 @@
 [{
-    "position": {
-        "chrom": "SL2.40ch05",
-        "start": 3000,
-        "end": 5000
-    },
+    "chrom": "SL2.40ch05",
+    "start": 3000,
+    "end": 5000,
     "id": "transcriptid1",
     "name": "Name of gene1",
-    "gene_id": "geneid1",
-    "strand": "+",
-    "coding_region": {
-        "start": 3100,
-        "end": 4900
-    },
-    "exons": [{
-        "start": 3100,
-        "end": 3900
-    }, {
-        "start": 4500,
-        "end": 4900
-    }]
+    "gene_id": "geneid1"
 }, {
-    "position": {
-        "chrom": "SL2.40ch05",
-        "start": 13000,
-        "end": 15000
-    },
+    "chrom": "SL2.40ch05",
+    "start": 13000,
+    "end": 15000,
     "id": "transcriptid2",
     "name": "Name of gene2",
-    "gene_id": "geneid2",
-    "strand": "+",
-    "coding_region": {
-        "start": 13100,
-        "end": 14900
-    },
-    "exons": [{
-        "start": 13100,
-        "end": 13900
-    }, {
-        "start": 14500,
-        "end": 14900
-    }]
+    "gene_id": "geneid2"
 }, {
-    "position": {
-        "chrom": "SL2.40ch02",
-        "start": 23000,
-        "end": 25000
-    },
+    "chrom": "SL2.40ch02",
+    "start": 23000,
+    "end": 25000,
     "id": "transcriptid3",
     "name": "Name of gene3",
-    "gene_id": "geneid3",
-    "strand": "+",
-    "coding_region": {
-        "start": 23100,
-        "end": 24900
-    },
-    "exons": [{
-        "start": 23100,
-        "end": 23900
-    }, {
-        "start": 24500,
-        "end": 24900
-    }]
+    "gene_id": "geneid3"
 }, {
-    "position": {
-        "chrom": "SL2.40ch04",
-        "start": 33000,
-        "end": 35000
-    },
+    "chrom": "SL2.40ch04",
+    "start": 33000,
+    "end": 35000,
     "id": "transcriptid4",
     "name": "Name of gene4",
-    "gene_id": "geneid4",
-    "strand": "+",
-    "coding_region": {
-        "start": 33100,
-        "end": 34900
-    },
-    "exons": [{
-        "start": 33100,
-        "end": 33900
-    }, {
-        "start": 34500,
-        "end": 34900
-    }]
+    "gene_id": "geneid4"
 }, {
-    "position": {
-        "chrom": "SL2.40ch05",
-        "start": 43000,
-        "end": 45000
-    },
+    "chrom": "SL2.40ch05",
+    "start": 43000,
+    "end": 45000,
     "id": "transcriptid5",
     "name": "Name of gene5",
-    "gene_id": "geneid5",
-    "strand": "+",
-    "coding_region": {
-        "start": 43100,
-        "end": 44900
-    },
-    "exons": [{
-        "start": 43100,
-        "end": 43900
-    }, {
-        "start": 44500,
-        "end": 44900
-    }]
+    "gene_id": "geneid5"
 }, {
-    "position": {
-        "chrom": "SL2.40ch06",
-        "start": 53000,
-        "end": 55000
-    },
+    "chrom": "SL2.40ch06",
+    "start": 53000,
+    "end": 55000,
     "id": "transcriptid6",
     "name": "Name of gene6",
-    "gene_id": "geneid6",
-    "strand": "+",
-    "coding_region": {
-        "start": 53100,
-        "end": 54900
-    },
-    "exons": [{
-        "start": 53100,
-        "end": 53900
-    }, {
-        "start": 54500,
-        "end": 54900
-    }]
+    "gene_id": "geneid6"
 }, {
-    "position": {
-        "chrom": "SL2.40ch07",
-        "start": 63000,
-        "end": 65000
-    },
+    "chrom": "SL2.40ch07",
+    "start": 63000,
+    "end": 65000,
     "id": "transcriptid7",
     "name": "Name of gene7",
-    "gene_id": "geneid7",
-    "strand": "+",
-    "coding_region": {
-        "start": 63100,
-        "end": 64900
-    },
-    "exons": [{
-        "start": 63100,
-        "end": 63900
-    }, {
-        "start": 64500,
-        "end": 64900
-    }]
+    "gene_id": "geneid7"
 }]
