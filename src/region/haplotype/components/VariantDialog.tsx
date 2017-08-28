@@ -23,7 +23,13 @@ export const VariantDialog = ({haplotype, onClose, variant}: IProps) => {
       />
     )];
     return (
-        <Dialog title="Variant information" open={true} onRequestClose={onClose} actions={actions}>
+        <Dialog
+            title="Variant information"
+            open={true}
+            onRequestClose={onClose}
+            actions={actions}
+            autoScrollBodyContent={true}
+        >
             <VariantInfo variant={variant}/>
             <h2>Part of haplotype</h2>
             <HaplotypeInfo haplotype={haplotype}/>

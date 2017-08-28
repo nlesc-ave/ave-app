@@ -31,7 +31,13 @@ export const HaplotypeDialog = ({haplotype, onClose, sequenceUrl}: IProps) => {
         )
     ];
     return (
-        <Dialog title="Haplotype information" open={true} onRequestClose={onClose} actions={actions}>
+        <Dialog
+            title="Haplotype information"
+            open={true}
+            onRequestClose={onClose}
+            actions={actions}
+            autoScrollBodyContent={true}
+        >
             <HaplotypeInfo haplotype={haplotype}/>
         </Dialog>
     );
