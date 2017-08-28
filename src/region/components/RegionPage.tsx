@@ -206,6 +206,26 @@ export class RegionPage extends React.Component<IProps, IState> {
         });
     }
 
+    regionUrlOfSelectedGene = () => {
+        if (this.state.genome && this.state.selectedGene) {
+            const genome_id = this.state.genome.genome_id;
+            const position = this.state.selectedGene.position;
+            return `/region/${genome_id}/${position.contig}/${position.interval.start}/${position.interval.stop}`;
+        } else {
+            return '/';
+        }
+    }
+
+    regionUrlOfSelectedFeature = () => {
+        if (this.state.genome && this.state.selectedFeature) {
+            const genome_id = this.state.genome.genome_id;
+            const {sequence, start, end} = this.state.selectedFeature;
+            return `/region/${genome_id}/${sequence}/${start}/${end}`;
+        } else {
+            return '/';
+        }
+    }
+
     renderDialog() {
         let dialog;
         if (this.state.selectedGene) {
@@ -213,12 +233,14 @@ export class RegionPage extends React.Component<IProps, IState> {
                 <GeneDialog
                     gene={this.state.selectedGene}
                     onClose={this.onCloseGeneDialog}
+                    regionUrl={this.regionUrlOfSelectedGene()}
                 />
             );
         } else if (this.state.selectedFeature) {
             dialog = (
                 <FeatureDialog
                     feature={this.state.selectedFeature}
+                    regionUrl={this.regionUrlOfSelectedFeature()}
                     onClose={this.onCloseFeatureDialog}
                 />
             );

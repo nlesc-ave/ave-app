@@ -7,10 +7,11 @@ import { FeatureInfo } from './FeatureInfo';
 
 interface IProps {
     feature: IFeatureAnnotation;
+    regionUrl: string;
     onClose(): void;
 }
 
-export const FeatureDialog = ({feature, onClose}: IProps) => {
+export const FeatureDialog = ({feature, onClose, regionUrl}: IProps) => {
     const actions = [
         (
             <FlatButton
@@ -22,7 +23,7 @@ export const FeatureDialog = ({feature, onClose}: IProps) => {
     ];
     return (
         <Dialog title="Feature information" open={true} onRequestClose={onClose} actions={actions}>
-            <FeatureInfo feature={feature}/>
+            <FeatureInfo feature={feature} regionUrl={regionUrl}/>
         </Dialog>
     );
 };

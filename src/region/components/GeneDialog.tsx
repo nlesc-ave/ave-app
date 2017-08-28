@@ -8,10 +8,11 @@ import { GeneInfo } from './GeneInfo';
 
 interface IProps {
     gene: Gene;
+    regionUrl: string;
     onClose(): void;
 }
 
-export const GeneDialog = ({gene, onClose}: IProps) => {
+export const GeneDialog = ({gene, regionUrl, onClose}: IProps) => {
     const actions = [
         (
             <FlatButton
@@ -23,7 +24,7 @@ export const GeneDialog = ({gene, onClose}: IProps) => {
     ];
     return (
         <Dialog title="Gene information" open={true} onRequestClose={onClose} actions={actions}>
-            <GeneInfo gene={gene}/>
+            <GeneInfo gene={gene} regionUrl={regionUrl}/>
         </Dialog>
     );
 };
