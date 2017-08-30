@@ -1,0 +1,20 @@
+{
+  "package": {
+    "subject": "nlesc-ave",
+    "repo": "ave",
+    "name": "ave-app"
+  },
+  "version": {
+    "name": "latest"
+  },
+  "files": [
+    {
+      "includePattern": "(ave-app-latest.tar.bz2)",
+      "uploadPattern": "/$1",
+      "matrixParams": {
+        "override": 1
+      }
+    }
+  ],
+  "publish": true
+}

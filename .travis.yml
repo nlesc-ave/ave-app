@@ -5,4 +5,12 @@ script:
 - yarn test -- --coverage --no-cache -w 1
 - cat coverage/remapped/lcov.info | ./node_modules/.bin/codacy-coverage -p .
 - yarn lint
+- yarn build
+- cd build;tar -cjf ../ave-app-latest.tar.bz2 .;cd ..
 cache: yarn
+deploy:
+  provider: bintray
+  file: descriptor.json
+  user: sverhoeven
+  key:
+    secure: "iejjC0leHgf2NTFAvDx/v/1o8c6E8qII2LQzQtxg4Qw2H09ncj0kF469EQ5vAF8egfGq4NJ4Vg4/2d2+2XBBPoKcmdTfG6BmMZ81CTVx8HTJjuEyO2FmM0o7FomYm2A3YmwcYN016deuZ4AU0x9dPdR2K3IjIN5n6efb0Hq13rsLzSKGhJc10l6mRQvIWoLQznw9vrNREESIt6L6Pen2w1q49tsfDqWHVkZlxDknyrz+7on6ac5vq0RBWSLtWXN/yoM6sYLc1w3f/qnTyPxTuJT9W3SP76EEydF7VpI4qk8xG9bNVlfYcv2ftkO/cHW2D86lettfVoGEPuL/u8vvRIZ4JbFrUPq5QYHy2+C9L498k8UWC97zZWzMOLhMqebjoPthB6W9UxOIovsN/yhXLtKtVYcAYj6kpVfGBIFyf2v2Dh+J0WZnCxCqzpT4s555fQWYlHmqAQiEG9Tr38/rg6JgjJqOgCpFd/N0lQA3TZCxQn+9mfVkGzmmIAAyKw4Q1/rjoBRja1XsaQk1QoIwtETMRrl/4f1krBJakNSoVVKKhc2vCR24ydBbKB9kKZtdYGTQ7aiaY7ZG0RO0cI9Wq3Jwi9uzKNX9tOuda8Wci5Oh4rcF2uig/ckjmTvFsQH042APAfK+lfBjRH2T6bC4YFWwiL1oV1oeEXsfHVyloig="
