@@ -20,10 +20,15 @@ interface IChromosome {
     length: number;
 }
 
+interface IFeatureTrack {
+    label: string;
+    url: string;
+}
+
 interface IGenome {
     genome_id: string;
     chromosomes: IChromosome[];
-    feature_types: string[];
+    feature_tracks: IFeatureTrack[];
     accessions: string[];
     reference: string;
     gene_track: string;

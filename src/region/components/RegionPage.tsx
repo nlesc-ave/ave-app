@@ -108,7 +108,7 @@ export class RegionPage extends React.Component<IProps, IState> {
 
         const sources: Track[] = this.addDefaultTracks(genome);
         this.addGeneTrack(genome, sources);
-        this.addFeatureTrack(genome, sources);
+        this.addFeatureTracks(genome, sources);
         this.addHaplotypeTrack(sources, genome.accessions.length);
         const vizTracks = sources.map((track) => {
             const source = track.data;
@@ -184,16 +184,22 @@ export class RegionPage extends React.Component<IProps, IState> {
         }
     }
 
-    addFeatureTrack(genome: IGenome, sources: Track[]) {
-        if ('feature_types' in genome && genome.feature_types.length > 0) {
-            sources.push({
-                data: this.featuresDataSource,
-                name: 'Features',
-                viz: pileup.viz.features({
-                    onFeatureClicked: this.onFeatureClick
-                })
-            });
+    addFeatureTracks(genome: IGenome, sources: Track[]) {
+        if ('feature_tracks' in genome) {
+            genome.feature_tracks.forEach((track) => this.addFeatureTrack(track, sources));
         }
+    }
+
+    addFeatureTrack = (track: IFeatureTrack, sources: Track[]) => {
+        sources.push({
+            data: pileup.formats.bigBed({
+                url: this.absoluteUrl(track.url)
+            }),
+            name: track.label,
+            viz: pileup.viz.features({
+                onFeatureClicked: this.onFeatureClick
+            })
+        });
     }
 
     addHaplotypeTrack(sources: Track[], nr_accessions: number) {
