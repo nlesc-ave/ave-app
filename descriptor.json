@@ -9,8 +9,8 @@
   },
   "files": [
     {
-      "includePattern": "(ave-app-latest.tar.bz2)",
-      "uploadPattern": "/$1",
+      "includePattern": "ave-app-latest.tar.bz2",
+      "uploadPattern": "ave-app-latest.tar.bz2",
       "matrixParams": {
         "override": 1
       }
