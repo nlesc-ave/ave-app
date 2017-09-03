@@ -173,6 +173,8 @@ export class RangeStepper extends React.Component<IProps, IState> {
         let speciesError = null;
         if (this.state.speciesError) {
             speciesError = <span style={{color: 'red'}}>{this.state.speciesError}</span>;
+        } else if (this.state.allowedSpecies.length === 0) {
+            speciesError = <span style={{color: 'red'}}>No species registered</span>;
         }
         return (
             <Step>
