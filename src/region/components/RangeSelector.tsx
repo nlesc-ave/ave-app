@@ -1,13 +1,12 @@
 import * as React from 'react';
 
 import IconButton from 'material-ui/IconButton';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
 import GoIcon from 'material-ui/svg-icons/av/play-arrow';
 import TextField from 'material-ui/TextField';
 import { ToolbarGroup } from 'material-ui/Toolbar';
 
 import { GenomeRange } from 'pileup/dist/main/Root';
+import { ChromosomePicker } from '../../components/ChromosomePicker';
 
 interface IProps {
     chromosomes: IChromosome[];
@@ -31,10 +30,6 @@ export class RangeSelector extends React.Component<IProps, {}> {
 
         this.state.start = props.range.start;
         this.state.stop = props.range.stop;
-
-        this.onChromosomChange = this.onChromosomChange.bind(this);
-        this.onStartChange = this.onStartChange.bind(this);
-        this.onStopChange = this.onStopChange.bind(this);
     }
 
     // If start/stop are changed outside component then update internal state to it
@@ -45,7 +40,7 @@ export class RangeSelector extends React.Component<IProps, {}> {
         });
     }
 
-    onChromosomChange(_event: any, _index: any, contig: string) {
+    onChromosomeChange = (contig: string) => {
         const {start, stop} = this.props.range;
         const newRange = {
             contig,
@@ -55,11 +50,11 @@ export class RangeSelector extends React.Component<IProps, {}> {
         this.props.onChange(newRange);
     }
 
-    onStartChange(_event: any, start: string) {
+    onStartChange = (_event: any, start: string) => {
         this.setState({start: Number(start)});
     }
 
-    onStopChange(_event: any, stop: string) {
+    onStopChange = (_event: any, stop: string) => {
         this.setState({stop: Number(stop)});
     }
 
@@ -78,8 +73,8 @@ export class RangeSelector extends React.Component<IProps, {}> {
     render() {
         const {range , chromosomes} = this.props;
         const {start, stop} = this.state;
-        const chromosomeItems = chromosomes.map(
-            (c) => <MenuItem key={c.chrom_id} value={c.chrom_id} primaryText={c.chrom_id} />
+        const chromosomeIds = chromosomes.map(
+            (c) => c.chrom_id
         );
         const currentChromosome = chromosomes.filter((c) => c.chrom_id === range.contig)[0];
         let error = '';
@@ -88,13 +83,11 @@ export class RangeSelector extends React.Component<IProps, {}> {
         }
         return (
             <ToolbarGroup>
-                <SelectField
+                <ChromosomePicker
                     value={range.contig}
-                    floatingLabelText="Chromosome"
-                    onChange={this.onChromosomChange}
-                >
-                    {chromosomeItems}
-                </SelectField>
+                    onPick={this.onChromosomeChange}
+                    choices={chromosomeIds}
+                />
                 <form onSubmit={this.onSubmit}>
                     <TextField
                         type="number"
