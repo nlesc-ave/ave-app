@@ -13,6 +13,9 @@ describe('<AccessionsMenu/>', () => {
             const source = new AveHaplotypesDataSource('some genome id', '/');
             const wrapper = shallow(<AccessionsMenu accessions={[]} source={source}/>);
             const expected = {
+                filtered: [],
+                open: false,
+                query: '',
                 selected: new Set()
             };
             expect(wrapper.state()).toEqual(expected);
@@ -43,8 +46,8 @@ describe('<AccessionsMenu/>', () => {
             expect(wrapper.state().selected).toEqual(expected);
         });
 
-        it('should have `Select all` menu item disabled', () => {
-            const menuItem = wrapper.find({primaryText: 'Select all'});
+        it('should have `All` menu item disabled', () => {
+            const menuItem = wrapper.find({label: 'All'});
             expect(menuItem.prop('disabled')).toBeTruthy();
         });
 
@@ -61,14 +64,14 @@ describe('<AccessionsMenu/>', () => {
                 expect(source.setAccessions).toBeCalledWith(['a2', 'a3']);
             });
 
-            it('should have `Select all` menu item enabled', () => {
-                const menuItem = wrapper.find({primaryText: 'Select all'});
+            it('should have `All` menu item enabled', () => {
+                const menuItem = wrapper.find({label: 'All'});
                 expect(menuItem.prop('disabled')).toBeFalsy();
             });
 
             describe('when selected all clicked', () => {
                 beforeEach(() => {
-                    wrapper.find({primaryText: 'Select all'}).simulate('touchTap');
+                    wrapper.find({label: 'All'}).simulate('touchTap');
                 });
 
                 it('should selected all', () => {
