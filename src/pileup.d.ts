@@ -85,6 +85,7 @@ declare module 'pileup/dist/main/pileup' {
     }
     export namespace formats {
         export var bigBed: (config: any) => any;
+        export var bigBedFeature: (config: any) => any;
         export var twoBit: (config: any) => any;
         export var empty: () => any;
     }

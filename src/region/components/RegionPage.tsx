@@ -192,7 +192,7 @@ export class RegionPage extends React.Component<IProps, IState> {
 
     addFeatureTrack = (track: IFeatureTrack, sources: Track[]) => {
         sources.push({
-            data: pileup.formats.bigBed({
+            data: pileup.formats.bigBedFeature({
                 url: this.absoluteUrl(track.url)
             }),
             name: track.label,
