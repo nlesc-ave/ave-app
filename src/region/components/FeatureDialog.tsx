@@ -2,11 +2,12 @@ import * as React from 'react';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import Feature from 'pileup/dist/main/data/feature';
 
 import { FeatureInfo } from './FeatureInfo';
 
 interface IProps {
-    feature: IFeatureAnnotation;
+    feature: Feature;
     regionUrl: string;
     onClose(): void;
 }

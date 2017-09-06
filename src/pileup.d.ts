@@ -72,6 +72,18 @@ declare module 'pileup/dist/main/VisualizationWrapper' {
     }
 }
 
+declare module 'pileup/dist/main/sources/BigBedDataSource' {
+    import ContigInterval from 'pileup/dist/main/ContigInterval';
+    import { GenomeRange } from 'pileup/dist/main/Root';
+    export interface BigBedSource {
+        rangeChanged(newRange: GenomeRange): void;
+        getFeaturesInRange(range: ContigInterval): any[];
+        on(event: string, handler: Function): void;
+        off(event: string): void;
+        trigger(event: string, args:any): void;
+    }
+}
+
 declare module 'pileup/dist/main/pileup' {
     import { IGeneTrackOptions } from 'pileup/dist/main/viz/GeneTrack';
     import { IFeatureTrackOptions } from 'pileup/dist/main/viz/FeatureTrack';
@@ -132,6 +144,10 @@ declare module 'pileup/dist/main/data/feature' {
         start: number;
         stop: number;
         score: number;
+        strand: string;
+        source: string;
+        phase: string;
+        attributes: string;
         constructor(feature: object);
     }
 }

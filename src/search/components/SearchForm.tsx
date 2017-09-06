@@ -87,13 +87,13 @@ export class SearchForm extends React.Component<IProps, IState> {
 
     mapFeatureAnnotation2Hit = (annotation: IFeatureAnnotation) => {
         const flank = this.props.flank;
-        const { sequence, start, end } = annotation;
-        const route = `${this.props.genome_id}/${sequence}/${start - flank}/${end + flank}`;
+        const { chrom, start, end } = annotation;
+        const route = `${this.props.genome_id}/${chrom}/${start - flank}/${end + flank}`;
         return {
-            key: annotation.attributes.id,
-            primaryText: annotation.attributes.id,
+            key: annotation.name,
+            primaryText: annotation.name,
             route,
-            secondaryText: annotation.attributes.name
+            secondaryText: annotation.attributes
         };
     }
 

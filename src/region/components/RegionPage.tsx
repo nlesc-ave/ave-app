@@ -3,16 +3,15 @@ import * as React from 'react';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import Feature from 'pileup/dist/main/data/feature';
 import * as pileup from 'pileup/dist/main/pileup';
 import { Track } from 'pileup/dist/main/Root';
+import { BigBedSource } from 'pileup/dist/main/sources/BigBedDataSource';
 import { Gene } from 'pileup/dist/main/viz/GeneTrack';
 import { RouteComponentProps } from 'react-router';
 
 import { SideBar } from '../../components/SideBar';
 import { Searcher } from '../../search/components/Searcher';
-import { AveFeature } from '../AveFeature';
-import { AveFeaturesDataSource } from '../AveFeaturesDataSource';
-import { AveGenesDataSource } from '../AveGenesDataSource';
 import { AveHaplotypesDataSource } from '../haplotype/AveHaplotypesDataSource';
 import { HAPLOTYPE_HEIGHT } from '../haplotype/components/HaplotypeTrack';
 import { haplotypes } from '../haplotype/haplotypes';
@@ -41,26 +40,43 @@ interface IState {
     genome?: IGenome;
     menuOpen: boolean;
     selectedGene?: Gene;
-    selectedFeature?: IFeatureAnnotation;
+    selectedFeature?: Feature;
 }
 
 export class RegionPage extends React.Component<IProps, IState> {
-    variantDataSource: AveHaplotypesDataSource;
-    genesDataSource: AveGenesDataSource;
-    featuresDataSource: AveFeaturesDataSource;
+    haplotypesDataSource: AveHaplotypesDataSource;
+    featuresDataSources: { [label: string]: BigBedSource } = {};
+    geneDataSource: BigBedSource | null = null;
     state: IState = {menuOpen: false};
 
     componentDidMount() {
         this.fetchGenome();
-        this.variantDataSource = new AveHaplotypesDataSource(this.props.match.params.genome_id, this.props.apiroot);
-        this.genesDataSource = new AveGenesDataSource(this.props.match.params.genome_id, this.props.apiroot);
-        this.featuresDataSource = new AveFeaturesDataSource(this.props.match.params.genome_id, this.props.apiroot);
     }
 
     fetchGenome() {
-        fetch(`${this.props.apiroot}/genomes/${this.props.match.params.genome_id}`)
+        const p = this.props;
+        fetch(`${p.apiroot}/genomes/${p.match.params.genome_id}`)
             .then<IGenome>((response) => response.json())
-            .then((genome) => this.setState({ genome }))
+            .then((genome) => {
+                this.haplotypesDataSource = new AveHaplotypesDataSource(p.match.params.genome_id, p.apiroot);
+                if ('gene_track' in genome) {
+                    this.geneDataSource = pileup.formats.bigBed({
+                        url: this.absoluteUrl(genome.gene_track)
+                    });
+                } else {
+                    this.geneDataSource = null;
+                }
+                if ('feature_tracks' in genome) {
+                    genome.feature_tracks.forEach((track) => {
+                        this.featuresDataSources[track.label] = pileup.formats.bigBedFeature({
+                            url: this.absoluteUrl(track.url)
+                        });
+                    });
+                } else {
+                    this.featuresDataSources = {};
+                }
+                this.setState({ genome });
+            })
         ;
     }
 
@@ -70,8 +86,8 @@ export class RegionPage extends React.Component<IProps, IState> {
         this.setState({selectedGene: genes[0]});
     }
 
-    onFeatureClick = (feature: AveFeature) => {
-        this.setState({selectedFeature: feature.annotation});
+    onFeatureClick = (feature: Feature) => {
+        this.setState({selectedFeature: feature});
     }
 
     onCloseGeneDialog = () => {
@@ -163,19 +179,9 @@ export class RegionPage extends React.Component<IProps, IState> {
     }
 
     addGeneTrack(genome: IGenome, sources: Track[]) {
-        if ('gene_track' in genome) {
+        if ('gene_track' in genome && this.geneDataSource) {
             sources.push({
-                data: pileup.formats.bigBed({
-                    url: this.absoluteUrl(genome.gene_track)
-                }),
-                name: 'Genes',
-                viz: pileup.viz.genes({
-                    onGeneClicked: this.onGeneClick
-                })
-            });
-        } else {
-            sources.push({
-                data: this.genesDataSource,
+                data: this.geneDataSource,
                 name: 'Genes',
                 viz: pileup.viz.genes({
                     onGeneClicked: this.onGeneClick
@@ -192,9 +198,7 @@ export class RegionPage extends React.Component<IProps, IState> {
 
     addFeatureTrack = (track: IFeatureTrack, sources: Track[]) => {
         sources.push({
-            data: pileup.formats.bigBedFeature({
-                url: this.absoluteUrl(track.url)
-            }),
+            data: this.featuresDataSources[track.label],
             name: track.label,
             viz: pileup.viz.features({
                 onFeatureClicked: this.onFeatureClick
@@ -205,7 +209,7 @@ export class RegionPage extends React.Component<IProps, IState> {
     addHaplotypeTrack(sources: Track[], nr_accessions: number) {
         sources.push({
             cssClass: 'normal',
-            data: this.variantDataSource,
+            data: this.haplotypesDataSource,
             height: nr_accessions * HAPLOTYPE_HEIGHT,
             name: 'Haplotypes',
             viz: haplotypes()
@@ -225,8 +229,8 @@ export class RegionPage extends React.Component<IProps, IState> {
     regionUrlOfSelectedFeature = () => {
         if (this.state.genome && this.state.selectedFeature) {
             const genome_id = this.state.genome.genome_id;
-            const {sequence, start, end} = this.state.selectedFeature;
-            return `/region/${genome_id}/${sequence}/${start}/${end}`;
+            const {contig, start, stop} = this.state.selectedFeature;
+            return `/region/${genome_id}/${contig}/${start}/${stop}`;
         } else {
             return '/';
         }

@@ -35,7 +35,8 @@ interface IGenome {
 }
 
 interface IFeatureAnnotation {
-    sequence: string;
+    name: string;
+    chrom: string;
     source: string;
     feature: string;
     start: number;
@@ -43,7 +44,7 @@ interface IFeatureAnnotation {
     score: number;
     strand: string;
     phase: string;
-    attributes: { [s: string]: string; };
+    attributes: string;
 }
 
 interface IRange {
