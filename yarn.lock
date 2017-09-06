@@ -5114,7 +5114,7 @@ pify@^2.0.0, pify@^2.3.0:
 
 "pileup@https://github.com/nlesc-ave/pileup.js.git":
   version "0.6.8"
-  resolved "https://github.com/nlesc-ave/pileup.js.git#3b0b292a1234dc5480805ea12ba78aa203d9aa13"
+  resolved "https://github.com/nlesc-ave/pileup.js.git#5c95f2c42656bf5e7e37575aa61131719b97c3dc"
   dependencies:
     backbone "1.1.2"
     d3 "^3.5.5"
