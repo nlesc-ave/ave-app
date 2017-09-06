@@ -51,9 +51,14 @@ export class AveHaplotypesDataSource extends AveDataSource {
     }
 
     load(response: IHaplotypesResponse) {
-        this.hierarchy = response.hierarchy;
-        this.haplotypes = response.haplotypes;
-        this.events.trigger('newdata', this.interval);
+        if (!('hierarchy' in response)) {
+            this.events.trigger('networkfailure', response);
+
+        } else {
+            this.hierarchy = response.hierarchy;
+            this.haplotypes = response.haplotypes;
+            this.events.trigger('newdata', this.interval);
+        }
         return response;
     }
 
