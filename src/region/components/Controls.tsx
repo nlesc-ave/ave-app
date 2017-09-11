@@ -87,6 +87,9 @@ export class Controls extends React.Component<IProps, {}> {
 
   render() {
     const { range, chromosomes } = this.props
+    if (!range) {
+      return <Toolbar />
+    }
     const { start, stop } = range
     const windowSize = stop - start
     const chromLength = this.chromLength()
