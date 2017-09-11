@@ -1,11 +1,11 @@
 #pileup {
-    position: absolute;
-    left: 10px;
-    right: 10px;
-    top: 80px;
-    bottom: 10px;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 80px;
+  bottom: 10px;
 }
 
 .pileup-root > .haplotype {
-  flex: 1;  /* stretch to fill remaining space */
+  flex: 1; /* stretch to fill remaining space */
 }
