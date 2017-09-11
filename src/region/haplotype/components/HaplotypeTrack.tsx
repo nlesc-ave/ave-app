@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import * as dataCanvas from 'data-canvas'
+import { BASE_COLORS } from 'pileup/dist/main/style'
 import * as canvasUtils from 'pileup/dist/main/viz/canvas-utils'
 import * as d3utils from 'pileup/dist/main/viz/d3utils'
 
@@ -32,7 +33,7 @@ interface IState {
   selectedHaplotype?: IHaplotype
 }
 
-const VARIANT_FILL = 'red'
+const VARIANT_HETEROZYGOUS_FILL = 'golden'
 const VARIANT_RADIUS = 7
 const VARIANT_TEXT_THRESHOLD = 10
 const VARIANT_LINE_THRESHOLD = 0.001
@@ -224,7 +225,11 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
         HAPLOTYPE_HEIGHT - 2
       )
       ctx.fillStyle = this.getVariantColor(variant)
-      ctx.fillText(variant.alt[0], xCenter, yOffset + halfHaplotype)
+      ctx.fillText(
+        variant.alt_ambiguous_nucleotide,
+        xCenter,
+        yOffset + halfHaplotype
+      )
     } else if (showLine) {
       ctx.fillStyle = this.getVariantColor(variant)
       ctx.fillRect(xCenter, yOffset + 1, 1, HAPLOTYPE_HEIGHT - 2)
@@ -240,9 +245,17 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
     ctx.popObject()
   }
 
-  getVariantColor(_variant: IVariant) {
-    // TODO choose fill style on type of variant
-    return VARIANT_FILL
+  getVariantColor(variant: IVariant) {
+    const homozygous_nucleotides = new Set(['A', 'C', 'T', 'G', 'U'])
+    const is_homozygous = homozygous_nucleotides.has(
+      variant.alt_ambiguous_nucleotide
+    )
+    // Colors based on https://www.ncbi.nlm.nih.gov/tools/sviewer/legends/#anchor_4
+    if (is_homozygous) {
+      return BASE_COLORS[variant.alt_ambiguous_nucleotide]
+    } else {
+      return VARIANT_HETEROZYGOUS_FILL
+    }
   }
 
   // Draw the center line(s), which orient the user

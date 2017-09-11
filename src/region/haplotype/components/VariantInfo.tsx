@@ -45,6 +45,9 @@ export const VariantInfo = ({ variant }: IProps) => {
       <div>Reference: {variant.ref}</div>
       <h3>Alternatives</h3>
       <ol>{alts}</ol>
+      <div>
+        Ambiguous nucliotide of alternatives: {variant.alt_ambiguous_nucleotide}
+      </div>
       <div>Quality score: {variant.qual}</div>
       <div>Passed filters: {variant.filter}</div>
       <h3>Info</h3>

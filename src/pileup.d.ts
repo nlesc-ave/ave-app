@@ -196,6 +196,7 @@ declare module 'pileup/dist/main/style' {
   export const VARIANT_HEIGHT: number
   export const VARIANT_FILL: string
   export const VARIANT_STROKE: string
+  export const BASE_COLORS: { [key: string]: string }
 }
 
 declare module 'data-canvas' {

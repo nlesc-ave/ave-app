@@ -1,174 +1,225 @@
 {
-    "hierarchy": {
-        "children": [{
-            "children": [{
-                "haplotype_id": 1
-            }, {
-                "children": [{
-                    "haplotype_id": 2
-                }, {
-                    "children": [{
-                        "haplotype_id": 3
-                    }, {
-                        "haplotype_id": 4
-                    }]
-                }]
-            }]
-        }]
+  "hierarchy": {
+    "children": [
+      {
+        "children": [
+          {
+            "haplotype_id": 1
+          },
+          {
+            "children": [
+              {
+                "haplotype_id": 2
+              },
+              {
+                "children": [
+                  {
+                    "haplotype_id": 3
+                  },
+                  {
+                    "haplotype_id": 4
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "haplotypes": [
+    {
+      "haplotype_id": 1,
+      "accessions": ["a1", "a2"],
+      "sequence": [
+        "AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"
+      ],
+      "variants": [
+        {
+          "id": "id placeholder",
+          "chrom": "SL2.40ch05",
+          "filter": "filter placeholder",
+          "pos": 100,
+          "ref": "A",
+          "alt": ["C"],
+          "alt_ambiguous_nucleotide": "C",
+          "qual": 54.3,
+          "info": {
+            "some": "info placeholder"
+          },
+          "genotypes": [
+            {
+              "accession": "a1",
+              "type": "1/1"
+            },
+            {
+              "accession": "a2",
+              "type": "1/1"
+            }
+          ]
+        },
+        {
+          "id": "id placeholder",
+          "chrom": "SL2.40ch05",
+          "filter": "filter placeholder",
+          "pos": 200,
+          "ref": "T",
+          "alt": ["G"],
+          "alt_ambiguous_nucleotide": "G",
+          "qual": 12.3,
+          "info": {
+            "some": "info placeholder"
+          },
+          "genotypes": [
+            {
+              "accession": "a1",
+              "type": "1/1"
+            },
+            {
+              "accession": "a2",
+              "type": "1/1"
+            }
+          ]
+        }
+      ]
     },
-    "haplotypes": [{
-        "haplotype_id": 1,
-        "accessions": [
-            "a1",
-            "a2"
-        ],
-        "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
-        "variants": [{
-            "id": "id placeholder",
-            "chrom": "SL2.40ch05",
-            "filter": "filter placeholder",
-            "pos": 100,
-            "ref": "A",
-            "alt": ["C"],
-            "qual": 54.3,
-            "info": {
-                "some": "info placeholder"
+    {
+      "haplotype_id": 2,
+      "accessions": ["a3", "a4"],
+      "sequence": [
+        "AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"
+      ],
+      "variants": [
+        {
+          "id": "id placeholder",
+          "chrom": "SL2.40ch05",
+          "filter": "filter placeholder",
+          "pos": 100,
+          "ref": "A",
+          "alt": ["C"],
+          "alt_ambiguous_nucleotide": "C",
+          "qual": 54.3,
+          "info": {
+            "some": "info placeholder"
+          },
+          "genotypes": [
+            {
+              "accession": "a3",
+              "type": "1/1"
             },
-            "genotypes": [{
-                "accession": "a1",
-                "type": "1/1"
-            }, {
-                "accession": "a2",
-                "type": "1/1"
-            }]
-        }, {
-            "id": "id placeholder",
-            "chrom": "SL2.40ch05",
-            "filter": "filter placeholder",
-            "pos": 200,
-            "ref": "T",
-            "alt": ["G"],
-            "qual": 12.3,
-            "info": {
-                "some": "info placeholder"
+            {
+              "accession": "a4",
+              "type": "1/1"
+            }
+          ]
+        },
+        {
+          "id": "id placeholder",
+          "chrom": "SL2.40ch05",
+          "filter": "filter placeholder",
+          "pos": 200,
+          "ref": "T",
+          "alt": ["G"],
+          "alt_ambiguous_nucleotide": "G",
+          "qual": 12.3,
+          "info": {
+            "some": "info placeholder"
+          },
+          "genotypes": [
+            {
+              "accession": "a3",
+              "type": "1/1"
             },
-            "genotypes": [{
-                "accession": "a1",
-                "type": "1/1"
-            }, {
-                "accession": "a2",
-                "type": "1/1"
-            }]
-        }]
-    }, {
-        "haplotype_id": 2,
-        "accessions": [
-            "a3",
-            "a4"
-        ],
-        "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
-        "variants": [{
-            "id": "id placeholder",
-            "chrom": "SL2.40ch05",
-            "filter": "filter placeholder",
-            "pos": 100,
-            "ref": "A",
-            "alt": "C",
-            "qual": 54.3,
-            "info": {
-                "some": "info placeholder"
+            {
+              "accession": "a4",
+              "type": "1/1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "haplotype_id": 3,
+      "accessions": ["a5", "a6"],
+      "sequence": [
+        "AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"
+      ],
+      "variants": [
+        {
+          "id": "id placeholder",
+          "chrom": "SL2.40ch05",
+          "filter": "filter placeholder",
+          "pos": 100,
+          "ref": "A",
+          "alt": ["C"],
+          "alt_ambiguous_nucleotide": "C",
+          "qual": 54.3,
+          "info": {
+            "some": "info placeholder"
+          },
+          "genotypes": [
+            {
+              "accession": "a5",
+              "type": "1/1"
             },
-            "genotypes": [{
-                "accession": "a3",
-                "type": "1/1"
-            }, {
-                "accession": "a4",
-                "type": "1/1"
-            }]
-        }, {
-            "id": "id placeholder",
-            "chrom": "SL2.40ch05",
-            "filter": "filter placeholder",
-            "pos": 200,
-            "ref": "T",
-            "alt": "G",
-            "qual": 12.3,
-            "info": {
-                "some": "info placeholder"
+            {
+              "accession": "a6",
+              "type": "1/1"
+            }
+          ]
+        },
+        {
+          "id": "id placeholder",
+          "chrom": "SL2.40ch05",
+          "filter": "filter placeholder",
+          "pos": 200,
+          "ref": "T",
+          "alt": ["G"],
+          "alt_ambiguous_nucleotide": "G",
+          "qual": 12.3,
+          "info": {
+            "some": "info placeholder"
+          },
+          "genotypes": [
+            {
+              "accession": "a5",
+              "type": "1/1"
             },
-            "genotypes": [{
-                "accession": "a3",
-                "type": "1/1"
-            }, {
-                "accession": "a4",
-                "type": "1/1"
-            }]
-        }]
-    }, {
-        "haplotype_id": 3,
-        "accessions": [
-            "a5",
-            "a6"
-        ],
-        "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
-        "variants": [{
-            "id": "id placeholder",
-            "chrom": "SL2.40ch05",
-            "filter": "filter placeholder",
-            "pos": 100,
-            "ref": "A",
-            "alt": ["C"],
-            "qual": 54.3,
-            "info": {
-                "some": "info placeholder"
-            },
-            "genotypes": [{
-                "accession": "a5",
-                "type": "1/1"
-            }, {
-                "accession": "a6",
-                "type": "1/1"
-            }]
-        }, {
-            "id": "id placeholder",
-            "chrom": "SL2.40ch05",
-            "filter": "filter placeholder",
-            "pos": 200,
-            "ref": "T",
-            "alt": ["G"],
-            "qual": 12.3,
-            "info": {
-                "some": "info placeholder"
-            },
-            "genotypes": [{
-                "accession": "a5",
-                "type": "1/1"
-            }, {
-                "accession": "a6",
-                "type": "1/1"
-            }]
-        }]
-    }, {
-        "haplotype_id": 4,
-        "accessions": [
-            "a7"
-        ],
-        "sequence": ["AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"],
-        "variants": [{
-            "id": "id placeholder",
-            "chrom": "SL2.40ch05",
-            "filter": "filter placeholder",
-            "pos": 250,
-            "ref": "A",
-            "alt": ["C"],
-            "qual": 87.3,
-            "info": {
-                "some": "info placeholder"
-            },
-            "genotypes": [{
-                "accession": "a7",
-                "type": "1/1"
-            }]
-        }]
-    }]
+            {
+              "accession": "a6",
+              "type": "1/1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "haplotype_id": 4,
+      "accessions": ["a7"],
+      "sequence": [
+        "AATCTTGTGCCAACGTACATGGACAACTGTATGAACCGATGGACTTACCAGCCTTGACCTTTACAAAGGGTGCTGCTA"
+      ],
+      "variants": [
+        {
+          "id": "id placeholder",
+          "chrom": "SL2.40ch05",
+          "filter": "filter placeholder",
+          "pos": 250,
+          "ref": "A",
+          "alt": ["C"],
+          "alt_ambiguous_nucleotide": "C",
+          "qual": 87.3,
+          "info": {
+            "some": "info placeholder"
+          },
+          "genotypes": [
+            {
+              "accession": "a7",
+              "type": "1/1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
