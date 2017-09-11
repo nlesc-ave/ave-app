@@ -1,9 +1,6 @@
 # Allelic Variation Explorer
 
 [![Build Status](https://travis-ci.org/nlesc-ave/ave-app.svg?branch=master)](https://travis-ci.org/nlesc-ave/ave-app)
-
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3ccb04ea47b04d19bfb560ffba27d18b)](https://www.codacy.com/app/nlesc-ave/ave-app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nlesc-ave/ave-app&amp;utm_campaign=Badge_Grade)
-[![Codacy Coverage Badge](https://api.codacy.com/project/badge/Coverage/3ccb04ea47b04d19bfb560ffba27d18b)](https://www.codacy.com/app/nlesc-ave/ave-app?utm_source=github.com&utm_medium=referral&utm_content=nlesc-ave/ave-app&utm_campaign=Badge_Coverage)
 [![SonarCloud Gate](https://sonarcloud.io/api/badges/gate?key=nlesc-ave:ave-app)](https://sonarcloud.io/dashboard?id=nlesc-ave:ave-app)
 [![SonarCloud Coverage](https://sonarcloud.io/api/badges/measure?key=nlesc-ave:ave-app&metric=coverage)](https://sonarcloud.io/component_measures/domain/Coverage?id=nlesc-ave:ave-app)
 [![Download](https://api.bintray.com/packages/nlesc-ave/ave/ave-app/images/download.svg) ](https://bintray.com/nlesc-ave/ave/ave-app/_latestVersion)
