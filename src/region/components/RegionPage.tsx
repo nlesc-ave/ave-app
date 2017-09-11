@@ -34,9 +34,9 @@ export interface IStateProps {
   flank: number
 }
 
-type IProps = RouteComponentProps<IParams> & IStateProps
+export type IProps = RouteComponentProps<IParams> & IStateProps
 
-interface IState {
+export interface IState {
   genome?: IGenome
   menuOpen: boolean
   selectedGene?: Gene
@@ -55,7 +55,7 @@ export class RegionPage extends React.Component<IProps, IState> {
 
   fetchGenome() {
     const p = this.props
-    fetch(`${p.apiroot}/genomes/${p.match.params.genome_id}`)
+    return fetch(`${p.apiroot}/genomes/${p.match.params.genome_id}`)
       .then<IGenome>(response => response.json())
       .then(genome => {
         this.haplotypesDataSource = new AveHaplotypesDataSource(

@@ -18,9 +18,9 @@ export interface IDispatchProps {
   saveSettings(apiRoot: string, flank: number): void
 }
 
-type IProps = IDispatchProps & IStateProps
+export type IProps = IDispatchProps & IStateProps
 // mirror of state props so they can be changed locally and saveSettings on submit
-type IState = IStateProps
+export type IState = IStateProps
 
 const style: React.CSSProperties = {
   margin: 'auto',

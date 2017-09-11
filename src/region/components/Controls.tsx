@@ -11,23 +11,14 @@ import { GenomeRange } from 'pileup/dist/main/Root'
 
 import { RangeSelector } from './RangeSelector'
 
-interface IProps {
+export interface IProps {
   chromosomes: IChromosome[]
   range: GenomeRange
   onChange(newRange: GenomeRange): void
 }
 
 export class Controls extends React.Component<IProps, {}> {
-  constructor(props: IProps) {
-    super(props)
-
-    this.onNexWindowClick = this.onNexWindowClick.bind(this)
-    this.onZoomInClick = this.onZoomInClick.bind(this)
-    this.onZoomOutClick = this.onZoomOutClick.bind(this)
-    this.onPrevWindowClick = this.onPrevWindowClick.bind(this)
-  }
-
-  onPrevWindowClick() {
+  onPrevWindowClick = () => {
     const { contig, start, stop } = this.props.range
     const windowSize = stop - start
     const newRange = {
@@ -38,7 +29,7 @@ export class Controls extends React.Component<IProps, {}> {
     this.props.onChange(this.capRange(newRange))
   }
 
-  onZoomInClick() {
+  onZoomInClick = () => {
     const { contig, start, stop } = this.props.range
     const windowSize = Math.floor((stop - start) / 4)
     const newRange = {
@@ -66,7 +57,7 @@ export class Controls extends React.Component<IProps, {}> {
     }
   }
 
-  onZoomOutClick() {
+  onZoomOutClick = () => {
     const { contig, start, stop } = this.props.range
     const windowSize = stop - start
     const newRange = {
@@ -77,7 +68,7 @@ export class Controls extends React.Component<IProps, {}> {
     this.props.onChange(this.capRange(newRange))
   }
 
-  onNexWindowClick() {
+  onNexWindowClick = () => {
     const { contig, start, stop } = this.props.range
     const windowSize = stop - start
     const newRange = {
@@ -96,9 +87,6 @@ export class Controls extends React.Component<IProps, {}> {
 
   render() {
     const { range, chromosomes } = this.props
-    if (!range) {
-      return <Toolbar />
-    }
     const { start, stop } = range
     const windowSize = stop - start
     const chromLength = this.chromLength()
