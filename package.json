@@ -2,7 +2,8 @@
   "name": "ave-app",
   "version": "0.1.0",
   "description": "Allelic Variation Explorer",
-  "author": "Netherlands eScience Center <info@esciencecenter.nl (https://www.esciencecenter.nl)",
+  "author":
+    "Netherlands eScience Center <info@esciencecenter.nl (https://www.esciencecenter.nl)",
   "license": "Apache-2.0",
   "proxy": "http://localhost:2015",
   "private": true,
@@ -29,6 +30,7 @@
     "jquery": "^3.2.1",
     "material-ui": "0.17.4",
     "pileup": "https://github.com/nlesc-ave/pileup.js.git",
+    "prettier": "^1.6.1",
     "react": "15.5.4",
     "react-dom": "15.5.4",
     "react-redux": "5.0.5",
@@ -40,6 +42,8 @@
     "redux-observable": "^0.14.1",
     "roboto-npm-webfont": "^0.0.2",
     "rxjs": "^5.4.0",
+    "tslint-config-prettier": "^1.5.0",
+    "tslint-sonarts": "^1.0.0",
     "wait-on": "^2.0.2"
   },
   "devDependencies": {
@@ -68,10 +72,19 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "react-scripts lint",
-    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"caddy\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron-pack": "electron-builder --win portable --linux AppImage --mac zip --em.main=build/electron.js",
-    "electron-pack-mac": "electron-builder --mac dmg --em.main=build/electron.js",
+    "electron-dev":
+      "concurrently \"BROWSER=none yarn start\" \"caddy\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack":
+      "electron-builder --win portable --linux AppImage --mac zip --em.main=build/electron.js",
+    "electron-pack-mac":
+      "electron-builder --mac dmg --em.main=build/electron.js",
     "postinstall": "electron-builder install-app-deps",
-    "preelectron-pack": "yarn build"
+    "preelectron-pack": "yarn build",
+    "prettier":
+      "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\" \"src/**/*.css\""
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
   }
 }
