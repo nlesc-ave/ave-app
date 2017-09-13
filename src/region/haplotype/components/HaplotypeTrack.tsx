@@ -31,12 +31,21 @@ interface IProps {
 interface IState {
   selectedVariant?: IVariant
   selectedHaplotype?: IHaplotype
+  error: string
 }
 
-const VARIANT_HETEROZYGOUS_FILL = 'golden'
+interface ProblemDetail {
+  detail: string
+  title: string
+  type: string
+  status: number
+}
+
+const VARIANT_HETEROZYGOUS_FILL = 'gold'
+const VARIANT_HOMOZYGOUS_FILL = 'red'
 const VARIANT_RADIUS = 7
 const VARIANT_TEXT_THRESHOLD = 10
-const VARIANT_LINE_THRESHOLD = 0.001
+const VARIANT_LINE_THRESHOLD = 0.1
 const HAPLOTYPE_TOP_MARGIN = 20
 export const HAPLOTYPE_HEIGHT = 16
 const HAPLOTYPE_STROKE = 'darkgrey'
@@ -44,6 +53,7 @@ const HAPLOTYPE_SIZE_STROKE = 'black'
 const HAPLOTYPE_FILL = 'white'
 export const HAPLOTYPE_PADDING = 4
 const containerStyles = { height: '100%' }
+const errorStyle = { color: 'red' }
 
 export class HaplotypeTrack extends React.Component<IProps, IState> {
   static displayName = 'haplotype'
@@ -53,7 +63,9 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
     super()
     this.onClick = this.onClick.bind(this)
     this.canvasRefHandler = this.canvasRefHandler.bind(this)
-    this.state = {}
+    this.state = {
+      error: ''
+    }
   }
 
   componentDidUpdate() {
@@ -61,7 +73,25 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
-    this.props.source.on('newdata', this.updateVisualization.bind(this))
+    this.props.source.on('newdata', this.newData)
+    this.props.source.on('networkfailure', this.setError)
+  }
+
+  setError = async (response: Response) => {
+    if (response.headers.get('content-type') === 'application/problem+json') {
+      const body: ProblemDetail = await response.json()
+      this.setState({ error: body.detail })
+    } else {
+      this.setState({ error: response.statusText })
+    }
+  }
+
+  newData = () => {
+    if (this.state.error) {
+      // clear error
+      this.setState({ error: '' })
+    }
+    this.updateVisualization()
   }
 
   onClick(reactEvent: any) {
@@ -104,6 +134,13 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
   }
 
   render() {
+    if (this.state.error) {
+      return (
+        <div style={errorStyle}>
+          Failed to retrieve haplotypes: {this.state.error}
+        </div>
+      )
+    }
     let dialog
     if (this.state.selectedVariant && this.state.selectedHaplotype) {
       dialog = (
@@ -133,7 +170,7 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
   updateVisualization() {
     const { width } = this.props
     // Hold off until height & width are known.
-    if (width === 0) {
+    if (width === 0 || !this.canvas) {
       return
     }
     const height =
@@ -215,6 +252,7 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
     const showLine = pxPerLetter <= VARIANT_LINE_THRESHOLD
     const xCenter = scale(variant.pos)
     const halfHaplotype = Math.round(HAPLOTYPE_HEIGHT / 2)
+    const fillStyle = this.getVariantColor(variant, showText)
     if (showText) {
       ctx.fillStyle = HAPLOTYPE_FILL
       // something to click as, fillText is not clickable
@@ -224,20 +262,18 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
         halfHaplotype,
         HAPLOTYPE_HEIGHT - 2
       )
-      ctx.fillStyle = this.getVariantColor(variant)
+      ctx.fillStyle = fillStyle
       ctx.fillText(
         variant.alt_ambiguous_nucleotide,
         xCenter,
         yOffset + halfHaplotype
       )
     } else if (showLine) {
-      ctx.fillStyle = this.getVariantColor(variant)
+      ctx.fillStyle = fillStyle
       ctx.fillRect(xCenter, yOffset + 1, 1, HAPLOTYPE_HEIGHT - 2)
     } else {
-      ctx.fillStyle = this.getVariantColor(variant)
+      ctx.fillStyle = fillStyle
       ctx.beginPath()
-      // TODO remove range.start when variant.pos is from real dataset
-      // const xCenter = this.getScale()(variant.pos);
       const yCenter = yOffset + halfHaplotype
       ctx.arc(xCenter, yCenter, VARIANT_RADIUS, 0, 2 * Math.PI)
       ctx.fill()
@@ -245,14 +281,18 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
     ctx.popObject()
   }
 
-  getVariantColor(variant: IVariant) {
+  getVariantColor(variant: IVariant, showText: boolean) {
     const homozygous_nucleotides = new Set(['A', 'C', 'T', 'G', 'U'])
     const is_homozygous = homozygous_nucleotides.has(
       variant.alt_ambiguous_nucleotide
     )
     // Colors based on https://www.ncbi.nlm.nih.gov/tools/sviewer/legends/#anchor_4
     if (is_homozygous) {
-      return BASE_COLORS[variant.alt_ambiguous_nucleotide]
+      if (showText) {
+        return BASE_COLORS[variant.alt_ambiguous_nucleotide]
+      } else {
+        return VARIANT_HOMOZYGOUS_FILL
+      }
     } else {
       return VARIANT_HETEROZYGOUS_FILL
     }

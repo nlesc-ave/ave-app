@@ -19,6 +19,11 @@ interface IState {
 }
 
 export class HaplotypeTree extends React.Component<IProps, IState> {
+  state: IState = {
+    hierarchy: {},
+    leafs: 0
+  }
+
   loadData() {
     this.setState({
       hierarchy: this.props.source.hierarchy,
@@ -28,17 +33,17 @@ export class HaplotypeTree extends React.Component<IProps, IState> {
 
   componentDidMount() {
     this.props.source.on('newdata', this.loadData.bind(this))
+    this.props.source.on('networkfailure', this.clearData)
+  }
+
+  clearData = () => {
+    this.setState({
+      hierarchy: {},
+      leafs: 0
+    })
   }
 
   render() {
-    if (this.state == null) {
-      return (
-        <svg
-          width={this.props.width}
-          height={HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING}
-        />
-      )
-    }
     const height = this.state.leafs * (HAPLOTYPE_HEIGHT + HAPLOTYPE_PADDING)
     const cluster = d3.layout
       .cluster()

@@ -12,6 +12,7 @@
     "interface-name": [false],
     "prefer-type-cast": false,
     "no-console": [false],
-    "no-http-string": false
+    "no-http-string": false,
+    "no-backbone-get-set-outside-model": false
   }
 }
