@@ -36,6 +36,14 @@ export const VariantInfo = ({ variant }: IProps) => {
       </TableRow>
     )
   })
+  let ambi_alt = null
+  if (variant.alt[0] === variant.alt_ambiguous_nucleotide) {
+    ambi_alt = (
+      <div>
+        Ambiguous nucliotide of alternatives: {variant.alt_ambiguous_nucleotide}
+      </div>
+    )
+  }
   return (
     <div>
       <div>Identifier: {variant.id}</div>
@@ -45,9 +53,7 @@ export const VariantInfo = ({ variant }: IProps) => {
       <div>Reference: {variant.ref}</div>
       <h3>Alternatives</h3>
       <ol>{alts}</ol>
-      <div>
-        Ambiguous nucliotide of alternatives: {variant.alt_ambiguous_nucleotide}
-      </div>
+      {ambi_alt}
       <div>Quality score: {variant.qual}</div>
       <div>Passed filters: {variant.filter}</div>
       <h3>Info</h3>
