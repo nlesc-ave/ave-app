@@ -1,6 +1,7 @@
 import ContigInterval from 'pileup/dist/main/ContigInterval'
 
 import { AveDataSource } from '../AveDataSource'
+import { processStatus } from './processStatus'
 
 // tslint:disable-next-line:interface-over-type-literal
 type IMap = { [s: string]: string }
@@ -52,13 +53,9 @@ export class AveHaplotypesDataSource extends AveDataSource {
   }
 
   load(response: IHaplotypesResponse) {
-    if (!('hierarchy' in response)) {
-      this.events.trigger('networkfailure', response)
-    } else {
-      this.hierarchy = response.hierarchy
-      this.haplotypes = response.haplotypes
-      this.events.trigger('newdata', this.interval)
-    }
+    this.hierarchy = response.hierarchy
+    this.haplotypes = response.haplotypes
+    this.events.trigger('newdata', this.interval)
     return response
   }
 
@@ -87,6 +84,7 @@ export class AveHaplotypesDataSource extends AveDataSource {
 
   fetch(url: string) {
     return fetch(url)
+      .then(processStatus)
       .then<IHaplotypesResponse>(response => response.json())
       .then(response => this.load(response))
       .catch(reason => this.events.trigger('networkfailure', reason))
