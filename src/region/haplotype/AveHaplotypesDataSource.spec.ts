@@ -28,8 +28,4 @@ describe('AveHaplotypesDataSource', () => {
       source.off('newdata', cb)
     })
   })
-
-  describe('rangeChanged', () => {
-    it('should trigger newdata event', () => {})
-  })
 })
