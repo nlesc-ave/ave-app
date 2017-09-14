@@ -60,7 +60,8 @@ export class RegionPage extends React.Component<IProps, IState> {
       .then(genome => {
         this.haplotypesDataSource = new AveHaplotypesDataSource(
           p.match.params.genome_id,
-          p.apiroot
+          p.apiroot,
+          genome.accessions
         )
         if ('gene_track' in genome) {
           this.geneDataSource = pileup.formats.bigBed({

@@ -45,6 +45,11 @@ export class AveHaplotypesDataSource extends AveDataSource {
   haplotypes: IHaplotype[] = []
   accessions: string[] = []
 
+  constructor(genome_id: string, apiroot: string, accessions: string[]) {
+    super(genome_id, apiroot)
+    this.accessions = accessions
+  }
+
   onFetch() {
     if (this.interval) {
       const url = this.buildUrl(this.interval, this.accessions)

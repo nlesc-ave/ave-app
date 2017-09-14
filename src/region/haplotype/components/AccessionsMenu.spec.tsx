@@ -9,18 +9,17 @@ const DEFAULT_ACCESSIONS = ['a1', 'a2', 'a3']
 
 describe('<AccessionsMenu/>', () => {
   describe('without accessions', () => {
-    it('should have nothing selected', () => {
-      const source = new AveHaplotypesDataSource('some genome id', '/')
+    it('should have selected all accessions', () => {
+      const source = new AveHaplotypesDataSource(
+        'some genome id',
+        '/',
+        DEFAULT_ACCESSIONS
+      )
       const wrapper = shallow(
         <AccessionsMenu accessions={[]} source={source} />
       )
-      const expected = {
-        filtered: [],
-        open: false,
-        query: '',
-        selected: new Set()
-      }
-      expect(wrapper.state()).toEqual(expected)
+      const expected = new Set(DEFAULT_ACCESSIONS)
+      expect(wrapper.state().selected).toEqual(expected)
     })
   })
 
@@ -28,7 +27,11 @@ describe('<AccessionsMenu/>', () => {
     let wrapper: ShallowWrapper<IProps, IState>
     let source: AveHaplotypesDataSource
     beforeEach(() => {
-      source = new AveHaplotypesDataSource('some genome id', '/')
+      source = new AveHaplotypesDataSource(
+        'some genome id',
+        '/',
+        DEFAULT_ACCESSIONS
+      )
       source.setAccessions = jest.fn()
       const response = {
         haplotypes: [
