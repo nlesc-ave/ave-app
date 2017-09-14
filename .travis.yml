@@ -18,4 +18,4 @@ addons:
   sonarcloud:
     organization: "nlesc-ave"
 after_success:
-  - "curl -H \"Content-Type: application/json\" --data '{\"build\": true}' -X POST https://registry.hub.docker.com/u/ave2/allelic-variation-explorer/trigger/$DOCKER_TOKEN"
+  - "curl -H \"Content-Type: application/json\" --data '{\"build\": true}' -X POST https://registry.hub.docker.com/u/ave2/allelic-variation-explorer/trigger/$DOCKER_TOKEN/"
