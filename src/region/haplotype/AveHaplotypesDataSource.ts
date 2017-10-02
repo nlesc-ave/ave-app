@@ -8,6 +8,8 @@ type IMap = { [s: string]: string }
 
 export interface Genotype extends IMap {
   accession: string
+  alt_ambiguous_nucleotide: string
+  is_homozygous: string // actually a boolean, but conflicts with IMap
 }
 
 export interface IVariant {

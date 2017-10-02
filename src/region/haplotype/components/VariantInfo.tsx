@@ -37,10 +37,11 @@ export const VariantInfo = ({ variant }: IProps) => {
     )
   })
   let ambi_alt = null
-  if (variant.alt[0] !== variant.alt_ambiguous_nucleotide) {
+  if (variant.genotypes[0].is_homozygous) {
     ambi_alt = (
       <div>
-        Ambiguous nucliotide of alternatives: {variant.alt_ambiguous_nucleotide}
+        Ambiguous nucliotide of alternatives:
+        {variant.genotypes[0].alt_ambiguous_nucleotide}
       </div>
     )
   }
