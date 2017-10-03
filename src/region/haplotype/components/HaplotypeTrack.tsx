@@ -282,13 +282,12 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
   }
 
   getVariantColor(variant: IVariant, showText: boolean) {
-    const homozygous_nucleotides = new Set(['A', 'C', 'T', 'G', 'U'])
-    const alt_ambiguous_nucleotide =
-      variant.genotypes[0].alt_ambiguous_nucleotide
-    const is_homozygous = homozygous_nucleotides.has(alt_ambiguous_nucleotide)
+    const is_homozygous = variant.genotypes[0].is_homozygous
     // Colors based on https://www.ncbi.nlm.nih.gov/tools/sviewer/legends/#anchor_4
     if (is_homozygous) {
       if (showText) {
+        const alt_ambiguous_nucleotide =
+          variant.genotypes[0].alt_ambiguous_nucleotide
         return BASE_COLORS[alt_ambiguous_nucleotide]
       } else {
         return VARIANT_HOMOZYGOUS_FILL

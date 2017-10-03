@@ -5,7 +5,7 @@
   "author":
     "Netherlands eScience Center <info@esciencecenter.nl (https://www.esciencecenter.nl)",
   "license": "Apache-2.0",
-  "proxy": "http://172.17.0.2",
+  "proxy": "http://localhost:2015",
   "private": true,
   "main": "public/electron.js",
   "homepage": "/",
