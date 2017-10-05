@@ -18,7 +18,6 @@ export interface IVariant {
   id: string
   ref: string
   alt: string[]
-  alt_ambiguous_nucleotide: string
   qual: number
   filter: string
   info: IMap

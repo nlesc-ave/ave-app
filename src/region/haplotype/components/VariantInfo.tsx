@@ -15,6 +15,9 @@ interface IProps {
   variant: IVariant
 }
 
+const genotypeKeyFilter = (k: string) =>
+  k !== 'accession' && k !== 'is_homozygous' && k !== 'alt_ambiguous_nucleotide'
+
 export const VariantInfo = ({ variant }: IProps) => {
   const alts = variant.alt.map((d, i) => <li key={i}>{d}</li>)
   const infos = Object.keys(variant.info).map(k => (
@@ -23,11 +26,11 @@ export const VariantInfo = ({ variant }: IProps) => {
     </div>
   ))
   const genotypeHeader = Object.keys(variant.genotypes[0])
-    .filter(k => k !== 'accession')
+    .filter(genotypeKeyFilter)
     .map(k => <TableHeaderColumn key={k}>{k}</TableHeaderColumn>)
   const genotypeRows = variant.genotypes.map((g, i) => {
     const cols = Object.keys(g)
-      .filter(k => k !== 'accession')
+      .filter(genotypeKeyFilter)
       .map((k, j) => <TableRowColumn key={i + '-' + j}>{g[k]}</TableRowColumn>)
     return (
       <TableRow key={i}>
@@ -37,7 +40,7 @@ export const VariantInfo = ({ variant }: IProps) => {
     )
   })
   let ambi_alt = null
-  if (variant.genotypes[0].is_homozygous) {
+  if (!variant.genotypes[0].is_homozygous) {
     ambi_alt = (
       <div>
         Ambiguous nucliotide of alternatives:
@@ -55,6 +58,10 @@ export const VariantInfo = ({ variant }: IProps) => {
       <h3>Alternatives</h3>
       <ol>{alts}</ol>
       {ambi_alt}
+      <div>
+        Heterozygous variant:
+        {variant.genotypes[0].is_homozygous ? 'no' : 'yes'}
+      </div>
       <div>Quality score: {variant.qual}</div>
       <div>Passed filters: {variant.filter}</div>
       <h3>Info</h3>

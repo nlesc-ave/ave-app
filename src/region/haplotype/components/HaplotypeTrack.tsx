@@ -264,7 +264,7 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
       )
       ctx.fillStyle = fillStyle
       ctx.fillText(
-        variant.alt_ambiguous_nucleotide,
+        variant.genotypes[0].alt_ambiguous_nucleotide,
         xCenter,
         yOffset + halfHaplotype
       )

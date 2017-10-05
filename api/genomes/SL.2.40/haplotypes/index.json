@@ -42,7 +42,6 @@
           "pos": 100,
           "ref": "A",
           "alt": ["C"],
-          "alt_ambiguous_nucleotide": "C",
           "qual": 54.3,
           "info": {
             "some": "info placeholder"
@@ -50,10 +49,14 @@
           "genotypes": [
             {
               "accession": "a1",
+              "alt_ambiguous_nucleotide": "C",
+              "is_homozygous": true,
               "type": "1/1"
             },
             {
               "accession": "a2",
+              "alt_ambiguous_nucleotide": "C",
+              "is_homozygous": true,
               "type": "1/1"
             }
           ]
@@ -65,7 +68,6 @@
           "pos": 200,
           "ref": "T",
           "alt": ["G"],
-          "alt_ambiguous_nucleotide": "G",
           "qual": 12.3,
           "info": {
             "some": "info placeholder"
@@ -73,9 +75,13 @@
           "genotypes": [
             {
               "accession": "a1",
+              "alt_ambiguous_nucleotide": "G",
+              "is_homozygous": true,
               "type": "1/1"
             },
             {
+              "alt_ambiguous_nucleotide": "G",
+              "is_homozygous": true,
               "accession": "a2",
               "type": "1/1"
             }
@@ -97,7 +103,6 @@
           "pos": 100,
           "ref": "A",
           "alt": ["C"],
-          "alt_ambiguous_nucleotide": "C",
           "qual": 54.3,
           "info": {
             "some": "info placeholder"
@@ -105,10 +110,14 @@
           "genotypes": [
             {
               "accession": "a3",
+              "alt_ambiguous_nucleotide": "C",
+              "is_homozygous": true,
               "type": "1/1"
             },
             {
               "accession": "a4",
+              "alt_ambiguous_nucleotide": "C",
+              "is_homozygous": true,
               "type": "1/1"
             }
           ]
@@ -120,7 +129,6 @@
           "pos": 200,
           "ref": "T",
           "alt": ["G"],
-          "alt_ambiguous_nucleotide": "G",
           "qual": 12.3,
           "info": {
             "some": "info placeholder"
@@ -128,10 +136,14 @@
           "genotypes": [
             {
               "accession": "a3",
+              "alt_ambiguous_nucleotide": "G",
+              "is_homozygous": true,
               "type": "1/1"
             },
             {
               "accession": "a4",
+              "alt_ambiguous_nucleotide": "G",
+              "is_homozygous": true,
               "type": "1/1"
             }
           ]
@@ -152,18 +164,21 @@
           "pos": 100,
           "ref": "A",
           "alt": ["C"],
-          "alt_ambiguous_nucleotide": "C",
           "qual": 54.3,
           "info": {
             "some": "info placeholder"
           },
           "genotypes": [
             {
+              "alt_ambiguous_nucleotide": "C",
               "accession": "a5",
+              "is_homozygous": true,
               "type": "1/1"
             },
             {
+              "alt_ambiguous_nucleotide": "C",
               "accession": "a6",
+              "is_homozygous": true,
               "type": "1/1"
             }
           ]
@@ -175,7 +190,6 @@
           "pos": 200,
           "ref": "T",
           "alt": ["G"],
-          "alt_ambiguous_nucleotide": "G",
           "qual": 12.3,
           "info": {
             "some": "info placeholder"
@@ -183,11 +197,15 @@
           "genotypes": [
             {
               "accession": "a5",
-              "type": "1/1"
+              "alt_ambiguous_nucleotide": "K",
+              "is_homozygous": false,
+              "type": "0/1"
             },
             {
               "accession": "a6",
-              "type": "1/1"
+              "alt_ambiguous_nucleotide": "K",
+              "is_homozygous": false,
+              "type": "0/1"
             }
           ]
         }
@@ -207,14 +225,15 @@
           "pos": 250,
           "ref": "A",
           "alt": ["C"],
-          "alt_ambiguous_nucleotide": "C",
           "qual": 87.3,
           "info": {
             "some": "info placeholder"
           },
           "genotypes": [
             {
+              "alt_ambiguous_nucleotide": "C",
               "accession": "a7",
+              "is_homozygous": true,
               "type": "1/1"
             }
           ]
