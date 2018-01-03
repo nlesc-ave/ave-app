@@ -14,7 +14,6 @@ The web application uses [pileup.js](https://github.com/hammerlab/pileup.js).
 Requirements:
 
 - caddy with http.cors plugin, https://caddyserver.com, static file server to proxy example api files
-- electron build dependencies, to build multi platform distributions, see [here](https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build) for more info
 
 Clone repo and then
 ```
@@ -44,29 +43,6 @@ yarn start
 
 This will open the web application in a web browser on `http://localhost:3000`.
 It will also start an api web service using caddy with example api files.
-
-## Develop with electron
-
-```
-yarn electron-dev
-```
-This will start an electron application with the application running in develop mode.
-
-To load the example api files, the api root must be changed to `http://localhost:3000/api` in the settings page.
-
-## Build electron distributions
-
-To build Linux and Windows distributions in the `dist/` directory use:
-```
-yarn electron-pack
-```
-
-On MacOS a dmg file can be built with:
-```
-yarn electron-pack-mac
-```
-
-After installation, set api root to location of a running ave api service.
 
 # Format
 
