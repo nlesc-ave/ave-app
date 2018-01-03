@@ -1,6 +1,8 @@
 :2015
 index index.html index.json
 
+# Pileup.js uses range request header to fetch chunks of 2bit and bigbed
+# Allow range header from any place
 cors {
   allowed_headers range
 }
@@ -16,25 +18,12 @@ rewrite {
     to /api/genomes/{1}/genes/index.json
 }
 
+# For any region give same haplotypes
 rewrite {
     # From /genomes/{genome_id}/chromosomes/{chrom_id}/start/{start_position}/end/{end_position}/haplotypes?accessions={accessions}
     # To /api/genomes/{genome_id}/haplotypes/index.json
     regexp /api/genomes/(.*)/chromosomes/(.*)/haplotypes
     to /api/genomes/{1}/haplotypes/index.json
-}
-
-rewrite {
-    # From /genomes/{genome_id}/chromosomes/{chrom_id}/start/{start_position}/end/{end_position}/genes
-    # To /api/genomes/{genome_id}/genes/index.json
-    regexp /api/genomes/(.*)/chromosomes/(.*)/genes
-    to /api/genomes/{1}/genes/index.json
-}
-
-rewrite {
-    # From /genomes/{genome_id}/chromosomes/{chrom_id}/start/{start_position}/end/{end_position}/features
-    # To /api/genomes/{genome_id}/features/index.json
-    regexp /api/genomes/(.*)/chromosomes/(.*)/features
-    to /api/genomes/{1}/features/index.json
 }
 
 # HTML5 push state
