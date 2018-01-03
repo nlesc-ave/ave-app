@@ -7,16 +7,9 @@ import { VariantInfo } from './VariantInfo'
 describe('<VariantInfo/>', () => {
   it('render', () => {
     const variant = {
-      id: 'id placeholder',
+      alt: ['C'],
       chrom: 'SL2.40ch05',
       filter: 'filter placeholder',
-      pos: 100,
-      ref: 'A',
-      alt: ['C'],
-      qual: 54.3,
-      info: {
-        some: 'info placeholder'
-      },
       genotypes: [
         {
           accession: 'a1',
@@ -30,7 +23,14 @@ describe('<VariantInfo/>', () => {
           is_homozygous: 'True',
           type: '1/1'
         }
-      ]
+      ],
+      id: 'id placeholder',
+      info: {
+        some: 'info placeholder'
+      },
+      pos: 100,
+      qual: 54.3,
+      ref: 'A'
     }
     const wrapper = shallow(<VariantInfo variant={variant} />)
 
