@@ -7,6 +7,8 @@
 
 The Allelic Variation Explorer web application visualizes clusters of genomic variants.
 
+![Screenshot of Allelic Variation Explorer](https://github.com/nlesc-ave/ave-rest-service/raw/master/docs/screenshot.png)
+
 This application is the front end for the [ave-rest-service](https://github.com/nlesc-ave/ave-rest-service) back end.
 The front end runs in the users web browser and communicates with the back end running on a web server somewhere.
 The front end is the user interface and the back end is the service serving the variant, annotation and genomic data.
