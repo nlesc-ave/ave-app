@@ -54,6 +54,21 @@ const HAPLOTYPE_FILL = 'white'
 export const HAPLOTYPE_PADDING = 4
 const containerStyles = { height: '100%' }
 const errorStyle = { color: 'red' }
+const AMBIGUOUS_BASE_COLORS: { [key: string]: string } = {
+  ...BASE_COLORS,
+  B: '#c7eae5',
+  D: '#80cdc1',
+  H: '#35978f',
+  K: '#dfc27d',
+  M: '#bf812d',
+  R: '#f6e8c3',
+  S: '#8c510a',
+  V: '#01665e',
+  W: '#543005',
+  X: 'black',
+  Y: '#f5f5f5',
+  Z: 'black'
+}
 
 export class HaplotypeTrack extends React.Component<IProps, IState> {
   static displayName = 'haplotype'
@@ -288,7 +303,7 @@ export class HaplotypeTrack extends React.Component<IProps, IState> {
       if (showText) {
         const alt_ambiguous_nucleotide =
           variant.genotypes[0].alt_ambiguous_nucleotide
-        return BASE_COLORS[alt_ambiguous_nucleotide]
+        return AMBIGUOUS_BASE_COLORS[alt_ambiguous_nucleotide]
       } else {
         return VARIANT_HOMOZYGOUS_FILL
       }
