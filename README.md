@@ -19,7 +19,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 The build archive of the latest commit on the master branch can be downloaded from https://bintray.com/nlesc-ave/ave/ave-app#files, it is automatically build on [Travis-CI](https://travis-ci.org/nlesc-ave/ave-app).
 
-See https://github.com/nlesc-ave/ave-rest-service#deployment how to combine the [build archive](https://bintray.com/nlesc-ave/ave/ave-app#files) or [build directory](#build) of this repo to a deployment which can be used by end-users.
+See https://github.com/nlesc-ave/ave-rest-service#installation how to combine the [build archive](https://bintray.com/nlesc-ave/ave/ave-app#files) or [build directory](#build) of this repo to a deployment which can be used by end-users.
 
 ## Develop
 
