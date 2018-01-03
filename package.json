@@ -5,6 +5,9 @@
   "author":
     "Netherlands eScience Center <info@esciencecenter.nl (https://www.esciencecenter.nl)",
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=7.0.0"
+  },
   "proxy": "http://localhost:2015",
   "private": true,
   "homepage": "/",
