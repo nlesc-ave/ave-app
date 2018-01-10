@@ -65,7 +65,8 @@ export class ChromosomePicker extends React.Component<IProps, IState> {
 
   render() {
     const selected = this.props.value
-    const chromosomeItems = this.state.filtered.map(chr => (
+    const maxItems = 100
+    const chromosomeItems = this.state.filtered.slice(0, maxItems).map(chr => (
       <ChromosomeListItem
         key={chr}
         chromosome={chr}
@@ -76,6 +77,10 @@ export class ChromosomePicker extends React.Component<IProps, IState> {
     let error = ''
     if (this.state.filtered.length === 0 && this.props.choices.length > 0) {
       error = 'No chromosome matches filter'
+    }
+    let more = null;
+    if (this.state.filtered.length > maxItems) {
+      more = <span>Not showing more, use filter to reduce</span>
     }
     return (
       <div>
@@ -91,7 +96,7 @@ export class ChromosomePicker extends React.Component<IProps, IState> {
           targetOrigin={{ horizontal: 'left', vertical: 'top' }}
           onRequestClose={this.closeSearchDialog}
           zDepth={2}
-          style={{ padding: 5 }}
+          style={{ padding: 5, overflowY: 'auto' }}
         >
           <TextField
             hintText="Filter chromosomes"
@@ -100,6 +105,7 @@ export class ChromosomePicker extends React.Component<IProps, IState> {
             errorText={error}
           />
           <List>{chromosomeItems}</List>
+          {more}
         </Popover>
       </div>
     )
